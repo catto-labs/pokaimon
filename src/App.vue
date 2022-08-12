@@ -4,6 +4,7 @@
     <router-link to="/about">About</router-link>
   </nav>
   <router-view />
+  <h1 class="text-success">Poggers</h1>
 </template>
 
 <style>
