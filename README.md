@@ -4,13 +4,18 @@
 > Pokaimon is a Genshin Impact themed collectible game with mechanics similar to Pokemon.
 
 ## Project setup
+
+### Recommended IDE Setup
+
+- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+
 ```
 yarn install
 ```
 
 ### Compiles and hot-reloads for development
 ```
-yarn serve
+yarn dev
 ```
 
 ### Compiles and minifies for production

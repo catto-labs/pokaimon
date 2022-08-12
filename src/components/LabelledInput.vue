@@ -1,11 +1,8 @@
 <script setup lang="ts">
-const props = defineProps({
-  label: {
-    type: String,
-    required: true,
-  },
-  placeholder: String,
-});
+const props = defineProps<{
+  label: string;
+  placeholder?: string;
+}>();
 </script>
 
 <template>
