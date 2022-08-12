@@ -1,6 +1,8 @@
 <template>
-  <div class="flex h-screen w-screen items-center justify-center bg-grey-900">
-    <div class="w-full max-w-md rounded-xl bg-black p-11">
+  <div
+    class="flex h-screen w-screen flex-col items-center justify-center bg-grey-900"
+  >
+    <div class="mb-4 w-full max-w-md rounded-xl bg-black p-11">
       <h1 class="mb-2 text-4xl font-bold text-head">Welcome back!</h1>
 
       <form @submit="handleSubmit" class="flex flex-col gap-3 pt-4">
@@ -55,6 +57,12 @@
         </button>
       </div>
     </div>
+    <span class="text-lg text-grey-400"
+      >Need an account?
+      <a href="/signup" class="text-purple filter hover:brightness-125"
+        >Create one here.</a
+      >
+    </span>
   </div>
 </template>
 
