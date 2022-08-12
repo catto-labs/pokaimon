@@ -53,7 +53,7 @@
           type="button"
           class="rounded-xl border border-fuchsia bg-grey-700 py-2 px-10 font-bold text-white"
         >
-          <IconGitHub />
+          <IconGitHub @click="signInWithGithub" />
         </button>
       </div>
     </div>
@@ -74,6 +74,8 @@ import IconGitHub from "virtual:icons/fa6-brands/github";
 
 import LabelledInput from "@/components/LabelledInput.vue";
 
+import { supabase } from "@/utils/supabase";
+
 const state = reactive({
   email: "",
   password: "",
@@ -84,4 +86,11 @@ const handleSubmit = (e: Event) => {
 
   console.log("hello");
 };
+
+async function signInWithGithub() {
+  const { user, session, error } = await supabase.auth.signIn({
+    provider: "github",
+  });
+  console.log(user, session, error);
+}
 </script>
