@@ -1,4 +1,7 @@
-# pokaimon
+<img height="125" align="left" style="float: left; margin: 0 10px 0 0;" alt="Pokaimon" src="https://cdn.discordapp.com/attachments/1007204906152767508/1007671728316633249/unknown.png">
+
+# Pokaimon
+> Pokaimon is a Genshin Impact themed collectible game with mechanics similar to Pokemon.
 
 ## Project setup
 ```
