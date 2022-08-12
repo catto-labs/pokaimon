@@ -2,11 +2,14 @@ import { defineConfig } from "vite";
 import path from "path";
 
 import vue from "@vitejs/plugin-vue";
+import icons from "unplugin-icons/vite";
 import { VitePWA as pwa } from "vite-plugin-pwa";
 
 export default defineConfig({
   plugins: [
     vue({ reactivityTransform: true }),
+    icons({ compiler: "vue3" }),
+
     pwa({
       registerType: "autoUpdate",
       workbox: {
