@@ -54,5 +54,6 @@ module.exports = {
     "space-unary-ops": "error",
     "spaced-comment": "error",
     yoda: "error",
+    "vue/multi-word-component-names": "off",
   },
 };
