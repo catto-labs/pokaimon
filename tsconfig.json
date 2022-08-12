@@ -13,6 +13,11 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
 
+    "types": [
+      "vite/client",
+      "unplugin-icons/types/vue"
+    ],
+
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
