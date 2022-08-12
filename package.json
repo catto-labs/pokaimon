@@ -35,6 +35,7 @@
     "typescript": "~4.5.5",
     "unplugin-icons": "^0.14.8",
     "vite": "^3.0.7",
+    "vite-plugin-pages": "^0.25.0",
     "vite-plugin-pwa": "^0.12.3",
     "vue-eslint-parser": "^9.0.3",
     "yorkie": "^2.0.0"
