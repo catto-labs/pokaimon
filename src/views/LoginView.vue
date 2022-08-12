@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { reactive } from "vue";
+import IconDiscord from "virtual:icons/fa6-brands/discord";
+import IconGoogle from "virtual:icons/fa6-brands/google";
+import IconGitHub from "virtual:icons/fa6-brands/github";
+
 import LabelledInput from "@/components/LabelledInput.vue";
 
 const state = reactive({
@@ -50,24 +54,24 @@ const handleSubmit = (e: Event) => {
         Alternatively, continue with...
       </h2>
 
-      <div class="flex justify-center gap-2.5">
+      <div class="flex justify-between gap-2.5">
         <button
           type="button"
-          class="rounded-2xl border border-purple bg-grey-700 py-1.5 px-10 font-bold text-white"
+          class="rounded-xl border border-purple bg-grey-700 py-2 px-10 font-bold text-white"
         >
-          DC
+          <IconDiscord />
         </button>
         <button
           type="button"
-          class="rounded-2xl border border-blue bg-grey-700 py-1.5 px-10 font-bold text-white"
+          class="rounded-xl border border-blue bg-grey-700 py-2 px-10 font-bold text-white"
         >
-          GG
+          <IconGoogle />
         </button>
         <button
           type="button"
-          class="rounded-2xl border border-fuchsia bg-grey-700 py-1.5 px-10 font-bold text-white"
+          class="rounded-xl border border-fuchsia bg-grey-700 py-2 px-10 font-bold text-white"
         >
-          GH
+          <IconGitHub />
         </button>
       </div>
     </div>
