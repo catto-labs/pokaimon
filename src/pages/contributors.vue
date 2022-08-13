@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <Navbar class="fixed top-0 z-50 w-full" />
-    <main class="min-h-screen w-screen px-8 py-32">
+    <main class="px-8 py-32">
       <div class="text-center">
         <h1 class="mb-2 text-4xl font-bold text-head">
           The Team & Contributors
@@ -9,7 +9,7 @@
       </div>
       <div class="mt-8 flex flex-col items-center justify-center space-y-4">
         <h2 class="mb-2 text-center text-xl text-body">Main Team Members</h2>
-        <div class="flex flex-row gap-12">
+        <div class="flex flex-col gap-12 md:flex-row">
           <MainContributor
             name="Pixel"
             img="https://cdn.discordapp.com/avatars/967724967741513808/d5f674fa1e3632cd62f32b49041e8877.png"
@@ -23,13 +23,13 @@
           <MainContributor
             name="Vexcited"
             img="https://cdn.discordapp.com/avatars/466655433415720992/f5e3debcf661a6ed65301a34aaaa1b88.png"
-            role="Site Responsivity"
+            role="Frontend Developer"
           />
         </div>
       </div>
       <div class="mt-8 flex flex-col items-center justify-center space-y-4">
         <h2 class="mb-2 text-center text-xl text-body">Other Contributors</h2>
-        <div class="flex flex-row gap-12">
+        <div class="flex flex-col gap-12 md:flex-row">
           <IndirectContributor
             name="tart"
             img="https://cdn.discordapp.com/avatars/466453424930553856/ddebd51f7c60c80d16cbac8a85f304d1.png"
