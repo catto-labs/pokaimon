@@ -20,7 +20,6 @@ module.exports = {
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
     "arrow-spacing": ["warn", { before: true, after: true }],
-    "brace-style": ["error", "stroustrup", { allowSingleLine: true }],
     "comma-spacing": "error",
     "comma-style": "error",
     curly: ["error", "multi-line", "consistent"],
