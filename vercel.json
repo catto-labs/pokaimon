@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "public": false,
+  
+  "github": {
+    "enabled": true,
+    "silent": true
+  },
+
+  "headers": [
+    {
+      "source": "/manifest.webmanifest",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/manifest+json"
+        }
+      ]
+    }
+  ]
+}
