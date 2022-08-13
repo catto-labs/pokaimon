@@ -18,14 +18,15 @@
           >
         </div>
       </a>
-      <nav
-        class="fixed top-0 left-0 right-0 mt-14 items-center space-y-2 rounded-xl border border-grey-700 bg-grey-800 bg-opacity-60 px-4 py-4 filter backdrop-blur-md md:top-auto md:left-auto md:right-4 md:mt-0 md:flex md:flex-row md:space-y-0 md:space-x-8 md:border-none md:px-0 md:py-0 md:pl-4"
-      >
-        <NavbarItem href="/cards" text="Cards" />
-        <NavbarItem href="/sets" text="Card Sets" />
-        <NavbarItem href="/community" text="Community" />
-        <NavbarItem href="/news" text="News" />
-
+      <nav class="flex flex-row items-center space-x-8">
+        <NavbarItem href="/cards" text="Cards" class="hidden md:block" />
+        <NavbarItem href="/sets" text="Card Sets" class="hidden md:block" />
+        <NavbarItem
+          href="/community"
+          text="Community"
+          class="hidden md:block"
+        />
+        <NavbarItem href="/news" text="News" class="hidden md:block" />
         <a
           href="/game"
           class="m-0 inline-block transform rounded-lg bg-brand-main py-1 px-2.5 text-center filter duration-300 ease-in-out hover:-translate-y-0.5 hover:font-bold md:w-auto"
@@ -34,6 +35,14 @@
         </a>
       </nav>
     </header>
+    <nav
+      class="absolute top-4 left-0 right-0 mx-8 mt-14 items-center space-y-2 rounded-xl border border-grey-700 bg-grey-800 bg-opacity-60 px-4 py-4 filter backdrop-blur-md md:top-auto md:left-auto md:right-4 md:mt-0 md:hidden md:space-y-0 md:space-x-8 md:border-none md:px-0 md:py-0 md:pl-4"
+    >
+      <NavbarItem href="/cards" text="Cards" />
+      <NavbarItem href="/sets" text="Card Sets" />
+      <NavbarItem href="/community" text="Community" />
+      <NavbarItem href="/news" text="News" />
+    </nav>
   </div>
 </template>
 
