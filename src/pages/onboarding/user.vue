@@ -11,12 +11,15 @@
           v-model="state.username"
           label="Username"
           class="w-3/4"
+          pattern="[A-Za-z0-9_-]+"
         />
         <LabelledInput
           type="text"
           v-model="state.tag"
           label="Tag"
           class="w-1/4"
+          pattern="#[A-Za-z0-9]+"
+          @input="handleTagInput"
         />
       </div>
       <button
@@ -45,19 +48,39 @@ const state = reactive({
   tag: "",
 });
 
-const handleSubmit = (e: Event) => {
+const handleSubmit = async (e: Event) => {
   e.preventDefault();
 
   if (state.username === "") return alert("Please enter a username");
-  if (state.tag === "") return alert("Please enter a tag");
+  if (state.username === "") return alert("Please enter a tag");
 
-  // signUpWithEmail(state.email, state.password);
-  // something here idk what im doing tbh ~Pixel
+  const { data, error: err1 } = await supabase
+    .from("users")
+    .select()
+    .match({ username: `${state.username}${state.tag}` });
+
+  if (err1) return alert(err1);
+  if (data.length !== 0) {
+    return alert("That username already exists, please use another one!");
+  }
+
+  const { error: err2 } = await supabase
+    .from("users")
+    .update({ username: `${state.username}${state.tag}` })
+    .match({ id: supabase.auth.session()?.user?.id });
+
+  if (err2) return alert(err2);
+
+  router.push("/onboarding/traveller");
+};
+
+const handleTagInput = () => {
+  if (state.tag.indexOf("#") !== 0) state.tag = `#${state.tag}`;
 };
 
 onBeforeMount(() => {
-  if (supabase.auth.session() === null) router.push("/register");
+  if (!store.showOnboarding) router.push("/register");
 
-  store.showOnboarding = false;
+  if (supabase.auth.session() === null) router.push("/register");
 });
 </script>
