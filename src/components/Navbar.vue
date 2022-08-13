@@ -19,10 +19,26 @@
         </div>
       </a>
       <nav class="flex flex-row items-center space-x-8">
-        <a href="/cards" class="hover:text-brand-second">Cards</a>
-        <a href="/sets" class="hover:text-brand-second">Card Sets</a>
-        <a href="/community" class="hover:text-brand-second">Community</a>
-        <a href="/news" class="hover:text-brand-second">News</a>
+        <a
+          href="/cards"
+          class="transition duration-300 ease-in-out hover:text-brand-second"
+          >Cards</a
+        >
+        <a
+          href="/sets"
+          class="transition duration-300 ease-in-out hover:text-brand-second"
+          >Card Sets</a
+        >
+        <a
+          href="/community"
+          class="transition duration-300 ease-in-out hover:text-brand-second"
+          >Community</a
+        >
+        <a
+          href="/news"
+          class="transition duration-300 ease-in-out hover:text-brand-second"
+          >News</a
+        >
         <a
           href="/game"
           class="transform rounded-md bg-brand-main px-2 py-1 filter duration-300 ease-in-out hover:-translate-y-0.5 hover:font-bold"
