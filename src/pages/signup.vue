@@ -2,28 +2,24 @@
   <div
     class="flex h-screen w-screen flex-col items-center justify-center bg-grey-900"
   >
-    <div class="mb-4 w-full max-w-md rounded-xl bg-black p-11">
+    <div class="mb-4 w-full max-w-md rounded-xl bg-black p-7">
       <h1 class="mb-2 text-4xl font-bold text-head">Create an account</h1>
 
-      <form @submit="handleSubmit" class="flex flex-col gap-3 pt-4">
+      <form @submit="handleSubmit" class="flex flex-col gap-4 pt-4">
         <LabelledInput
           type="email"
           v-model="state.email"
           label="Email address"
           placeholder="traveler@pokaimon.ml"
         />
-
-        <div class="flex flex-col gap-1 text-grey-500">
-          <LabelledInput
-            type="password"
-            v-model="state.password"
-            label="Password"
-          />
-        </div>
-
+        <LabelledInput
+          type="password"
+          v-model="state.password"
+          label="Password"
+        />
         <button
           type="submit"
-          class="mt-3 w-full rounded-2xl bg-grey-700 py-2 px-4 font-bold text-white"
+          class="mt-2 w-full rounded-2xl bg-grey-700 py-2 px-4 font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-grey-600"
         >
           Continue
         </button>
@@ -38,19 +34,19 @@
       <div class="flex justify-between gap-2.5">
         <button
           type="button"
-          class="rounded-xl border border-purple bg-grey-700 py-2 px-10 font-bold text-white"
+          class="rounded-xl border-2 border-[#5865F2] bg-grey-700 py-2 px-12 font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-[#5865F2]"
         >
           <IconDiscord />
         </button>
         <button
           type="button"
-          class="rounded-xl border border-blue bg-grey-700 py-2 px-10 font-bold text-white"
+          class="rounded-xl border-2 border-[#4285F4] bg-grey-700 py-2 px-12 font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-[#4285F4]"
         >
           <IconGoogle />
         </button>
         <button
           type="button"
-          class="rounded-xl border border-fuchsia bg-grey-700 py-2 px-10 font-bold text-white"
+          class="rounded-xl border-2 border-[#8F33AD] bg-grey-700 py-2 px-12 font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-[#8F33AD]"
         >
           <IconGitHub />
         </button>
@@ -58,7 +54,9 @@
     </div>
     <span class="text-lg text-grey-400"
       >Already have an account?
-      <a href="/login" class="text-purple filter hover:brightness-125"
+      <a
+        href="/login"
+        class="text-brand-main filter transition duration-300 ease-in-out hover:underline hover:brightness-125"
         >Log in here.</a
       >
     </span>
