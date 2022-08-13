@@ -29,8 +29,6 @@
 import { reactive, onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
 
-import LabelledInput from "@/components/LabelledInput.vue";
-
 import { supabase } from "@/utils/supabase";
 import { store } from "@/utils/store";
 
