@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex h-screen w-screen flex-col items-center justify-center bg-grey-900"
+    class="flex h-screen w-screen flex-col items-center justify-center bg-grey-900 px-6"
   >
     <div class="mb-4 w-full max-w-md rounded-xl bg-black p-7">
       <h1 class="mb-2 text-4xl font-bold text-head">Create an account</h1>
@@ -35,21 +35,21 @@
         <button
           @click="signInWithProvider('discord')"
           type="button"
-          class="rounded-xl border-2 border-[#5865F2] bg-grey-700 py-2 px-12 font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-[#5865F2]"
+          class="flex w-full justify-center rounded-xl border-2 border-[#5865F2] bg-grey-700 py-2 font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-[#5865F2]"
         >
           <IconDiscord />
         </button>
         <button
           @click="signInWithProvider('google')"
           type="button"
-          class="rounded-xl border-2 border-[#4285F4] bg-grey-700 py-2 px-12 font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-[#4285F4]"
+          class="flex w-full justify-center rounded-xl border-2 border-[#4285F4] bg-grey-700 py-2 font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-[#4285F4]"
         >
           <IconGoogle />
         </button>
         <button
           @click="signInWithProvider('github')"
           type="button"
-          class="rounded-xl border-2 border-[#8F33AD] bg-grey-700 py-2 px-12 font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-[#8F33AD]"
+          class="flex w-full justify-center rounded-xl border-2 border-[#8F33AD] bg-grey-700 py-2 font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-[#8F33AD]"
         >
           <IconGitHub />
         </button>
