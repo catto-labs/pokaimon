@@ -62,7 +62,7 @@
     <span class="text-lg text-grey-400"
       >Need an account?
       <a
-        href="/signup"
+        href="/register"
         class="text-brand-main filter transition duration-300 ease-in-out hover:underline hover:brightness-125"
         >Create one here.</a
       >

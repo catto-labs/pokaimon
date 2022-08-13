@@ -56,7 +56,7 @@ const handleSubmit = (e: Event) => {
 };
 
 onBeforeMount(() => {
-  if (supabase.auth.session() === null) router.push("/signup");
+  if (supabase.auth.session() === null) router.push("/register");
 
   store.showOnboarding = false;
 });
