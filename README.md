@@ -6,9 +6,13 @@
 ## Project setup
 
 ### Recommended IDE Setup
+[Visual Studio Code](https://code.visualstudio.com/), with..
+- [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+- [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
+- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
-
+### Installs required dependencies
 ```
 yarn install
 ```
@@ -27,6 +31,3 @@ yarn build
 ```
 yarn lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
