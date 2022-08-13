@@ -90,6 +90,9 @@ const state = reactive({
 const handleSubmit = (e: Event) => {
   e.preventDefault();
 
+  if (state.email === "") return alert("Please enter an email adress");
+  if (state.password === "") return alert("Please enter a password");
+
   signUpWithEmail(state.email, state.password);
 };
 
