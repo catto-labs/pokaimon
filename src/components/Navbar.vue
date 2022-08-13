@@ -41,7 +41,7 @@
         >
         <a
           href="/game"
-          class="transform rounded-md bg-brand-main px-2 py-1 filter duration-300 ease-in-out hover:-translate-y-0.5 hover:font-bold"
+          class="transform rounded-lg bg-brand-main px-2 py-1 filter duration-300 ease-in-out hover:-translate-y-0.5 hover:font-bold"
           >Play Now</a
         >
       </nav>
