@@ -5,8 +5,8 @@ module.exports = {
     colors: {
       // other important colours
       brand: {
-        main: "#FB7185",
-        second: "#C084FC",
+        main: "#C084FC",
+        second: "#60A5FA",
       },
 
       // text colours
