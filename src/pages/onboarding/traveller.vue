@@ -44,30 +44,24 @@ const router = useRouter();
 
 const state = reactive<{
   traveller: "lumine" | "aether" | null;
+  username: string | null;
 }>({
   traveller: null,
+  username: null,
 });
 
 const handleSubmit = async (e: Event) => {
   e.preventDefault();
-  if (state.selection === 0) return alert("Please select a character!");
-
-  if (state.selection < 1 || state.selection > 2) {
-    return alert("Invalid selection, this should not happen!");
-  }
+  if (!state.traveller) return alert("Please choose a traveller");
 
   const { error } = await supabase
     .from("users")
-    .update({ starter_traveller: state.selection })
+    .update({ starter_traveller: state.traveller })
     .match({ id: supabase.auth.session()?.user?.id });
 
   if (error) return alert(error);
 
   router.push("/game");
-};
-
-const handleClick = (selection: number) => {
-  state.selection = selection;
 };
 
 onBeforeMount(() => {
