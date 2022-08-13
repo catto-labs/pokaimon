@@ -25,7 +25,7 @@
         <a href="/news" class="hover:text-brand-second">News</a>
         <a
           href="/game"
-          class="rounded-md bg-brand-main px-2 py-1 filter hover:brightness-75"
+          class="transform rounded-md bg-brand-main px-2 py-1 filter duration-300 ease-in-out hover:-translate-y-0.5 hover:font-bold"
           >Play Now</a
         >
       </nav>
