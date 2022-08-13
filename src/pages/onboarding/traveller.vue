@@ -62,13 +62,14 @@ const handleSubmit = async (e: Event) => {
   if (error) return alert(error);
 
   router.push("/game");
+
+  store.showOnboarding = false;
+  localStorage.setItem("showOnboarding", "false");
 };
 
 onBeforeMount(() => {
   if (!store.showOnboarding) router.push("/register");
   if (supabase.auth.session() === null) router.push("/register");
-
-  store.showOnboarding = false;
 });
 
 onMounted(async () => {
