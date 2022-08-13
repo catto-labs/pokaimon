@@ -6,7 +6,7 @@
       <a href="/" class="cursor-pointer">
         <div class="flex flex-row items-center gap-4">
           <img
-            src="../assets/logo.png"
+            src="../../../assets/logo.png"
             alt="Pokaimon logo"
             class="my-auto h-8"
             id="header-logo"
