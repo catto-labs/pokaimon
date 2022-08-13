@@ -18,25 +18,31 @@
           >
         </div>
       </a>
-      <nav class="flex flex-row items-center space-x-8">
-        <NavbarItem href="/cards" text="Cards" class="hidden md:block" />
-        <NavbarItem href="/sets" text="Card Sets" class="hidden md:block" />
-        <NavbarItem
-          href="/community"
-          text="Community"
-          class="hidden md:block"
-        />
-        <NavbarItem href="/news" text="News" class="hidden md:block" />
+
+      <div class="flex gap-8 rounded-xl pl-4 md:bg-grey-700 md:bg-opacity-40">
+        <nav class="hidden flex-row items-center space-x-8 md:flex">
+          <NavbarItem href="/cards" text="Cards" />
+          <NavbarItem href="/sets" text="Card Sets" />
+          <NavbarItem href="/community" text="Community" />
+          <NavbarItem href="/news" text="News" />
+        </nav>
+
         <a
           href="/game"
           class="m-0 inline-block transform rounded-lg bg-brand-main py-1 px-2.5 text-center filter duration-300 ease-in-out hover:-translate-y-0.5 hover:font-bold md:w-auto"
         >
           Play Now
         </a>
-      </nav>
+
+        <button @click="toggleMobileMenu" class="flex items-center md:hidden">
+          <IconHanburger font-size="22px" />
+        </button>
+      </div>
     </header>
+
     <nav
-      class="absolute top-4 left-0 right-0 mx-8 mt-14 items-center space-y-2 rounded-xl border border-grey-700 bg-grey-800 bg-opacity-60 px-4 py-4 filter backdrop-blur-md md:top-auto md:left-auto md:right-4 md:mt-0 md:hidden md:space-y-0 md:space-x-8 md:border-none md:px-0 md:py-0 md:pl-4"
+      ref="mobileMenu"
+      class="absolute top-4 left-0 right-0 mx-8 mt-14 hidden items-center rounded-xl border border-grey-700 bg-grey-800 bg-opacity-60 px-4 py-4 filter backdrop-blur-md md:top-auto md:left-auto md:right-4 md:mt-0 md:hidden md:space-y-0 md:space-x-8 md:border-none md:px-0 md:py-0 md:pl-4"
     >
       <NavbarItem href="/cards" text="Cards" />
       <NavbarItem href="/sets" text="Card Sets" />
@@ -47,5 +53,15 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
+
 import NavbarItem from "./NavbarItem.vue";
+import IconHanburger from "~icons/mdi/menu";
+
+const mobileMenu = ref<HTMLElement | null>(null);
+const toggleMobileMenu = () => {
+  if (mobileMenu.value) {
+    mobileMenu.value.classList.toggle("hidden");
+  }
+};
 </script>
