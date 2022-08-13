@@ -11,6 +11,7 @@
         </p>
         <div class="mt-4 flex flex-row gap-4">
           <button
+            @click="router.push('/game')"
             class="transform rounded-2xl bg-brand-main px-8 py-2 text-xl font-bold text-white duration-300 ease-in-out hover:-translate-y-0.5"
           >
             Play Now
@@ -27,5 +28,19 @@
 </template>
 
 <script setup lang="ts">
+import { onBeforeMount } from "vue";
+import { useRouter } from "vue-router";
 import Navbar from "@/components/Navbar.vue";
+
+import { supabase } from "@/utils/supabase";
+
+import { store } from "@/utils/store";
+
+const router = useRouter();
+
+onBeforeMount(() => {
+  if (supabase.auth.session() !== null && store.showOnboarding) {
+    router.push("/onboarding");
+  }
+});
 </script>
