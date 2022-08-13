@@ -1,7 +1,7 @@
 <template>
   <div>
     <footer
-      class="flex w-full flex-row justify-between rounded-t-xl border-t border-grey-700 bg-grey-800 bg-opacity-60 px-8 py-2 px-4 filter backdrop-blur-md"
+      class="flex w-full flex-row justify-between rounded-t-xl border-t border-grey-700 bg-grey-800 bg-opacity-60 py-2 px-8 filter backdrop-blur-md"
     >
       <div class="flex flex-row items-center gap-4">
         <a href="/" class="my-auto">
