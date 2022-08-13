@@ -19,13 +19,13 @@
         </div>
       </a>
       <nav class="flex flex-row items-center space-x-8">
-        <a href="/cards" class="hover:text-purple">Cards</a>
-        <a href="/sets" class="hover:text-purple">Card Sets</a>
-        <a href="/community" class="hover:text-purple">Community</a>
-        <a href="/news" class="hover:text-purple">News</a>
+        <a href="/cards" class="hover:text-brand-second">Cards</a>
+        <a href="/sets" class="hover:text-brand-second">Card Sets</a>
+        <a href="/community" class="hover:text-brand-second">Community</a>
+        <a href="/news" class="hover:text-brand-second">News</a>
         <a
           href="/game"
-          class="rounded-md bg-purple px-2 py-1 filter hover:brightness-75"
+          class="rounded-md bg-brand-main px-2 py-1 filter hover:brightness-75"
           >Play Now</a
         >
       </nav>
