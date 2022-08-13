@@ -64,7 +64,8 @@
           <NewsCard class="md:max-w-sm lg:max-w-xs" />
           <NewsCard class="lg:max-w-xs" />
         </div>
-        <div class="flex space-x-8">
+
+        <div class="flex flex-col space-x-8 sm:flex-row">
           <h2 class="text-xl">Check out more Pokaimon news:</h2>
           <a
             href="/news#featured"

@@ -19,8 +19,8 @@
         </div>
       </a>
 
-      <div class="flex gap-8 rounded-xl pl-4 md:bg-grey-700 md:bg-opacity-40">
-        <nav class="hidden flex-row items-center space-x-8 md:flex">
+      <div class="flex gap-6 rounded-xl pl-4 md:bg-grey-700 md:bg-opacity-40">
+        <nav class="hidden flex-row items-center space-x-2 md:flex">
           <NavbarItem href="/cards" text="Cards" />
           <NavbarItem href="/sets" text="Card Sets" />
           <NavbarItem href="/community" text="Community" />
