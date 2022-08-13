@@ -37,22 +37,25 @@
 
       <div class="flex justify-between gap-2.5">
         <button
+          @click="signInWithProvider('github')"
           type="button"
           class="flex space-x-4 rounded-xl border-2 border-[#5865F2] bg-grey-700 py-2 px-12 font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-[#5865F2]"
         >
           <IconDiscord />
         </button>
         <button
+          @click="signInWithProvider('google')"
           type="button"
           class="rounded-xl border-2 border-[#4285F4] bg-grey-700 py-2 px-12 font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-[#4285F4]"
         >
           <IconGoogle />
         </button>
         <button
+          @click="signInWithProvider('github')"
           type="button"
           class="rounded-xl border-2 border-[#8F33AD] bg-grey-700 py-2 px-12 font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-[#8F33AD]"
         >
-          <IconGitHub @click="signInWithGithub" />
+          <IconGitHub />
         </button>
       </div>
     </div>
@@ -76,6 +79,10 @@ import IconGitHub from "virtual:icons/fa6-brands/github";
 import LabelledInput from "@/components/LabelledInput.vue";
 
 import { supabase } from "@/utils/supabase";
+import { Provider } from "@supabase/gotrue-js";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const state = reactive({
   email: "",
@@ -85,13 +92,36 @@ const state = reactive({
 const handleSubmit = (e: Event) => {
   e.preventDefault();
 
-  console.log("hello");
+  if (state.email === "") return alert("Please enter an email adress");
+  if (state.password === "") return alert("Please enter a password");
+
+  signInWithEmail(state.email, state.password);
 };
 
-async function signInWithGithub() {
-  const { user, session, error } = await supabase.auth.signIn({
-    provider: "github",
-  });
-  console.log(user, session, error);
-}
+const signInWithEmail = async (email: string, password: string) => {
+  try {
+    const { error } = await supabase.auth.signIn({
+      email: email,
+      password: password,
+    });
+    if (error) throw error;
+  } catch (error: Error) {
+    alert(error.error_description || error.message);
+  } finally {
+    router.push("/game");
+  }
+};
+
+const signInWithProvider = async (provider: Provider) => {
+  try {
+    const { error } = await supabase.auth.signIn({
+      provider: provider,
+    });
+    if (error) throw error;
+  } catch (error: Error) {
+    alert(error.error_description || error.message);
+  } finally {
+    router.push("/game");
+  }
+};
 </script>
