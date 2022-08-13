@@ -1,7 +1,7 @@
 <template>
   <div class="py-4 px-8">
     <header
-      class="flex w-full flex-row justify-between rounded-xl bg-grey-800 bg-opacity-60 py-2 px-4 filter backdrop-blur-md"
+      class="flex w-full flex-row justify-between rounded-xl border border-grey-700 bg-grey-800 bg-opacity-60 py-2 px-4 filter backdrop-blur-md"
     >
       <a href="/" class="cursor-pointer">
         <div class="flex flex-row items-center gap-4">
