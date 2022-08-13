@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "lint": "eslint . --fix && vue-tsc --noEmit",
-    "build": "yarn lint && vite build"
+    "lint": "eslint . --fix",
+    "build": "yarn lint && vue-tsc --noEmit && vite build"
   },
   "dependencies": {
     "@fontsource/raleway": "^4.5.10",
