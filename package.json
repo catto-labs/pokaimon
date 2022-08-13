@@ -38,6 +38,7 @@
     "vite-plugin-pages": "^0.25.0",
     "vite-plugin-pwa": "^0.12.3",
     "vue-eslint-parser": "^9.0.3",
+    "vue-tsc": "^0.40.1",
     "yorkie": "^2.0.0"
   },
   "gitHooks": {
