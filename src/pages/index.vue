@@ -104,9 +104,29 @@ import { store } from "@/utils/store";
 
 const router = useRouter();
 
-onBeforeMount(() => {
-  if (supabase.auth.session() !== null && store.showOnboarding) {
-    router.push("/onboarding");
-  }
+onBeforeMount(async () => {
+  const showOnboardingSaved = localStorage.getItem("showOnboarding");
+  if (showOnboardingSaved === "true") store.showOnboarding = true;
+
+  setTimeout(async () => {
+    if (supabase.auth.session() !== null && store.showOnboarding) {
+      console.log("test");
+      const { data, error } = await supabase
+        .from("users")
+        .select()
+        .match({ id: supabase.auth.session()?.user?.id });
+
+      if (!error && data.length !== 0) {
+        if (data[0].username !== null && data[0].starter_traveller !== null) {
+          // If username and traveller are set we are assuming full signup
+          store.showOnboarding = false;
+          localStorage.setItem("showOnboarding", "false");
+          return router.push("/game");
+        }
+      }
+
+      router.push("/onboarding");
+    }
+  }, 2000);
 });
 </script>
