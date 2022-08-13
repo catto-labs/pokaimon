@@ -1,6 +1,6 @@
 {
   "name": "pokaimon",
-  "version": "0.1.0",
+  "version": "1.18.4",
   "private": true,
   "scripts": {
     "dev": "vite",
