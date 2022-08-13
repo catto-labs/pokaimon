@@ -1,18 +1,22 @@
 <template>
   <div class="bg-gray-900 flex flex-col items-center py-32">
     <div class="text-center">
-      <h1 class="mb-2 text-4xl font-bold text-head">Welcome, [name]!</h1>
+      <h1 class="mb-2 text-4xl font-bold text-head">
+        Welcome, {{ state.username }}!
+      </h1>
       <h2 class="mb-2 text-xl text-body">Which character best suits you?</h2>
     </div>
     <form @submit="handleSubmit" class="flex flex-col gap-4 pt-16">
       <div class="flex flex-row gap-16">
         <img
+          @click="handleClick(1)"
           src="https://i.imgur.com/MicjQA4.png"
-          class="aspect-square h-40 rounded-full border-2 border-grey-700 bg-grey-800 outline-none transition hover:bg-opacity-80 focus:border-grey-500 focus:bg-opacity-80"
+          class="aspect-square h-40 rounded-full border-2 border-grey-700 bg-grey-800 outline-none transition hover:bg-opacity-80 focus:border-grey-500 focus:bg-opacity-80 active:bg-brand-main"
         />
         <img
+          @click="handleClick(2)"
           src="https://i.imgur.com/MF0fPNp.png"
-          class="aspect-square h-40 rounded-full border-2 border-grey-700 bg-grey-800 outline-none transition hover:bg-opacity-80 focus:border-grey-500 focus:bg-opacity-80"
+          class="aspect-square h-40 rounded-full border-2 border-grey-700 bg-grey-800 outline-none transition hover:bg-opacity-80 focus:border-grey-500 focus:bg-opacity-80 active:bg-brand-main"
         />
       </div>
       <button
@@ -26,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, onBeforeMount } from "vue";
+import { reactive, onBeforeMount, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 import { supabase } from "@/utils/supabase";
@@ -36,22 +40,51 @@ const router = useRouter();
 
 const state = reactive({
   username: "",
-  tag: "",
+  selection: 0,
 });
 
-const handleSubmit = (e: Event) => {
+const handleSubmit = async (e: Event) => {
   e.preventDefault();
+  if (state.selection === 0) return alert("Please select a character!");
 
-  if (state.username === "") return alert("Please enter a username");
-  if (state.tag === "") return alert("Please enter a tag");
+  if (state.selection < 1 || state.selection > 2) {
+    return alert("Invalid selection, this should not happen!");
+  }
 
-  // signUpWithEmail(state.email, state.password);
-  // something here idk what im doing tbh ~Pixel
+  const { error } = await supabase
+    .from("users")
+    .update({ starter_traveller: state.selection })
+    .match({ id: supabase.auth.session()?.user?.id });
+
+  if (error) return alert(error);
+
+  router.push("/game");
+};
+
+const handleClick = (selection: number) => {
+  state.selection = selection;
 };
 
 onBeforeMount(() => {
+  if (!store.showOnboarding) router.push("/register");
   if (supabase.auth.session() === null) router.push("/register");
 
   store.showOnboarding = false;
+});
+
+onMounted(async () => {
+  const { data, error } = await supabase
+    .from("users")
+    .select()
+    .match({ id: supabase.auth.session()?.user?.id });
+
+  if (error) alert(error);
+
+  if (data !== null) {
+    if (data[0].username === null) state.username = "Traveller";
+    else state.username = data[0].username;
+  } else {
+    state.username = "Traveller";
+  }
 });
 </script>
