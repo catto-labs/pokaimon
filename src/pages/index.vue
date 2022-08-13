@@ -10,11 +10,12 @@
           the Genshin Impact world.
         </p>
         <div class="mt-4 flex flex-row gap-4">
-          <button
+          <a
+            href="/game"
             class="transform rounded-2xl bg-brand-main px-8 py-2 text-xl font-bold text-white duration-300 ease-in-out hover:-translate-y-0.5"
           >
             Play Now
-          </button>
+          </a>
           <button
             class="transform rounded-2xl border border-brand-second px-8 py-2 text-xl font-bold text-white transition duration-300 ease-in-out hover:-translate-y-0.5 hover:bg-brand-second"
           >
