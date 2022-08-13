@@ -234,6 +234,20 @@
 </template>
 
 <script setup lang="ts">
+import { onBeforeMount } from "vue";
+import { useRouter } from "vue-router";
 import Navbar from "@/components/pages/global/Navbar.vue";
 import NewsCard from "@/components/pages/index/NewsCard.vue";
+
+import { supabase } from "@/utils/supabase";
+
+import { store } from "@/utils/store";
+
+const router = useRouter();
+
+onBeforeMount(() => {
+  if (supabase.auth.session() !== null && store.showOnboarding) {
+    router.push("/onboarding");
+  }
+});
 </script>
