@@ -112,6 +112,7 @@ const signUpWithEmail = async (email: string, password: string) => {
 };
 
 const signInWithProvider = async (provider: Provider) => {
+  localStorage.setItem("showOnboarding", "true");
   try {
     const { error } = await supabase.auth.signIn({
       provider: provider,
@@ -119,8 +120,7 @@ const signInWithProvider = async (provider: Provider) => {
     if (error) throw error;
   } catch (error: Error) {
     alert(error.error_description || error.message);
-  } finally {
-    store.showOnboarding = true;
+    localStorage.setItem("showOnboarding", "false");
   }
 };
 </script>
