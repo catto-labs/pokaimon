@@ -6,7 +6,7 @@
       <a href="/" class="cursor-pointer">
         <div class="flex flex-row items-center gap-4">
           <img
-            src="../assets/logo.png"
+            src="../../../assets/logo.png"
             alt="Pokaimon logo"
             class="my-auto h-8"
             id="header-logo"
@@ -41,7 +41,7 @@
         >
         <a
           href="/game"
-          class="transform rounded-md bg-brand-main px-2 py-1 filter duration-300 ease-in-out hover:-translate-y-0.5 hover:font-bold"
+          class="transform rounded-lg bg-brand-main px-2 py-1 filter duration-300 ease-in-out hover:-translate-y-0.5 hover:font-bold"
           >Play Now</a
         >
       </nav>
