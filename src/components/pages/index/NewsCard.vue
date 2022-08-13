@@ -1,10 +1,10 @@
 <template>
-  <div class="h-auto max-w-xs rounded-xl bg-black">
+  <div class="h-auto w-full rounded-xl bg-black lg:max-w-md">
     <img
       class="rounded-xl rounded-b-none"
       src="https://images.unsplash.com/photo-1659853376683-28cd63ad88c7?ixlib=rb-1.2.1&dl=solen-feyissa-r0lYekmCf4E-unsplash.jpg&q=80&fm=jpg&crop=entropy&cs=tinysrgb"
     />
-    <div class="flex flex-col justify-between p-8 pt-6">
+    <div class="flex flex-col justify-between gap-4 p-8 pt-6">
       <div class="space-y-4">
         <h2 class="text-xl font-bold text-head">Article Title Here</h2>
         <p>

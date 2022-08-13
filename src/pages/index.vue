@@ -27,10 +27,12 @@
         <h1 class="text-left text-6xl font-bold">
           What's cookin' in Pokaimon?
         </h1>
-        <div class="flex flex-wrap justify-between gap-16 lg:flex-nowrap">
-          <NewsCard />
-          <NewsCard />
-          <NewsCard />
+        <div
+          class="flex flex-wrap justify-center gap-16 lg:flex-nowrap lg:justify-between xl:justify-start"
+        >
+          <NewsCard class="md:max-w-sm lg:max-w-xs" />
+          <NewsCard class="md:max-w-sm lg:max-w-xs" />
+          <NewsCard class="lg:max-w-xs" />
         </div>
         <div class="flex space-x-8">
           <h2 class="text-xl">Check out more Pokaimon news:</h2>
