@@ -12,27 +12,60 @@
         <div class="mt-4 flex flex-row gap-4">
           <a
             href="/game"
-            class="transform rounded-2xl bg-brand-main px-8 py-2 text-xl font-bold text-white duration-300 ease-in-out hover:-translate-y-0.5"
+            class="transform rounded-2xl bg-brand-main px-8 py-2 text-center font-bold text-white duration-300 ease-in-out hover:-translate-y-0.5 sm:text-xl"
           >
             Play Now
           </a>
           <button
-            class="transform rounded-2xl border-2 border-brand-second px-8 py-2 text-xl font-bold text-white transition duration-300 ease-in-out hover:-translate-y-0.5 hover:bg-brand-second"
+            class="transform rounded-2xl border-2 border-brand-second px-8 py-2 text-center font-bold text-white transition duration-300 ease-in-out hover:-translate-y-0.5 hover:bg-brand-second sm:text-xl"
           >
             Learn More
           </button>
         </div>
       </section>
+
+      <section
+        id="deck"
+        class="mt-64 mb-32 flex flex-col items-start justify-between gap-8 lg:flex-row"
+      >
+        <div class="flex flex-col space-y-4 lg:mt-12">
+          <h2 class="text-5xl font-bold">
+            Discover cards and build your own deck!
+          </h2>
+          <button
+            class="w-fit transform rounded-2xl bg-brand-main px-8 py-2 text-right text-xl font-bold text-white duration-300 ease-in-out hover:-translate-y-0.5"
+          >
+            View All Cards
+          </button>
+          <button
+            class="w-fit transform rounded-2xl border border-brand-second px-8 py-2 text-right text-xl font-bold text-white transition duration-300 ease-in-out hover:-translate-y-0.5 hover:bg-brand-second"
+          >
+            See Deck Builder
+          </button>
+        </div>
+        <div
+          class="cards-row flex flex-row flex-wrap items-start justify-end gap-6 space-y-0 md:self-end"
+        >
+          <PlayingCard />
+          <PlayingCard class="hidden sm:block" />
+          <PlayingCard class="hidden md:block" />
+          <PlayingCard class="hidden lg:block" />
+        </div>
+      </section>
+
       <section id="news" class="mt-64 mb-32 space-y-8">
         <h1 class="text-left text-6xl font-bold">
           What's cookin' in Pokaimon?
         </h1>
-        <div class="flex justify-between gap-16">
-          <NewsCard />
-          <NewsCard />
-          <NewsCard />
+        <div
+          class="flex flex-wrap justify-center gap-16 lg:flex-nowrap lg:justify-between xl:justify-start"
+        >
+          <NewsCard class="md:max-w-sm lg:max-w-xs" />
+          <NewsCard class="md:max-w-sm lg:max-w-xs" />
+          <NewsCard class="lg:max-w-xs" />
         </div>
-        <div class="flex space-x-8">
+
+        <div class="flex flex-col space-x-8 sm:flex-row">
           <h2 class="text-xl">Check out more Pokaimon news:</h2>
           <a
             href="/news#featured"
@@ -51,39 +84,17 @@
           >
         </div>
       </section>
-      <section id="deck" class="mt-64 mb-32 flex flex-row">
-        <div class="flex flex-col space-y-4">
-          <h2 class="text-5xl font-bold">
-            Discover cards and build your own deck!
-          </h2>
-          <button
-            class="w-fit transform rounded-2xl bg-brand-main px-8 py-2 text-right text-xl font-bold text-white duration-300 ease-in-out hover:-translate-y-0.5"
-          >
-            View All Cards
-          </button>
-          <button
-            class="w-fit transform rounded-2xl border border-brand-second px-8 py-2 text-right text-xl font-bold text-white transition duration-300 ease-in-out hover:-translate-y-0.5 hover:bg-brand-second"
-          >
-            See Deck Builder
-          </button>
-        </div>
-        <div
-          class="cards-row flex flex-row items-start justify-between gap-8 space-y-0"
-        >
-          <PlayingCard />
-          <PlayingCard />
-          <PlayingCard />
-          <PlayingCard />
-        </div>
-      </section>
     </main>
+    <Footer class="bottom-0 w-full" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
+
 import Navbar from "@/components/pages/global/Navbar.vue";
+import Footer from "../components/pages/global/Footer.vue";
 import NewsCard from "@/components/pages/index/NewsCard.vue";
 import PlayingCard from "@/components/pages/index/PlayingCard.vue";
 

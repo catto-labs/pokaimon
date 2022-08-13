@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-900 flex flex-col items-center py-32">
+  <div class="bg-gray-900 flex flex-col items-center py-32 px-6">
     <div class="text-center">
       <h1 class="mb-2 text-4xl font-bold text-head">
         Welcome, {{ state.username }}!
@@ -7,17 +7,21 @@
       <h2 class="mb-2 text-xl text-body">Which character best suits you?</h2>
     </div>
     <form @submit="handleSubmit" class="flex flex-col gap-4 pt-16">
-      <div class="flex flex-row gap-16">
-        <img
-          @click="handleClick(1)"
-          src="https://i.imgur.com/MicjQA4.png"
-          class="aspect-square h-40 rounded-full border-2 border-grey-700 bg-grey-800 outline-none transition hover:bg-opacity-80 focus:border-grey-500 focus:bg-opacity-80 active:bg-brand-main"
-        />
-        <img
-          @click="handleClick(2)"
-          src="https://i.imgur.com/MF0fPNp.png"
-          class="aspect-square h-40 rounded-full border-2 border-grey-700 bg-grey-800 outline-none transition hover:bg-opacity-80 focus:border-grey-500 focus:bg-opacity-80 active:bg-brand-main"
-        />
+      <div class="flex flex-row gap-10 sm:gap-16">
+        <button type="button" @click="state.traveller = 'aether'">
+          <img
+            src="https://i.imgur.com/MicjQA4.png"
+            class="aspect-square h-auto w-40 rounded-full border-2 border-grey-700 bg-grey-800 outline-none transition hover:bg-opacity-80 focus:border-grey-500 focus:bg-opacity-80"
+            :class="{ 'border-grey-200': state.traveller === 'aether' }"
+          />
+        </button>
+        <button type="button" @click="state.traveller = 'lumine'">
+          <img
+            src="https://i.imgur.com/MF0fPNp.png"
+            class="aspect-square h-auto w-40 rounded-full border-2 border-grey-700 bg-grey-800 outline-none transition hover:bg-opacity-80 focus:border-grey-500 focus:bg-opacity-80"
+            :class="{ 'border-grey-200': state.traveller === 'lumine' }"
+          />
+        </button>
       </div>
       <button
         type="submit"
@@ -38,9 +42,10 @@ import { store } from "@/utils/store";
 
 const router = useRouter();
 
-const state = reactive({
-  username: "",
-  selection: 0,
+const state = reactive<{
+  traveller: "lumine" | "aether" | null;
+}>({
+  traveller: null,
 });
 
 const handleSubmit = async (e: Event) => {

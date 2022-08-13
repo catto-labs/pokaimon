@@ -1,23 +1,28 @@
 <template>
-  <div class="bg-gray-900 flex flex-col items-center py-32">
+  <div class="bg-gray-900 flex flex-col items-center py-32 px-6">
     <div class="text-center">
       <h1 class="mb-2 text-4xl font-bold text-head">Let your name be known.</h1>
       <h2 class="mb-2 text-xl text-body">What should we call you?</h2>
     </div>
-    <form @submit="handleSubmit" class="flex flex-col gap-4 pt-16">
-      <div class="flex flex-row gap-8">
+    <form
+      @submit="handleSubmit"
+      class="flex w-full flex-col gap-4 pt-16 sm:w-auto"
+    >
+      <div class="flex gap-2 sm:gap-8">
         <LabelledInput
           type="text"
           v-model="state.username"
           label="Username"
-          class="w-3/4"
+          class="w-full sm:w-3/4"
+          placeholder="AwesomeTravellerName"
           pattern="[A-Za-z0-9_-]+"
         />
         <LabelledInput
           type="text"
           v-model="state.tag"
           label="Tag"
-          class="w-1/4"
+          class="w-1/2 sm:w-1/4"
+          placeholder="1337"
           pattern="#[A-Za-z0-9]+"
           @input="handleTagInput"
         />
