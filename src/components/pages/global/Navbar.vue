@@ -29,7 +29,7 @@
 
         <a
           href="/game"
-          class="m-0 hidden transform rounded-lg bg-brand-main py-1 px-2.5 text-center filter duration-300 ease-in-out hover:-translate-y-0.5 hover:font-bold sm:inline-block md:w-auto"
+          class="m-0 hidden transform rounded-lg bg-brand-main py-1 px-2.5 text-center text-white filter duration-300 ease-in-out hover:-translate-y-0.5 hover:font-bold hover:text-white hover:no-underline sm:inline-block md:w-auto"
         >
           Play Now
         </a>
@@ -51,7 +51,7 @@
 
       <a
         href="/game"
-        class="mt-4 inline-block w-full transform rounded-lg bg-brand-main py-1.5 px-4 filter duration-300 ease-in-out hover:-translate-y-0.5 hover:font-bold sm:hidden md:w-auto"
+        class="mt-4 inline-block w-full transform rounded-lg bg-brand-main py-1.5 px-4 text-white filter duration-300 ease-in-out hover:-translate-y-0.5 hover:font-bold hover:text-white hover:no-underline sm:hidden md:w-auto"
       >
         Play Now
       </a>
