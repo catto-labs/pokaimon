@@ -7,7 +7,7 @@
         <div class="space-y-4">
           <a href="/" class="flex flex-row gap-4">
             <img
-              src="../../../assets/branding/raster/logo.png"
+              src="../../../assets/branding/raster/pokaimon.png"
               alt="Pokaimon logo"
               id="logo"
               class="h-8"
