@@ -7,7 +7,7 @@
         <div class="space-y-4">
           <a href="/" class="flex flex-row gap-4">
             <img
-              src="../../../assets/logo.png"
+              src="../../../assets/branding/raster/logo.png"
               alt="Pokaimon logo"
               id="logo"
               class="h-8"
@@ -33,7 +33,10 @@
         </div>
 
         <div class="space-y-4">
-          <img src="../../../assets/undefined.svg" class="w-56" />
+          <img
+            src="../../../assets/branding/vector/undefined.svg"
+            class="w-56"
+          />
           <div>
             <p>© 2022 undefined labs</p>
             <div class="flex space-x-2 text-sm">
@@ -61,7 +64,7 @@
               <!-- need this button to trigger the 'Install App' pop-up -->
               Install Pokaimon
             </button>
-            <a href="/branding">Branding</a>
+            <a href="/docs/branding">Branding</a>
             <a
               href="/linkout?url=aHR0cHM6Ly9naXRodWIuY29tL3Ryb2Jvbm94L3Bva2FpbW9uL2Jsb2IvbWFpbi9DT05UUklCVVRJTkcubWQ="
               >Contributing</a
