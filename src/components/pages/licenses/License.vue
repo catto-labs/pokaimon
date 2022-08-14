@@ -14,8 +14,8 @@
 <script setup lang="ts">
 const props = defineProps<{
   name: string;
-  version: string;
-  license: string;
+  version?: string;
+  license?: string;
   copyright: string;
 }>();
 </script>
