@@ -22,9 +22,8 @@
             Made with
             <span class="text-brand-main">❤</span>
             by
-            <a href="/contributors" class="text-white"> the team</a><br /><span
-              class="flex"
-            >
+            <a href="/docs/contributors" class="text-white"> the team</a
+            ><br /><span class="flex">
               <span>in </span>
               <FlagID class="my-auto ml-1 h-3 rounded-sm" /><span>, </span>
               <FlagDE class="my-auto mx-1 h-3 rounded-sm" /> <span>&</span>
@@ -41,7 +40,7 @@
               <a class="text-grey-300" href="/privacy">Privacy Policy</a>
               <p>•</p>
 
-              <a class="text-grey-300" href="/licenses">License Notice</a>
+              <a class="text-grey-300" href="/docs/licenses">License Notice</a>
             </div>
           </div>
         </div>

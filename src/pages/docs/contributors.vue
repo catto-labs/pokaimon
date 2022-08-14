@@ -71,9 +71,9 @@ import { onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
 
 import Navbar from "@/components/pages/global/Navbar.vue";
-import Footer from "../components/pages/global/Footer.vue";
-import MainContributor from "@/components/pages/contributors/MainContributor.vue";
-import IndirectContributor from "@/components/pages/contributors/IndirectContributor.vue";
+import Footer from "@/components/pages/global/Footer.vue";
+import MainContributor from "@/components/pages/docs/contributors/MainContributor.vue";
+import IndirectContributor from "@/components/pages/docs/contributors/IndirectContributor.vue";
 
 import { supabase } from "@/utils/supabase";
 

@@ -86,14 +86,14 @@
 </template>
 
 <script setup lang="ts">
-import pkg from "../../package.json";
+import pkg from "../../../package.json";
 
 import { onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
 
 import Navbar from "@/components/pages/global/Navbar.vue";
-import Footer from "../components/pages/global/Footer.vue";
-import License from "@/components/pages/licenses/License.vue";
+import Footer from "@/components/pages/global/Footer.vue";
+import License from "@/components/pages/docs/licenses/License.vue";
 
 import { supabase } from "@/utils/supabase";
 
