@@ -18,6 +18,6 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 
 onBeforeMount(() => {
-  router.push("/onboarding/user");
+  router.push("/");
 });
 </script>
