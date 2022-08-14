@@ -110,7 +110,6 @@ onBeforeMount(async () => {
 
   setTimeout(async () => {
     if (supabase.auth.session() !== null && store.showOnboarding) {
-      console.log("test");
       const { data, error } = await supabase
         .from("users")
         .select()
