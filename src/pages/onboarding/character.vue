@@ -63,7 +63,7 @@ const handleSubmit = async (e: Event) => {
     .update({ starter_traveller: state.traveller })
     .match({ id: supabase.auth.session()?.user?.id });
 
-  if (error) return alert(error);
+  if (error) return alert(error.message);
 
   router.push("/onboarding/welcome");
 };
@@ -79,7 +79,7 @@ onMounted(async () => {
     .select()
     .match({ id: supabase.auth.session()?.user?.id });
 
-  if (error) alert(error);
+  if (error) alert(error.message);
 
   if (data !== null) {
     if (data[0].username === null) state.username = "Traveller";
