@@ -153,7 +153,7 @@ onMounted(() => {
 
       // if the last key is reached, activate cheats
       if (konamiCodePosition == konamiCode.length) {
-        router.push("/forgot-password");
+        router.push("/easter-eggs/forgot-password");
         konamiCodePosition = 0;
       }
     } else {

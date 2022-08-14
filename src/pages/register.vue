@@ -152,7 +152,7 @@ onMounted(() => {
 
       // if the last key is reached, activate cheats
       if (konamiCodePosition == konamiCode.length) {
-        router.push("/no-account");
+        router.push("/easter-eggs/no-account");
         konamiCodePosition = 0;
       }
     } else {
