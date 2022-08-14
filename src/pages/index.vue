@@ -12,7 +12,7 @@
         <div class="mt-4 flex flex-row gap-4">
           <a
             href="/game"
-            class="transform rounded-2xl bg-brand-main px-8 py-2 text-center font-bold text-white duration-300 ease-in-out hover:-translate-y-0.5 sm:text-xl"
+            class="transform rounded-2xl bg-brand-main px-8 py-2 text-center font-bold text-white duration-300 ease-in-out hover:-translate-y-0.5 hover:text-white sm:text-xl"
           >
             Play Now
           </a>
