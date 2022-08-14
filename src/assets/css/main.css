@@ -4,5 +4,5 @@
 
 :root {
   color-scheme: dark;
-  @apply selection:bg-brand-primary selection:text-head;
+  @apply selection:bg-brand-main selection:text-head;
 }
