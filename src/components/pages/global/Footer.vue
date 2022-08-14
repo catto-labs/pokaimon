@@ -1,47 +1,93 @@
 <template>
   <div>
     <footer
-      class="flex w-full flex-row justify-between rounded-t-xl border-t border-grey-700 bg-grey-800 bg-opacity-60 py-2 px-8 filter backdrop-blur-md"
+      class="flex w-full flex-row justify-between rounded-t-xl border-t border-grey-700 bg-grey-800 bg-opacity-60 py-8 px-8 filter backdrop-blur-md"
     >
-      <div class="flex flex-row items-center gap-4">
-        <a href="/" class="my-auto">
-          <img src="../../../assets/logo.png" alt="Pokaimon logo" class="h-8" />
-        </a>
-        <div>
+      <div class="items-center space-y-8 text-body">
+        <div class="space-y-4">
+          <a href="/" class="flex flex-row gap-4">
+            <img
+              src="../../../assets/logo.png"
+              alt="Pokaimon logo"
+              id="logo"
+              class="h-8"
+            />
+            <label
+              for="logo"
+              class="my-auto cursor-pointer text-lg font-bold text-white"
+              >Pokaimon</label
+            >
+          </a>
           <p>
             Made with
             <span class="text-brand-main">❤</span>
             by
-            <a
-              href="/contributors"
-              class="text-white transition duration-300 hover:text-brand-second hover:underline"
+            <a href="/contributors" class="text-white"> the team</a><br /><span
+              class="flex"
             >
-              the team</a
-            >.
+              <span>in </span>
+              <FlagID class="my-auto ml-1 h-3 rounded-sm" /><span>, </span>
+              <FlagDE class="my-auto mx-1 h-3 rounded-sm" /> <span>&</span>
+              <FlagFR class="my-auto ml-1 h-3 rounded-sm" />.
+            </span>
           </p>
-          <span class="text-sm"
-            >© 2022 Trobonox •
-            <a
-              class="text-grey-300 transition duration-300 hover:text-brand-second hover:underline"
-              href="/licenses"
-              >License notice</a
-            ></span
-          >
+        </div>
+
+        <div class="space-y-4">
+          <img src="../../../assets/undefined.svg" class="w-56" />
+          <div>
+            <p>© 2022 undefined labs</p>
+            <div class="flex space-x-2 text-sm">
+              <a class="text-grey-300" href="/licenses">Privacy Policy</a>
+              <p>•</p>
+
+              <a class="text-grey-300" href="/licenses">License Notice</a>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="flex gap-4">
-        <a
-          href="https://github.com/trobonox/pokaimon"
-          class="my-auto rounded-full bg-grey-700 p-2 text-white transition duration-300 hover:-translate-y-0.5 hover:text-fuchsia"
-        >
-          <IconGitHub class="h-6 w-6" />
-        </a>
-        <a
-          href="/discord.jpg"
-          class="my-auto rounded-full bg-grey-700 p-2 text-white transition duration-300 hover:-translate-y-0.5 hover:text-purple"
-        >
-          <IconDiscord class="h-6 w-6" />
-        </a>
+      <div class="items-center space-y-12 text-body">
+        <div class="space-y-4">
+          <h2 for="logo" class="my-auto text-lg font-bold text-white">
+            About Pokaimon
+          </h2>
+          <div class="grid grid-cols-2 gap-x-12 gap-y-4">
+            <a href="/game">Play Now</a>
+            <a href="/get-started"> Get Started </a>
+            <button
+              onclick="showInstallPromotion()"
+              class="transition duration-300 hover:text-brand-second hover:underline"
+            >
+              <!-- if someone can make this work that'd be amazing ty -->
+              Install Pokaimon
+            </button>
+            <a href="/branding">Branding</a>
+            <a href="/contributing">Contributing</a>
+            <a href="/issues">Issue Tracker</a>
+            <a href="/contributing">GitHub Repo</a>
+          </div>
+        </div>
+      </div>
+      <div class="items-center space-y-12 text-body">
+        <div class="space-y-4">
+          <h2 for="logo" class="my-auto text-lg font-bold text-white">
+            Pokaimon Community
+          </h2>
+          <div class="grid grid-cols-2 gap-x-12 gap-y-4">
+            <a href="/game" class="flex gap-2">
+              <IconGitHub class="my-auto h-5 w-5" />
+              GitHub
+            </a>
+            <a href="/discord.jpg" class="flex gap-2">
+              <IconDiscord class="my-auto h-5 w-5" />
+              Discord Server
+            </a>
+            <a href="/game" class="flex gap-2">
+              <IconTwitter class="my-auto h-5 w-5" />
+              @PokaimonGame
+            </a>
+          </div>
+        </div>
       </div>
     </footer>
   </div>
@@ -50,4 +96,8 @@
 <script setup lang="ts">
 import IconDiscord from "virtual:icons/fa6-brands/discord";
 import IconGitHub from "virtual:icons/fa6-brands/github";
+import IconTwitter from "virtual:icons/fa6-brands/twitter";
+import FlagID from "virtual:icons/flagpack/id";
+import FlagDE from "virtual:icons/flagpack/de";
+import FlagFR from "virtual:icons/flagpack/fr";
 </script>
