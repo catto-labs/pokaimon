@@ -59,6 +59,7 @@
               class="transition duration-300 hover:text-brand-second hover:underline"
             >
               <!-- if someone can make this work that'd be amazing ty -->
+              <!-- need this button to trigger the 'Install App' pop-up -->
               Install Pokaimon
             </button>
             <a href="/branding">Branding</a>
