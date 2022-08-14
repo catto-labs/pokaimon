@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, onBeforeMount, onMounted } from "vue";
+import { reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 import { supabase } from "@/utils/supabase";
