@@ -38,7 +38,7 @@
           <div>
             <p>© 2022 undefined labs</p>
             <div class="flex space-x-2 text-sm">
-              <a class="text-grey-300" href="/licenses">Privacy Policy</a>
+              <a class="text-grey-300" href="/privacy">Privacy Policy</a>
               <p>•</p>
 
               <a class="text-grey-300" href="/licenses">License Notice</a>
@@ -62,9 +62,18 @@
               Install Pokaimon
             </button>
             <a href="/branding">Branding</a>
-            <a href="/contributing">Contributing</a>
-            <a href="/issues">Issue Tracker</a>
-            <a href="/contributing">GitHub Repo</a>
+            <a
+              href="/linkout?url=aHR0cHM6Ly9naXRodWIuY29tL3Ryb2Jvbm94L3Bva2FpbW9uL2Jsb2IvbWFpbi9DT05UUklCVVRJTkcubWQ="
+              >Contributing</a
+            >
+            <a
+              href="/linkout?url=aHR0cHM6Ly9naXRodWIuY29tL3Ryb2Jvbm94L3Bva2FpbW9uL2lzc3Vlcw=="
+              >Issue Tracker</a
+            >
+            <a
+              href="/linkout?url=aHR0cHM6Ly9naXRodWIuY29tL3Ryb2Jvbm94L3Bva2FpbW9u"
+              >GitHub Repo</a
+            >
           </div>
         </div>
       </div>
@@ -74,15 +83,18 @@
             Pokaimon Community
           </h2>
           <div class="grid grid-cols-2 gap-x-12 gap-y-4">
-            <a href="/game" class="flex gap-2">
+            <a
+              href="/linkout?url=aHR0cHM6Ly9naXRodWIuY29tL3Ryb2Jvbm94L3Bva2FpbW9u"
+              class="flex gap-2"
+            >
               <IconGitHub class="my-auto h-5 w-5" />
               GitHub
             </a>
-            <a href="/discord.jpg" class="flex gap-2">
+            <a href="/linkout?url=L2Rpc2NvcmQuanBn" class="flex gap-2">
               <IconDiscord class="my-auto h-5 w-5" />
               Discord Server
             </a>
-            <a href="/game" class="flex gap-2">
+            <a href="/linkout?url=L3R3aXR0ZXIuanBn" class="flex gap-2">
               <IconTwitter class="my-auto h-5 w-5" />
               @PokaimonGame
             </a>

@@ -8,14 +8,15 @@
     "build": "yarn lint && vue-tsc --noEmit && vite build"
   },
   "dependencies": {
+    "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
     "@fontsource/raleway": "^4.5.10",
     "@supabase/supabase-js": "^1.35.6",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3"
   },
   "devDependencies": {
-    "@iconify-json/flagpack": "^1.1.2",
     "@iconify-json/fa6-brands": "^1.1.5",
+    "@iconify-json/flagpack": "^1.1.2",
     "@iconify-json/mdi": "^1.1.30",
     "@types/node": "^18.7.2",
     "@typescript-eslint/eslint-plugin": "^5.4.0",

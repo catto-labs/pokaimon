@@ -5,6 +5,7 @@ import vue from "@vitejs/plugin-vue";
 import routes from "vite-plugin-pages";
 import icons from "unplugin-icons/vite";
 import { VitePWA as pwa } from "vite-plugin-pwa";
+import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill";
 
 export default defineConfig({
   plugins: [
@@ -56,6 +57,10 @@ export default defineConfig({
           },
         ],
       },
+    }),
+
+    NodeGlobalsPolyfillPlugin({
+      buffer: true,
     }),
   ],
 
