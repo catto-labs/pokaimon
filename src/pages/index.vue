@@ -29,7 +29,7 @@
         class="mt-64 mb-32 flex flex-col items-start justify-between gap-8 lg:flex-row"
       >
         <div class="flex flex-col space-y-4 lg:mt-12">
-          <h2 class="text-5xl font-bold">
+          <h2 class="max-w-lg text-5xl font-bold">
             Discover cards and build your own deck!
           </h2>
           <button
