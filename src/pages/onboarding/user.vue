@@ -24,6 +24,7 @@
           class="w-1/2 sm:w-1/4"
           :placeholder="'#' + Math.floor(Math.random() * 9999).toString()"
           pattern="#[A-Za-z0-9]+"
+          maxlength="7"
           @input="handleTagInput"
         />
       </div>
