@@ -11,15 +11,19 @@
         <button type="button" @click="state.traveller = 'aether'">
           <img
             src="https://i.imgur.com/MicjQA4.png"
-            class="aspect-square h-auto w-40 rounded-full border-2 border-grey-700 bg-grey-800 outline-none transition hover:bg-opacity-80 focus:border-grey-500 focus:bg-opacity-80"
-            :class="{ 'border-grey-200': state.traveller === 'aether' }"
+            class="aspect-square h-auto w-40 rounded-full border-2 border-grey-700 bg-grey-800 outline-none transition hover:bg-opacity-80 focus:border-grey-500"
+            :class="{
+              'border-brand-main bg-grey-700': state.traveller === 'aether',
+            }"
           />
         </button>
         <button type="button" @click="state.traveller = 'lumine'">
           <img
             src="https://i.imgur.com/MF0fPNp.png"
-            class="aspect-square h-auto w-40 rounded-full border-2 border-grey-700 bg-grey-800 outline-none transition hover:bg-opacity-80 focus:border-grey-500 focus:bg-opacity-80"
-            :class="{ 'border-grey-200': state.traveller === 'lumine' }"
+            class="aspect-square h-auto w-40 rounded-full border-2 border-grey-700 bg-grey-800 outline-none transition hover:bg-opacity-80 focus:border-grey-500"
+            :class="{
+              'border-brand-main bg-grey-700': state.traveller === 'lumine',
+            }"
           />
         </button>
       </div>
@@ -67,10 +71,10 @@ const handleSubmit = async (e: Event) => {
   localStorage.setItem("showOnboarding", "false");
 };
 
-onBeforeMount(() => {
-  if (!store.showOnboarding) router.push("/register");
-  if (supabase.auth.session() === null) router.push("/register");
-});
+// onBeforeMount(() => {
+//   if (!store.showOnboarding) router.push("/register");
+//   if (supabase.auth.session() === null) router.push("/register");
+// });
 
 onMounted(async () => {
   const { data, error } = await supabase
