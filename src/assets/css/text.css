@@ -17,5 +17,5 @@ span {
 }
 
 a {
-    @apply transition duration-300 hover: text-brand-second hover:underline
+    @apply transition duration-300 hover:text-brand-second hover:underline
 }
