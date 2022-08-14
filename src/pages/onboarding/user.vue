@@ -14,7 +14,7 @@
           v-model="state.username"
           label="Username"
           class="w-full sm:w-3/4"
-          placeholder="AwesomeTravellerName"
+          :placeholder="randomisedUsername"
           pattern="[A-Za-z0-9_-]+"
         />
         <LabelledInput
@@ -22,7 +22,7 @@
           v-model="state.tag"
           label="Tag"
           class="w-1/2 sm:w-1/4"
-          placeholder="1337"
+          :placeholder="'#' + Math.floor(Math.random() * 9999).toString()"
           pattern="#[A-Za-z0-9]+"
           @input="handleTagInput"
         />
@@ -38,6 +38,8 @@
 </template>
 
 <script setup lang="ts">
+import { adjectives, animals } from "../../assets/misc/usernames.json";
+
 import { reactive, onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
 
@@ -45,6 +47,15 @@ import LabelledInput from "@/components/LabelledInput.vue";
 
 import { supabase } from "@/utils/supabase";
 import { store } from "@/utils/store";
+
+const randomAdj = adjectives[Math.floor(Math.random() * adjectives.length)];
+const randomAni = animals[Math.floor(Math.random() * animals.length)];
+
+const randomisedUsername =
+  randomAdj.charAt(0).toUpperCase() +
+  randomAdj.slice(1) +
+  randomAni.charAt(0).toUpperCase() +
+  randomAni.slice(1);
 
 const router = useRouter();
 
