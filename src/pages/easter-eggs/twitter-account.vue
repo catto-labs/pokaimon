@@ -4,10 +4,10 @@
   >
     <h1 class="text-4xl font-bold">Oh hey, you found an easter egg!</h1>
     <img
-      src="../../assets/memes/forgot-password.jpg"
+      src="../../assets/memes/twitter-account.jpg"
       alt="Forgot password megamind meme image"
       class="h-[28rem] rounded-xl"
     />
-    <p>Maybe use a password manager next time?</p>
+    <p>Maybe once this project takes off.</p>
   </div>
 </template>

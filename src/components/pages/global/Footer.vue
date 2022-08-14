@@ -90,11 +90,17 @@
               <IconGitHub class="my-auto h-5 w-5" />
               GitHub
             </a>
-            <a href="/linkout?url=L2Rpc2NvcmQuanBn" class="flex gap-2">
+            <a
+              href="/linkout?url=L2Vhc3Rlci1lZ2dzL2Rpc2NvcmQtc2VydmVy"
+              class="flex gap-2"
+            >
               <IconDiscord class="my-auto h-5 w-5" />
               Discord Server
             </a>
-            <a href="/linkout?url=L3R3aXR0ZXIuanBn" class="flex gap-2">
+            <a
+              href="/linkout?url=L2Vhc3Rlci1lZ2dzL3R3aXR0ZXItYWNjb3VudA=="
+              class="flex gap-2"
+            >
               <IconTwitter class="my-auto h-5 w-5" />
               @PokaimonGame
             </a>

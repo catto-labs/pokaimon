@@ -4,7 +4,7 @@
   >
     <h1 class="text-4xl font-bold">Oh hey, you found an easter egg!</h1>
     <img
-      src="../assets/no-account.jpg"
+      src="../../assets/memes/no-account.jpg"
       alt="No account megamind meme image"
       class="h-[28rem] rounded-xl"
     />
