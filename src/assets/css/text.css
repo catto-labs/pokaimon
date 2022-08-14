@@ -15,3 +15,7 @@ body {
 span {
     @apply text-note
 }
+
+a {
+    @apply transition duration-300 hover: text-brand-second hover:underline
+}
