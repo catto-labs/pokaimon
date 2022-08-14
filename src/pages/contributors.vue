@@ -23,7 +23,7 @@
           <MainContributor
             name="Vexcited"
             img="https://cdn.discordapp.com/avatars/466655433415720992/f5e3debcf661a6ed65301a34aaaa1b88.png"
-            role="Frontend Developer"
+            role="Front-end Developer"
           />
         </div>
       </div>
