@@ -19,7 +19,7 @@
             v-model="state.password"
             label="Password"
           />
-          <span class="text-sm"> Forgot password? Huge skill issue ngl </span>
+          <span class="text-sm"> Forgot password? Try the Konami code ;) </span>
         </div>
         <button
           type="submit"
@@ -153,7 +153,7 @@ onMounted(() => {
 
       // if the last key is reached, activate cheats
       if (konamiCodePosition == konamiCode.length) {
-        router.push("/no-account");
+        router.push("/forgot-password");
         konamiCodePosition = 0;
       }
     } else {
