@@ -13,7 +13,7 @@
           />
           <label
             for="header-logo"
-            class="my-auto cursor-pointer text-lg font-bold"
+            class="my-auto cursor-pointer text-lg font-bold text-white"
             >Pokaimon</label
           >
         </div>
