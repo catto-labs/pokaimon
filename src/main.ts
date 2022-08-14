@@ -6,6 +6,7 @@ import "@fontsource/raleway/600.css";
 // styles
 import "@/assets/css/main.css";
 import "@/assets/css/text.css";
+import "@/assets/css/transitions.css";
 // #endregion css imports
 
 import { createApp } from "vue";
