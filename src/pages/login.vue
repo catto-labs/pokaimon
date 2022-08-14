@@ -71,7 +71,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import { onMounted, reactive } from "vue";
 import IconDiscord from "virtual:icons/fa6-brands/discord";
 import IconGoogle from "virtual:icons/fa6-brands/google";
 import IconGitHub from "virtual:icons/fa6-brands/github";
@@ -124,4 +124,41 @@ const signInWithProvider = async (provider: Provider) => {
     router.push("/game");
   }
 };
+
+onMounted(() => {
+  // the 'official' Konami Code sequence
+  const konamiCode = [
+    "ArrowUp",
+    "ArrowUp",
+    "ArrowDown",
+    "ArrowDown",
+    "ArrowLeft",
+    "ArrowRight",
+    "ArrowLeft",
+    "ArrowRight",
+  ];
+
+  // a variable to remember the 'position' the user has reached so far.
+  let konamiCodePosition = 0;
+
+  // add keydown event listener
+  document.addEventListener("keydown", (e) => {
+    // get the value of the required key from the konami code
+    const requiredKey = konamiCode[konamiCodePosition];
+
+    // compare the key with the required key
+    if (e.code == requiredKey) {
+      // move to the next key in the konami code sequence
+      konamiCodePosition++;
+
+      // if the last key is reached, activate cheats
+      if (konamiCodePosition == konamiCode.length) {
+        router.push("/no-account");
+        konamiCodePosition = 0;
+      }
+    } else {
+      konamiCodePosition = 0;
+    }
+  });
+});
 </script>
