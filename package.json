@@ -14,6 +14,7 @@
     "vue-router": "^4.0.3"
   },
   "devDependencies": {
+    "@iconify-json/flagpack": "^1.1.2",
     "@iconify-json/fa6-brands": "^1.1.5",
     "@iconify-json/mdi": "^1.1.30",
     "@types/node": "^18.7.2",

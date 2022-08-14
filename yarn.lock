@@ -975,6 +975,13 @@
   dependencies:
     "@iconify/types" "*"
 
+"@iconify-json/flagpack@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@iconify-json/flagpack/-/flagpack-1.1.2.tgz#1fad05a401af366f70b7de8ca40c656433603b98"
+  integrity sha512-mHmR/Dt5RaS+RisYwRRPYr43vYdb27yhl011Y1dqFVegHZtvkHfMF2ZVq6iDoaQokAustuBGuZI7sQoehpKJZw==
+  dependencies:
+    "@iconify/types" "*"
+
 "@iconify-json/mdi@^1.1.30":
   version "1.1.30"
   resolved "https://registry.yarnpkg.com/@iconify-json/mdi/-/mdi-1.1.30.tgz#405a2b79e551f26ae907ec98cf8348159eeccd50"
