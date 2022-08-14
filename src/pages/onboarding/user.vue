@@ -87,7 +87,7 @@ const handleSubmit = async (e: Event) => {
 
   if (err2) return alert(err2);
 
-  router.push("/onboarding/traveller");
+  router.push("/onboarding/character");
 };
 
 const handleTagInput = () => {
