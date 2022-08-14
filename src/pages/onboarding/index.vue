@@ -1,3 +1,7 @@
+<template>
+  <div><h1>Redirecting you to the onboarding...</h1></div>
+</template>
+
 <script setup lang="ts">
 import { onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
