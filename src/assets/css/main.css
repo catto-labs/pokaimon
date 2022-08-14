@@ -3,5 +3,6 @@
 @tailwind utilities;
 
 :root {
-    color-scheme: dark;
+  color-scheme: dark;
+  @apply selection:bg-brand-primary selection:text-head;
 }
