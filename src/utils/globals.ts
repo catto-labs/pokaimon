@@ -6,3 +6,6 @@ export const wait = (ms: number) =>
  */
 export const randomBetween = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1) + min);
+
+export const copyToClipboard = (text: string) =>
+  navigator.clipboard.writeText(text);

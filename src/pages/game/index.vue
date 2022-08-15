@@ -16,10 +16,8 @@
             primo.toLocaleString("en-GB")
           }}</span>
         </div>
-        <!-- someone pls implement click to copy, thank you -->
-        <!-- i'm sure i could've implemented this but i wanted to push asap -->
         <button
-          onclick="navigator.clipboard.writeText(state.username)"
+          @click="copyToClipboard(state.username)"
           class="my-auto flex space-x-2 rounded-md bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md transition duration-300 hover:bg-grey-700"
         >
           <IconUser class="my-auto" />
@@ -44,6 +42,7 @@ import { reactive, onBeforeMount, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 import { supabase } from "@/utils/supabase";
+import { copyToClipboard } from "@/utils/globals";
 
 const router = useRouter();
 
