@@ -61,7 +61,18 @@
               <strong>{{ state.player.name }}</strong>
               <p>Lv. {{ state.player.level }}</p>
             </div>
-            <div class="rounded-full bg-grey-600 p-2"></div>
+            <div class="rounded-full bg-grey-600">
+              <div
+                class="rounded-full bg-brand-main p-2"
+                :style="{
+                  width:
+                    (
+                      (state.player.health / state.player.maxHealth) *
+                      100
+                    ).toString() + '%',
+                }"
+              ></div>
+            </div>
             <span class="text-right">
               {{ state.player.health }}/{{ state.player.maxHealth }} HP
             </span>
@@ -73,7 +84,18 @@
               <strong>{{ state.enemy.name }}</strong>
               <p>Lv. {{ state.enemy.level }}</p>
             </div>
-            <div class="rounded-full bg-grey-600 p-2"></div>
+            <div class="rounded-full bg-grey-600">
+              <div
+                class="rounded-full bg-brand-second p-2"
+                :style="{
+                  width:
+                    (
+                      (state.enemy.health / state.enemy.maxHealth) *
+                      100
+                    ).toString() + '%',
+                }"
+              ></div>
+            </div>
             <span class="text-right">
               {{ state.enemy.health }}/{{ state.enemy.maxHealth }} HP
             </span>
@@ -230,9 +252,11 @@ const playTurn = async (action_index?: number) => {
 const processNextTurn = async () => {
   if (state.player.health <= 0) {
     state.winner = "enemy";
+    alert("Enemy won :(");
     return;
   } else if (state.enemy.health <= 0) {
     state.winner = "player";
+    alert("You won!");
     return;
   }
 
