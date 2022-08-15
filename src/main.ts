@@ -3,6 +3,9 @@
 import "@fontsource/raleway/400.css";
 import "@fontsource/raleway/600.css";
 
+// roboto mono
+import "@fontsource/roboto-mono/400.css";
+
 // styles
 import "@/assets/css/main.css";
 import "@/assets/css/text.css";
