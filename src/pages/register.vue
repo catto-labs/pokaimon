@@ -119,8 +119,8 @@ const signInWithProvider = async (provider: Provider) => {
     });
     if (error) throw error;
   } catch (error: Error) {
-    alert(error.error_description || error.message);
     localStorage.setItem("showOnboarding", "false");
+    return alert(error.error_description || error.message);
   }
 };
 

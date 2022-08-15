@@ -98,34 +98,19 @@ import Footer from "../components/pages/global/Footer.vue";
 import NewsCard from "@/components/pages/index/NewsCard.vue";
 import PlayingCard from "@/components/pages/index/PlayingCard.vue";
 
-import { supabase } from "@/utils/supabase";
-
 import { store } from "@/utils/store";
 
 const router = useRouter();
 
 onBeforeMount(async () => {
   const showOnboardingSaved = localStorage.getItem("showOnboarding");
-  if (showOnboardingSaved === "true") store.showOnboarding = true;
+  if (showOnboardingSaved === "true") {
+    store.showOnboarding = true; // Save value to JS global state
+    localStorage.removeItem("showOnboarding"); // Clear localstorage as we do not need the saved value anymore
+  }
 
-  setTimeout(async () => {
-    if (supabase.auth.session() !== null && store.showOnboarding) {
-      const { data, error } = await supabase
-        .from("users")
-        .select()
-        .match({ id: supabase.auth.session()?.user?.id });
-
-      if (!error && data.length !== 0) {
-        if (data[0].username !== null && data[0].starter_traveller !== null) {
-          // If username and traveller are set we are assuming full signup
-          store.showOnboarding = false;
-          localStorage.setItem("showOnboarding", "false");
-          return router.push("/game");
-        }
-      }
-
-      router.push("/onboarding");
-    }
-  }, 2000);
+  if (store.showOnboarding) {
+    router.push("/onboarding"); // Go to onboarding page for further init logic
+  }
 });
 </script>

@@ -16,10 +16,10 @@ export default defineConfig({
     pwa({
       registerType: "autoUpdate",
       workbox: {
-        globPatterns: ["**/*.{js,css,woff,woff2,html,ico,png,svg}"],
+        globPatterns: ["**/*"],
       },
 
-      includeAssets: ["favicon.ico", "favicon.svg", "apple-touch-icon.png"],
+      includeAssets: ["favicon.ico", "favicon.svg"],
 
       manifest: {
         name: "Pokaimon",

@@ -24,6 +24,7 @@
           class="w-1/2 sm:w-1/4"
           :placeholder="'#' + Math.floor(Math.random() * 9999).toString()"
           pattern="#[A-Za-z0-9]+"
+          maxlength="7"
           @input="handleTagInput"
         />
       </div>
@@ -75,7 +76,7 @@ const handleSubmit = async (e: Event) => {
     .select()
     .match({ username: `${state.username}${state.tag}` });
 
-  if (err1) return alert(err1);
+  if (err1) return alert(err1.message);
   if (data.length !== 0) {
     return alert("That username already exists, please use another one!");
   }
@@ -85,7 +86,7 @@ const handleSubmit = async (e: Event) => {
     .update({ username: `${state.username}${state.tag}` })
     .match({ id: supabase.auth.session()?.user?.id });
 
-  if (err2) return alert(err2);
+  if (err2) return alert(err2.message);
 
   router.push("/onboarding/character");
 };

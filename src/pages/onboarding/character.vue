@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, onMounted } from "vue";
+import { reactive, onMounted, onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
 
 import { supabase } from "@/utils/supabase";
@@ -63,18 +63,15 @@ const handleSubmit = async (e: Event) => {
     .update({ starter_traveller: state.traveller })
     .match({ id: supabase.auth.session()?.user?.id });
 
-  if (error) return alert(error);
+  if (error) return alert(error.message);
 
-  router.push("/game");
-
-  store.showOnboarding = false;
-  localStorage.setItem("showOnboarding", "false");
+  router.push("/onboarding/welcome");
 };
 
-// onBeforeMount(() => {
-//   if (!store.showOnboarding) router.push("/register");
-//   if (supabase.auth.session() === null) router.push("/register");
-// });
+onBeforeMount(() => {
+  if (!store.showOnboarding) router.push("/register");
+  if (supabase.auth.session() === null) router.push("/register");
+});
 
 onMounted(async () => {
   const { data, error } = await supabase
@@ -82,7 +79,7 @@ onMounted(async () => {
     .select()
     .match({ id: supabase.auth.session()?.user?.id });
 
-  if (error) alert(error);
+  if (error) alert(error.message);
 
   if (data !== null) {
     if (data[0].username === null) state.username = "Traveller";

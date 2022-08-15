@@ -21,7 +21,7 @@ const router = useRouter();
 
 onBeforeMount(async () => {
   const { error } = await supabase.auth.signOut();
-  if (error) alert(error);
+  if (error) alert(error.message);
   router.push("/");
 });
 </script>
