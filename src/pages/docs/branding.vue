@@ -56,6 +56,20 @@
             </p>
           </div>
         </div>
+        <div class="flex flex-col items-center justify-center space-y-8">
+          <div class="flex gap-16">
+            <img
+              src="@/assets/branding/vector/undefined-mark.svg"
+              class="my-auto h-12"
+            />
+            <div class="my-auto">
+              <h4 class="text-xl font-bold">"undefined" logo-mark</h4>
+              <p class="max-w-[16rem]">
+                This is the primary and only logo-mark for undefined labs.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="my-16 flex flex-col items-center justify-center space-y-4">
         <h2 class="mb-2 max-w-xl text-center text-xl text-body">
