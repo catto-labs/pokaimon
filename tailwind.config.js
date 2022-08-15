@@ -49,6 +49,7 @@ module.exports = {
     },
     fontFamily: {
       sans: ["Raleway", "sans-serif"],
+      mono: ["Roboto Mono", "monospace"],
     },
     extend: {},
   },
