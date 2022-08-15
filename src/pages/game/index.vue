@@ -18,6 +18,7 @@
         </div>
         <button
           @click="copyToClipboard(state.username)"
+          v-tippy="{ content: 'Click to copy user ID!' }"
           class="my-auto flex space-x-2 rounded-md bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md transition duration-300 hover:bg-grey-700"
         >
           <IconUser class="my-auto" />
