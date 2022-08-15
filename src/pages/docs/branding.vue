@@ -68,41 +68,41 @@
         <div class="grid grid-cols-2 gap-4 text-white">
           <div class="w-64 rounded-xl bg-brand-main px-8 py-4">
             <h3 class="text-center font-bold">Primary Brand Colour</h3>
-            <p class="font-mono text-center">#C084FC</p>
+            <p class="text-center font-mono">#C084FC</p>
           </div>
           <div class="w-64 rounded-xl bg-brand-second px-8 py-4">
             <h3 class="text-center font-bold">Secondary Brand Colour</h3>
-            <p class="font-mono text-center">#60A5FA</p>
+            <p class="text-center font-mono">#60A5FA</p>
           </div>
         </div>
         <div class="grid grid-cols-3 gap-4 text-white">
           <div class="w-64 rounded-xl bg-head px-8 py-4">
             <h3 class="text-center font-bold text-black">Text Headings</h3>
-            <p class="font-mono text-center text-black">#F3F4F6</p>
+            <p class="text-center font-mono text-black">#F3F4F6</p>
           </div>
           <div class="w-64 rounded-xl bg-body px-8 py-4">
             <h3 class="text-center font-bold text-black">Main Bodies</h3>
-            <p class="font-mono text-center text-black">#E5E7EB</p>
+            <p class="text-center font-mono text-black">#E5E7EB</p>
           </div>
           <div class="w-64 rounded-xl bg-note px-8 py-4">
             <h3 class="text-center font-bold text-black">
               Miscellaneous Notes
             </h3>
-            <p class="font-mono text-center text-black">#9CA3AF</p>
+            <p class="text-center font-mono text-black">#9CA3AF</p>
           </div>
         </div>
         <div class="grid grid-cols-3 gap-4 text-white">
           <div class="w-64 rounded-xl bg-danger px-8 py-4">
             <h3 class="text-center font-bold text-black">Dangerous Action</h3>
-            <p class="font-mono text-center text-black">#F87171</p>
+            <p class="text-center font-mono text-black">#F87171</p>
           </div>
           <div class="w-64 rounded-xl bg-warn px-8 py-4">
             <h3 class="text-center font-bold text-black">Warning Message</h3>
-            <p class="font-mono text-center text-black">#FDE047</p>
+            <p class="text-center font-mono text-black">#FDE047</p>
           </div>
           <div class="w-64 rounded-xl bg-success px-8 py-4">
             <h3 class="text-center font-bold text-black">Success Operation</h3>
-            <p class="font-mono text-center text-black">#34D399</p>
+            <p class="text-center font-mono text-black">#34D399</p>
           </div>
         </div>
         <p class="max-w-xl text-center">
@@ -111,45 +111,45 @@
         <div class="grid grid-cols-5 gap-4 text-white">
           <div class="w-36 rounded-xl bg-grey-50 px-4 py-4">
             <h3 class="text-center font-bold text-black">Grey 50</h3>
-            <p class="font-mono text-center text-black">#F9FAFB</p>
+            <p class="text-center font-mono text-black">#F9FAFB</p>
           </div>
           <div class="w-36 rounded-xl bg-grey-100 px-4 py-4">
             <h3 class="text-center font-bold text-black">Grey 100</h3>
-            <p class="font-mono text-center text-black">#F9FAFB</p>
+            <p class="text-center font-mono text-black">#F9FAFB</p>
           </div>
           <div class="w-36 rounded-xl bg-grey-200 px-4 py-4">
             <h3 class="text-center font-bold text-black">Grey 200</h3>
-            <p class="font-mono text-center text-black">#F9FAFB</p>
+            <p class="text-center font-mono text-black">#F9FAFB</p>
           </div>
           <div class="w-36 rounded-xl bg-grey-300 px-4 py-4">
             <h3 class="text-center font-bold text-black">Grey 300</h3>
-            <p class="font-mono text-center text-black">#F9FAFB</p>
+            <p class="text-center font-mono text-black">#F9FAFB</p>
           </div>
           <div class="w-36 rounded-xl bg-grey-400 px-4 py-4">
             <h3 class="text-center font-bold text-black">Grey 400</h3>
-            <p class="font-mono text-center text-black">#F9FAFB</p>
+            <p class="text-center font-mono text-black">#F9FAFB</p>
           </div>
           <div class="w-36 rounded-xl bg-grey-500 px-4 py-4">
             <h3 class="text-center font-bold">Grey 500</h3>
-            <p class="font-mono text-center">#F9FAFB</p>
+            <p class="text-center font-mono">#F9FAFB</p>
           </div>
           <div class="w-36 rounded-xl bg-grey-600 px-4 py-4">
             <h3 class="text-center font-bold">Grey 600</h3>
-            <p class="font-mono text-center">#F9FAFB</p>
+            <p class="text-center font-mono">#F9FAFB</p>
           </div>
           <div class="w-36 rounded-xl bg-grey-700 px-4 py-4">
             <h3 class="text-center font-bold">Grey 700</h3>
-            <p class="font-mono text-center">#F9FAFB</p>
+            <p class="text-center font-mono">#F9FAFB</p>
           </div>
           <div class="w-36 rounded-xl bg-grey-800 px-4 py-4">
             <h3 class="text-center font-bold">Grey 800</h3>
-            <p class="font-mono text-center">#F9FAFB</p>
+            <p class="text-center font-mono">#F9FAFB</p>
           </div>
           <div
             class="w-36 rounded-xl border border-grey-800 bg-grey-900 px-4 py-4"
           >
             <h3 class="text-center font-bold">Grey 900</h3>
-            <p class="font-mono text-center">#F9FAFB</p>
+            <p class="text-center font-mono">#F9FAFB</p>
           </div>
         </div>
         <p class="max-w-xl text-center">
@@ -158,39 +158,39 @@
         <div class="grid grid-cols-3 gap-4 text-white">
           <div class="w-64 rounded-xl bg-red px-8 py-4">
             <h3 class="text-center font-bold">"Flamingo Red"</h3>
-            <p class="font-mono text-center">#EF4444</p>
+            <p class="text-center font-mono">#EF4444</p>
           </div>
           <div class="w-64 rounded-xl bg-orange px-8 py-4">
             <h3 class="text-center font-bold">"Neon Carrot"</h3>
-            <p class="font-mono text-center">#FB923C</p>
+            <p class="text-center font-mono">#FB923C</p>
           </div>
           <div class="w-64 rounded-xl bg-yellow px-8 py-4">
             <h3 class="text-center font-bold">"Lightning Yellow"</h3>
-            <p class="font-mono text-center">#FBBF24</p>
+            <p class="text-center font-mono">#FBBF24</p>
           </div>
           <div class="w-64 rounded-xl bg-green px-8 py-4">
             <h3 class="text-center font-bold">"Shamrock Green"</h3>
-            <p class="font-mono text-center">#4ADE80</p>
+            <p class="text-center font-mono">#4ADE80</p>
           </div>
           <div class="w-64 rounded-xl bg-blue px-8 py-4">
             <h3 class="text-center font-bold">"Picton Blue"</h3>
-            <p class="font-mono text-center">#38BDF8</p>
+            <p class="text-center font-mono">#38BDF8</p>
           </div>
           <div class="w-64 rounded-xl bg-purple px-8 py-4">
             <h3 class="text-center font-bold">"Floral Lavender"</h3>
-            <p class="font-mono text-center">#A78BFA</p>
+            <p class="text-center font-mono">#A78BFA</p>
           </div>
           <div class="w-64 rounded-xl bg-fuchsia px-8 py-4">
             <h3 class="text-center font-bold">"Heliotrope Pink"</h3>
-            <p class="font-mono text-center">#E879F9</p>
+            <p class="text-center font-mono">#E879F9</p>
           </div>
           <div class="w-64 rounded-xl bg-pink px-8 py-4">
             <h3 class="text-center font-bold">"Persian Pink"</h3>
-            <p class="font-mono text-center">#F472B6</p>
+            <p class="text-center font-mono">#F472B6</p>
           </div>
           <div class="w-64 rounded-xl bg-rose px-8 py-4">
             <h3 class="text-center font-bold">"Brink Pink"</h3>
-            <p class="font-mono text-center">#FB7185</p>
+            <p class="text-center font-mono">#FB7185</p>
           </div>
         </div>
       </div>
