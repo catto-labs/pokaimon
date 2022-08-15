@@ -74,7 +74,10 @@
               ></div>
             </div>
             <span class="text-right">
-              {{ state.player.health }}/{{ state.player.maxHealth }} HP
+              {{ state.player.health > 0 ? state.player.health : 0 }}/{{
+                state.player.maxHealth
+              }}
+              HP
             </span>
           </div>
           <div
@@ -97,7 +100,10 @@
               ></div>
             </div>
             <span class="text-right">
-              {{ state.enemy.health }}/{{ state.enemy.maxHealth }} HP
+              {{ state.enemy.health > 0 ? state.enemy.health : 0 }}/{{
+                state.enemy.maxHealth
+              }}
+              HP
             </span>
           </div>
         </div>
