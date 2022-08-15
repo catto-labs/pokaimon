@@ -115,41 +115,41 @@
           </div>
           <div class="w-36 rounded-xl bg-grey-100 px-4 py-4">
             <h3 class="text-center font-bold text-black">Grey 100</h3>
-            <p class="text-center font-mono text-black">#F9FAFB</p>
+            <p class="text-center font-mono text-black">#F3F4F6</p>
           </div>
           <div class="w-36 rounded-xl bg-grey-200 px-4 py-4">
             <h3 class="text-center font-bold text-black">Grey 200</h3>
-            <p class="text-center font-mono text-black">#F9FAFB</p>
+            <p class="text-center font-mono text-black">#E5E7EB</p>
           </div>
           <div class="w-36 rounded-xl bg-grey-300 px-4 py-4">
             <h3 class="text-center font-bold text-black">Grey 300</h3>
-            <p class="text-center font-mono text-black">#F9FAFB</p>
+            <p class="text-center font-mono text-black">#D1D5DB</p>
           </div>
           <div class="w-36 rounded-xl bg-grey-400 px-4 py-4">
             <h3 class="text-center font-bold text-black">Grey 400</h3>
-            <p class="text-center font-mono text-black">#F9FAFB</p>
+            <p class="text-center font-mono text-black">#9CA3AF</p>
           </div>
           <div class="w-36 rounded-xl bg-grey-500 px-4 py-4">
             <h3 class="text-center font-bold">Grey 500</h3>
-            <p class="text-center font-mono">#F9FAFB</p>
+            <p class="text-center font-mono">#6B7280</p>
           </div>
           <div class="w-36 rounded-xl bg-grey-600 px-4 py-4">
             <h3 class="text-center font-bold">Grey 600</h3>
-            <p class="text-center font-mono">#F9FAFB</p>
+            <p class="text-center font-mono">#4B5563</p>
           </div>
           <div class="w-36 rounded-xl bg-grey-700 px-4 py-4">
             <h3 class="text-center font-bold">Grey 700</h3>
-            <p class="text-center font-mono">#F9FAFB</p>
+            <p class="text-center font-mono">#374151</p>
           </div>
           <div class="w-36 rounded-xl bg-grey-800 px-4 py-4">
             <h3 class="text-center font-bold">Grey 800</h3>
-            <p class="text-center font-mono">#F9FAFB</p>
+            <p class="text-center font-mono">#1F2937</p>
           </div>
           <div
             class="w-36 rounded-xl border border-grey-800 bg-grey-900 px-4 py-4"
           >
             <h3 class="text-center font-bold">Grey 900</h3>
-            <p class="text-center font-mono">#F9FAFB</p>
+            <p class="text-center font-mono">#111827</p>
           </div>
         </div>
         <p class="max-w-xl text-center">
