@@ -180,7 +180,7 @@ const state = reactive<{
 });
 
 /**
- * If we don't choose an actio, it will select one for us.
+ * If we don't choose an action, it will select one for us.
  * @action - The action to perform (can choose between 4 actions, `0` to `3`).
  */
 const playTurn = async (action_index?: number) => {
