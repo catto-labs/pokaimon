@@ -9,7 +9,7 @@
       </div>
       <div class="flex space-x-4">
         <div
-          class="my-auto flex space-x-2 rounded-md bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md"
+          class="my-auto flex cursor-default space-x-2 rounded-md bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md"
         >
           <img src="@/assets/game/primogem.svg" class="my-auto h-4" />
           <span class="my-auto text-white">{{
