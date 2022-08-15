@@ -12,7 +12,7 @@ import "@/assets/css/text.css";
 import "@/assets/css/transitions.css";
 
 // tippy.js animations and styles
-import "tippy.js/dist/tippy.css";
+import "@/assets/css/tippy.css";
 import "tippy.js/animations/shift-away.css";
 // #endregion css imports
 
