@@ -4,7 +4,7 @@
   >
     <h1 class="text-4xl font-bold">Oh hey, you found an easter egg!</h1>
     <img
-      src="../../assets/memes/forgot-password.jpg"
+      src="@/assets/memes/forgot-password.jpg"
       alt="Forgot password megamind meme image"
       class="h-[28rem] rounded-xl"
     />

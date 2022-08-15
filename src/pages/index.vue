@@ -94,7 +94,7 @@ import { onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
 
 import Navbar from "@/components/pages/global/Navbar.vue";
-import Footer from "../components/pages/global/Footer.vue";
+import Footer from "@/components/pages/global/Footer.vue";
 import NewsCard from "@/components/pages/index/NewsCard.vue";
 import PlayingCard from "@/components/pages/index/PlayingCard.vue";
 

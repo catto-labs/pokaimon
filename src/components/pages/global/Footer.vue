@@ -7,7 +7,7 @@
         <div class="space-y-4">
           <a href="/" class="flex flex-row gap-4">
             <img
-              src="../../../assets/branding/raster/pokaimon.png"
+              src="@/assets/branding/raster/pokaimon.png"
               alt="Pokaimon logo"
               id="logo"
               class="h-8"
@@ -33,10 +33,7 @@
         </div>
 
         <div class="space-y-4">
-          <img
-            src="../../../assets/branding/vector/undefined.svg"
-            class="w-56"
-          />
+          <img src="@/assets/branding/vector/undefined.svg" class="w-56" />
           <div>
             <p>© 2022 undefined labs</p>
             <div class="flex space-x-2 text-sm">

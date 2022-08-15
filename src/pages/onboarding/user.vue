@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { adjectives, animals } from "../../assets/misc/usernames.json";
+import { adjectives, animals } from "@/assets/misc/usernames.json";
 
 import { reactive, onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
