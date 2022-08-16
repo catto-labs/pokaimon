@@ -60,6 +60,8 @@ onBeforeMount(() => {
 });
 
 onMounted(async () => {
+  if (supabase.auth.session() === null) return;
+
   const { data, error } = await supabase
     .from("users")
     .select()
