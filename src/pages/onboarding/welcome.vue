@@ -19,22 +19,12 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { onBeforeMount } from "vue";
-import { useRouter } from "vue-router";
-
-import { supabase } from "@/utils/supabase";
-
-import { store } from "@/utils/store";
-
-const router = useRouter();
-
-onBeforeMount(async () => {
-  if (!store.showOnboarding) router.push("/register");
-  if (supabase.auth.session() === null) router.push("/register");
-
-  // Reset all values for onboarding
-  store.showOnboarding = false;
-  localStorage.removeItem("showOnboarding");
-});
-</script>
+<route>
+{
+  meta: {
+    requiresAuth: true,
+    registerRedirect: true,
+    checkForCompletedOnboarding: true
+  }
+}
+</route>

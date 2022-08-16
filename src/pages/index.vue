@@ -93,27 +93,8 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount } from "vue";
-import { useRouter } from "vue-router";
-
 import Navbar from "@/components/pages/global/Navbar.vue";
 import Footer from "@/components/pages/global/Footer.vue";
 import NewsCard from "@/components/pages/index/NewsCard.vue";
 import PlayingCard from "@/components/pages/index/PlayingCard.vue";
-
-import { store } from "@/utils/store";
-
-const router = useRouter();
-
-onBeforeMount(() => {
-  const showOnboardingSaved = localStorage.getItem("showOnboarding");
-  if (showOnboardingSaved === "true") {
-    store.showOnboarding = true; // Save value to JS global state
-    localStorage.removeItem("showOnboarding"); // Clear localstorage as we do not need the saved value anymore
-  }
-
-  if (store.showOnboarding) {
-    router.push("/onboarding"); // Go to onboarding page for further init logic
-  }
-});
 </script>
