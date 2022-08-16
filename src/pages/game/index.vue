@@ -33,7 +33,7 @@
               <div class="px-1 py-1">
                 <MenuItem v-slot="{ active }">
                   <button
-                    @click="copyToClipboard(state.username)"
+                    @click="copyToClipboard(state.username as string)"
                     :class="[
                       active ? 'bg-grey-600 text-white' : 'text-white',
                       'group flex w-full items-center rounded-md px-2 py-2 text-sm',
@@ -68,7 +68,7 @@
     </div>
   </div>
 
-  <div class="fixed top-0 left-0 h-screen w-screen" ref="map_ref"></div>
+  <div class="fixed top-0 left-0 h-screen w-screen" ref="map_element_ref"></div>
 </template>
 
 <script setup lang="ts">
@@ -79,18 +79,21 @@ import IconBackpack from "virtual:icons/mdi/backpack";
 import IconSwordCross from "virtual:icons/mdi/sword-cross";
 import IconUser from "virtual:icons/mdi/user";
 
-import { Map, Marker, TileLayer, LatLngBounds, LatLng } from "leaflet";
-const map_ref = ref<HTMLElement | null>(null);
+import { reactive, onBeforeMount, onMounted, ref, onBeforeUnmount } from "vue";
 
-// this is just for testing purposes, they shouldn't be hard-coded.
-const primo = 13525;
-
-import { reactive, onBeforeMount, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 
 import { supabase, storedMapsUrl } from "@/utils/supabase";
 import { copyToClipboard } from "@/utils/globals";
+
+import { Map, Marker, TileLayer, LatLngBounds, LatLng } from "leaflet";
+
+const map_element_ref = ref<HTMLElement | null>(null);
+const map_ref = ref<Map | null>(null);
+
+// this is just for testing purposes, they shouldn't be hard-coded.
+const primo = 13525;
 
 const router = useRouter();
 const state = reactive<{
@@ -126,8 +129,8 @@ onMounted(async () => {
   const northEast = new LatLng(40, 45);
   const bounds = new LatLngBounds(southWest, northEast);
 
-  if (!map_ref.value) return;
-  const map = new Map(map_ref.value, {
+  if (!map_element_ref.value) return;
+  const map = new Map(map_element_ref.value, {
     center: bounds.getCenter(),
     zoom: 3,
 
@@ -154,6 +157,9 @@ onMounted(async () => {
   tile.addTo(map);
   map.fitBounds(bounds);
 
+  // When the map is ready, store the map reference for access later.
+  map.whenReady(() => (map_ref.value = map));
+
   const myMarker = new Marker(bounds.getCenter(), {
     title: "Coordinates",
     alt: "Coordinates",
@@ -167,5 +173,10 @@ onMounted(async () => {
         .bindPopup("Latitude: " + lat + "<br />Longitude: " + lon)
         .openPopup();
     });
+});
+
+onBeforeUnmount(() => {
+  if (map_ref.value) map_ref.value.remove();
+  if (map_element_ref.value) map_element_ref.value.remove();
 });
 </script>
