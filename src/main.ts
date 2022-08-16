@@ -35,7 +35,10 @@ const router = createRouter({
 
 router.beforeEach(async (to, from) => {
   // If we are coming from the register page, wait for the session to be filled
-  if (to.path === "/onboarding/user" && from.path === "/") {
+  if (
+    (to.path === "/onboarding/user" && from.path === "/") ||
+    (to.path === "/game" && from.path === "/")
+  ) {
     await wait(1000);
   }
 
