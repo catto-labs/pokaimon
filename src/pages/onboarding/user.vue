@@ -38,10 +38,19 @@
   </div>
 </template>
 
+<route>
+{
+  meta: {
+    requiresAuth: true,
+    registerRedirect: true
+  }
+}
+</route>
+
 <script setup lang="ts">
 import { adjectives, animals } from "@/assets/misc/usernames.json";
 
-import { reactive, onBeforeMount } from "vue";
+import { reactive } from "vue";
 import { useRouter } from "vue-router";
 
 import LabelledInput from "@/components/LabelledInput.vue";
@@ -84,7 +93,7 @@ const handleSubmit = async (e: Event) => {
   const { error: err2 } = await supabase
     .from("users")
     .update({ username: `${state.username}${state.tag}` })
-    .match({ id: supabase.auth.session()?.user?.id });
+    .match({ id: store.authSession?.user?.id });
 
   if (err2) return alert(err2.message);
 
@@ -94,10 +103,4 @@ const handleSubmit = async (e: Event) => {
 const handleTagInput = () => {
   if (state.tag.indexOf("#") !== 0) state.tag = `#${state.tag}`;
 };
-
-onBeforeMount(() => {
-  if (!store.showOnboarding) router.push("/register");
-
-  if (supabase.auth.session() === null) router.push("/register");
-});
 </script>

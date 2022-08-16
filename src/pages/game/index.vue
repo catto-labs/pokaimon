@@ -71,6 +71,15 @@
   <div class="fixed top-0 left-0 h-screen w-screen" ref="map_ref"></div>
 </template>
 
+<route>
+{
+  meta: {
+    requiresAuth: true,
+    checkForCompletedOnboarding: true
+  }
+}
+</route>
+
 <script setup lang="ts">
 import "leaflet/dist/leaflet.css";
 import IconSettings from "virtual:icons/mdi/settings";
@@ -81,20 +90,17 @@ import IconUser from "virtual:icons/mdi/user";
 
 import { Map, Marker, TileLayer, LatLngBounds, LatLng } from "leaflet";
 
-import { reactive, onBeforeMount, onMounted, ref } from "vue";
-import { useRouter } from "vue-router";
+import { reactive, onMounted, ref } from "vue";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 
 import { supabase, storedMapsUrl } from "@/utils/supabase";
 import { copyToClipboard } from "@/utils/globals";
+import { store } from "@/utils/store";
 
-const router = useRouter();
 const state = reactive<{
-  traveller: "lumine" | "aether" | null;
-  username: string | null;
+  username: string;
 }>({
-  traveller: null,
-  username: null,
+  username: "",
 });
 
 const map_ref = ref<HTMLElement | null>(null);
@@ -102,23 +108,19 @@ const map_ref = ref<HTMLElement | null>(null);
 // this is just for testing purposes, they shouldn't be hard-coded.
 const primo = 13525;
 
-onBeforeMount(() => {
-  if (supabase.auth.session() === null) router.push("/login");
-});
-
 onMounted(async () => {
   const { data, error } = await supabase
     .from("users")
     .select()
-    .match({ id: supabase.auth.session()?.user?.id });
+    .match({ id: store.authSession?.user?.id })
+    .select();
 
   if (error) alert(error.message);
 
-  if (data !== null) {
-    if (data[0].username === null) state.username = "Traveller";
-    else state.username = data[0].username;
+  if (data) {
+    state.username = data[0].username;
   } else {
-    state.username = "Traveller";
+    state.username = "traveller#123";
   }
 
   const southWest = new LatLng(-85, -180);

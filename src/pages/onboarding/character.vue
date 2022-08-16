@@ -37,8 +37,17 @@
   </div>
 </template>
 
+<route>
+{
+  meta: {
+    requiresAuth: true,
+    registerRedirect: true
+  }
+}
+</route>
+
 <script setup lang="ts">
-import { reactive, onMounted, onBeforeMount } from "vue";
+import { reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 import { supabase } from "@/utils/supabase";
@@ -61,29 +70,23 @@ const handleSubmit = async (e: Event) => {
   const { error } = await supabase
     .from("users")
     .update({ starter_traveller: state.traveller })
-    .match({ id: supabase.auth.session()?.user?.id });
+    .match({ id: store.authSession?.user?.id });
 
   if (error) return alert(error.message);
 
   router.push("/onboarding/welcome");
 };
 
-onBeforeMount(() => {
-  if (!store.showOnboarding) router.push("/register");
-  if (supabase.auth.session() === null) router.push("/register");
-});
-
 onMounted(async () => {
   const { data, error } = await supabase
     .from("users")
     .select()
-    .match({ id: supabase.auth.session()?.user?.id });
+    .match({ id: store.authSession?.user?.id });
 
   if (error) alert(error.message);
 
-  if (data !== null) {
-    if (data[0].username === null) state.username = "Traveller";
-    else state.username = data[0].username;
+  if (data && data.length > 0) {
+    state.username = data[0].username;
   } else {
     state.username = "Traveller";
   }

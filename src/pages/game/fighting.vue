@@ -112,6 +112,15 @@
   </div>
 </template>
 
+<route>
+{
+  meta: {
+    requiresAuth: true,
+    checkForCompletedOnboarding: true
+  }
+}
+</route>
+
 <script setup lang="ts">
 import type { Character } from "@/types/Character";
 import { reactive } from "vue";
