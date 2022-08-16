@@ -25,14 +25,15 @@ const router = useRouter();
 
 onBeforeMount(async () => {
   if (!store.showOnboarding) router.push("/register");
-  if (supabase.auth.session() === null) router.push("/register");
+  if ((await supabase.auth.getSession()) === null) router.push("/register");
 
   setTimeout(async () => {
-    if (supabase.auth.session() !== null && store.showOnboarding) {
+    if ((await supabase.auth.getSession()) !== null && store.showOnboarding) {
       const { data, error } = await supabase
         .from("users")
         .select()
-        .match({ id: supabase.auth.session()?.user?.id });
+        .match({ id: (await supabase.auth.getUser()).data.user?.id })
+        .select();
 
       if (error) alert(error.message);
 
