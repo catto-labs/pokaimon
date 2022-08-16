@@ -1,7 +1,9 @@
 <template>
-  <div class="relative z-10 p-8">
+  <div class="relative z-10 p-4">
     <div class="flex justify-between">
-      <div class="flex items-center gap-8 text-white">
+      <div
+        class="my-auto flex cursor-default items-center gap-8 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md"
+      >
         <IconSettings class="my-auto text-3xl" />
         <IconPerson class="my-auto text-3xl" />
         <IconBackpack class="my-auto text-3xl" />
