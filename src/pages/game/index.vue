@@ -122,7 +122,7 @@ onMounted(async () => {
     state.username = "Traveller";
   }
 
-  const southWest = new LatLng(-80, -180);
+  const southWest = new LatLng(-85, -180);
   const northEast = new LatLng(40, 45);
   const bounds = new LatLngBounds(southWest, northEast);
 
@@ -136,7 +136,7 @@ onMounted(async () => {
     minZoom: 3,
 
     zoomControl: false,
-    attributionControl: true,
+    attributionControl: false,
   });
 
   const tile = new TileLayer(`${storedMapsUrl("teyvat")}/{z}/{x}/{y}.png`, {
