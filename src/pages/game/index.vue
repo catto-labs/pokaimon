@@ -1,18 +1,18 @@
 <template>
   <div class="relative z-10 p-8">
     <div class="flex justify-between">
-      <div class="flex space-x-8 text-white">
+      <div class="flex items-center gap-8 text-white">
         <IconSettings class="my-auto text-3xl" />
         <IconPerson class="my-auto text-3xl" />
         <IconBackpack class="my-auto text-3xl" />
         <IconSwordCross class="my-auto text-3xl" />
       </div>
-      <div class="flex space-x-4">
+      <div class="flex items-center gap-4">
         <Menu as="div">
           <div>
             <MenuButton
               v-tippy="{ content: 'Click to see more options!' }"
-              class="my-auto flex space-x-2 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md transition duration-300 hover:bg-grey-700"
+              class="my-auto flex gap-2 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md transition duration-300 hover:bg-grey-700"
             >
               <IconUser class="my-auto" />
               <span class="my-auto text-white">{{ state.username }}</span>
@@ -28,7 +28,7 @@
             leave-to-class="transform scale-95 opacity-0"
           >
             <MenuItems
-              class="mt-2 mr-auto w-56 origin-top-right divide-y divide-grey-100 rounded-md bg-grey-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+              class="absolute mt-2 mr-auto w-56 origin-top-right divide-y divide-grey-100 rounded-md bg-grey-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
             >
               <div class="px-1 py-1">
                 <MenuItem v-slot="{ active }">
