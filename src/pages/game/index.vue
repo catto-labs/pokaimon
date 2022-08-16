@@ -68,7 +68,11 @@
     </div>
   </div>
 
-  <div class="fixed top-0 left-0 h-screen w-screen" ref="map_element_ref"></div>
+  <div
+    class="fixed top-0 left-0 h-screen w-screen"
+    style="background-color: #040e10"
+    ref="map_element_ref"
+  ></div>
 </template>
 
 <script setup lang="ts">
@@ -87,7 +91,14 @@ import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 import { supabase, storedMapsUrl } from "@/utils/supabase";
 import { copyToClipboard } from "@/utils/globals";
 
-import { Map, Marker, TileLayer, LatLngBounds, LatLng } from "leaflet";
+import {
+  Map,
+  Marker,
+  TileLayer,
+  LatLngBounds,
+  LatLng,
+  MarkerOptions,
+} from "leaflet";
 
 const map_element_ref = ref<HTMLElement | null>(null);
 const map_ref = ref<Map | null>(null);
@@ -103,6 +114,23 @@ const state = reactive<{
   traveller: null,
   username: null,
 });
+
+const MONDSTADT_LOCATION = new LatLng(5.96575367, -96.02050781);
+
+/**
+ * @example
+ * ```typescript
+ * const location = new LatLng(latitude, longitude);
+ * createMarker(location, { title: "Random title here !", draggable: true });
+ * ```
+ */
+const createMarker = (latlng: LatLng, options: MarkerOptions) => {
+  if (!map_ref.value) return;
+  const map = map_ref.value as Map;
+
+  const marker = new Marker(latlng, options);
+  marker.addTo(map);
+};
 
 onBeforeMount(() => {
   if (supabase.auth.session() === null) router.push("/login");
@@ -131,16 +159,17 @@ onMounted(async () => {
 
   if (!map_element_ref.value) return;
   const map = new Map(map_element_ref.value, {
-    center: bounds.getCenter(),
-    zoom: 3,
+    center: MONDSTADT_LOCATION,
+    zoom: 5,
 
     maxBounds: bounds,
     maxBoundsViscosity: 1,
-    minZoom: 3,
 
     zoomControl: false,
     attributionControl: false,
   });
+
+  map.setMinZoom(map.getBoundsZoom(bounds));
 
   const tile = new TileLayer(`${storedMapsUrl("teyvat")}/{z}/{x}/{y}.png`, {
     tms: true,
@@ -155,24 +184,9 @@ onMounted(async () => {
   });
 
   tile.addTo(map);
-  map.fitBounds(bounds);
 
   // When the map is ready, store the map reference for access later.
   map.whenReady(() => (map_ref.value = map));
-
-  const myMarker = new Marker(bounds.getCenter(), {
-    title: "Coordinates",
-    alt: "Coordinates",
-    draggable: true,
-  })
-    .addTo(map)
-    .on("dragend", () => {
-      const lat = myMarker.getLatLng().lat.toFixed(8);
-      const lon = myMarker.getLatLng().lng.toFixed(8);
-      myMarker
-        .bindPopup("Latitude: " + lat + "<br />Longitude: " + lon)
-        .openPopup();
-    });
 });
 
 onBeforeUnmount(() => {
