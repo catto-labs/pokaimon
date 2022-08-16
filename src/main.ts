@@ -26,13 +26,19 @@ import tippy from "vue-tippy";
 
 import { supabase } from "@/utils/supabase";
 import { store } from "@/utils/store";
+import { wait } from "@/utils/globals";
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
 });
 
-router.beforeEach(async (to) => {
+router.beforeEach(async (to, from) => {
+  // If we are coming from the register page, wait for the session to be filled
+  if (to.path === "/onboarding/user" && from.path === "/") {
+    await wait(1000);
+  }
+
   const authSession = await supabase.auth.getSession();
   if (authSession.error) alert(authSession.error.message);
 
