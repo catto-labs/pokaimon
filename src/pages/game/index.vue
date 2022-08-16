@@ -1,5 +1,5 @@
 <template>
-  <div class="p-8">
+  <div class="relative z-10 p-8">
     <div class="flex justify-between">
       <div class="flex space-x-8 text-white">
         <IconSettings class="my-auto text-3xl" />
@@ -67,27 +67,32 @@
       </div>
     </div>
   </div>
+
+  <div class="fixed top-0 left-0 h-screen w-screen" ref="map_ref"></div>
 </template>
 
 <script setup lang="ts">
+import "leaflet/dist/leaflet.css";
 import IconSettings from "virtual:icons/mdi/settings";
 import IconPerson from "virtual:icons/mdi/person";
 import IconBackpack from "virtual:icons/mdi/backpack";
 import IconSwordCross from "virtual:icons/mdi/sword-cross";
 import IconUser from "virtual:icons/mdi/user";
 
+import { Map, Marker, TileLayer, LatLngBounds, LatLng } from "leaflet";
+const map_ref = ref<HTMLElement | null>(null);
+
 // this is just for testing purposes, they shouldn't be hard-coded.
 const primo = 13525;
 
-import { reactive, onBeforeMount, onMounted } from "vue";
+import { reactive, onBeforeMount, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 
-import { supabase } from "@/utils/supabase";
+import { supabase, storedMapsUrl } from "@/utils/supabase";
 import { copyToClipboard } from "@/utils/globals";
 
 const router = useRouter();
-
 const state = reactive<{
   traveller: "lumine" | "aether" | null;
   username: string | null;
@@ -116,5 +121,51 @@ onMounted(async () => {
   } else {
     state.username = "Traveller";
   }
+
+  const southWest = new LatLng(-80, -180);
+  const northEast = new LatLng(40, 45);
+  const bounds = new LatLngBounds(southWest, northEast);
+
+  if (!map_ref.value) return;
+  const map = new Map(map_ref.value, {
+    center: bounds.getCenter(),
+    zoom: 3,
+
+    maxBounds: bounds,
+    maxBoundsViscosity: 1,
+    minZoom: 3,
+
+    zoomControl: false,
+    attributionControl: true,
+  });
+
+  const tile = new TileLayer(`${storedMapsUrl("teyvat")}/{z}/{x}/{y}.png`, {
+    tms: true,
+    noWrap: true,
+    tileSize: 256,
+
+    bounds,
+    minZoom: 0,
+    maxZoom: 6,
+
+    attribution: "&copy; Pokaimon",
+  });
+
+  tile.addTo(map);
+  map.fitBounds(bounds);
+
+  const myMarker = new Marker(bounds.getCenter(), {
+    title: "Coordinates",
+    alt: "Coordinates",
+    draggable: true,
+  })
+    .addTo(map)
+    .on("dragend", () => {
+      const lat = myMarker.getLatLng().lat.toFixed(8);
+      const lon = myMarker.getLatLng().lng.toFixed(8);
+      myMarker
+        .bindPopup("Latitude: " + lat + "<br />Longitude: " + lon)
+        .openPopup();
+    });
 });
 </script>
