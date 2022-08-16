@@ -57,11 +57,12 @@
     </div>
     <span class="text-lg text-grey-400"
       >Already have an account?
-      <a
-        href="/login"
+      <router-link
+        to="/login"
         class="text-brand-main filter transition duration-300 ease-in-out hover:underline hover:brightness-125"
-        >Log in here.</a
       >
+        Log in here.
+      </router-link>
     </span>
   </div>
 </template>

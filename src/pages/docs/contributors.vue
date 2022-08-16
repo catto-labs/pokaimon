@@ -12,17 +12,17 @@
         <div class="flex flex-col gap-12 md:flex-row">
           <MainContributor
             name="Pixel"
-            img="https://cdn.discordapp.com/avatars/967724967741513808/d5f674fa1e3632cd62f32b49041e8877.png"
+            img="https://avatars.githubusercontent.com/u/66474423?v=4"
             role="UI Designer"
           />
           <MainContributor
             name="Trobonox"
-            img="https://cdn.discordapp.com/avatars/540898474288480256/2ad101f74adc81bd5f8155298c791fa4.png"
+            img="https://avatars.githubusercontent.com/u/57040351?v=4"
             role="Lead Developer"
           />
           <MainContributor
             name="Vexcited"
-            img="https://cdn.discordapp.com/avatars/466655433415720992/f5e3debcf661a6ed65301a34aaaa1b88.png"
+            img="https://avatars.githubusercontent.com/u/59152884?v=4"
             role="Front-end Developer"
           />
         </div>
