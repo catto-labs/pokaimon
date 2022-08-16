@@ -67,23 +67,8 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount } from "vue";
-import { useRouter } from "vue-router";
-
 import Navbar from "@/components/pages/global/Navbar.vue";
 import Footer from "@/components/pages/global/Footer.vue";
 import MainContributor from "@/components/pages/docs/contributors/MainContributor.vue";
 import IndirectContributor from "@/components/pages/docs/contributors/IndirectContributor.vue";
-
-import { supabase } from "@/utils/supabase";
-
-import { store } from "@/utils/store";
-
-const router = useRouter();
-
-onBeforeMount(() => {
-  if (supabase.auth.session() !== null && store.showOnboarding) {
-    router.push("/onboarding");
-  }
-});
 </script>
