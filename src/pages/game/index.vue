@@ -30,14 +30,16 @@
             leave-to-class="transform scale-95 opacity-0"
           >
             <MenuItems
-              class="absolute mt-2 mr-auto w-56 origin-top-right divide-y divide-grey-100 rounded-md bg-grey-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+              class="absolute mt-2 mr-auto w-56 origin-top-right divide-y divide-grey-100 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 shadow-lg ring-1 ring-black ring-opacity-5 backdrop-blur-md focus:outline-none"
             >
-              <div class="px-1 py-1">
+              <div class="px-2 py-2">
                 <MenuItem v-slot="{ active }">
                   <button
                     @click="copyToClipboard(state.username as string)"
                     :class="[
-                      active ? 'bg-grey-600 text-white' : 'text-white',
+                      active
+                        ? 'bg-brand-main bg-opacity-60 text-white'
+                        : 'text-white',
                       'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                     ]"
                   >
@@ -48,7 +50,9 @@
                   <button
                     @click="$router.push('/logout')"
                     :class="[
-                      active ? 'bg-grey-600 text-white' : 'text-white',
+                      active
+                        ? 'bg-brand-main bg-opacity-60 text-white'
+                        : 'text-white',
                       'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                     ]"
                   >
