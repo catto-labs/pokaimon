@@ -46,6 +46,7 @@
                 </MenuItem>
                 <MenuItem v-slot="{ active }">
                   <button
+                    @click="$router.push('/logout')"
                     :class="[
                       active ? 'bg-grey-600 text-white' : 'text-white',
                       'group flex w-full items-center rounded-md px-2 py-2 text-sm',
