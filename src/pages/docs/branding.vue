@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div>
     <Navbar class="fixed top-0 z-50 w-full" />
     <main class="px-8 py-32">
       <div class="flex flex-col items-center justify-center text-center">
@@ -234,21 +234,6 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount } from "vue";
-import { useRouter } from "vue-router";
-
 import Navbar from "@/components/pages/global/Navbar.vue";
 import Footer from "@/components/pages/global/Footer.vue";
-
-import { supabase } from "@/utils/supabase";
-
-import { store } from "@/utils/store";
-
-const router = useRouter();
-
-onBeforeMount(() => {
-  if (supabase.auth.session() !== null && store.showOnboarding) {
-    router.push("/onboarding");
-  }
-});
 </script>
