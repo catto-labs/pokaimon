@@ -89,17 +89,20 @@ const state = reactive({
 const handleSubmit = (e: Event) => {
   e.preventDefault();
 
-  if (state.email === "") return alert("Please enter an email adress");
-  if (state.password === "") return alert("Please enter a password");
+  const email = state.email.trim();
+  const password = state.password.trim();
 
-  signUpWithEmail(state.email, state.password);
+  if (email.length <= 0) return alert("Please enter an email adress");
+  if (password.length <= 0) return alert("Please enter a password");
+
+  signUpWithEmail(email, password);
 };
 
 const signUpWithEmail = async (email: string, password: string) => {
   try {
     const { error } = await supabase.auth.signUp({
-      email: email,
-      password: password,
+      email,
+      password,
     });
     if (error) throw error;
   } catch (error: Error) {
@@ -113,7 +116,7 @@ const signInWithProvider = async (provider: Provider) => {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: provider,
     options: {
-      redirectTo: "http://localhost:3000/onboarding/user",
+      redirectTo: window.location.origin + "/onboarding/user",
     },
   });
   if (error) alert(error.message);
