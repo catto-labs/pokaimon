@@ -5,7 +5,7 @@
     >
       <div class="items-center space-y-8 text-body">
         <div class="space-y-4">
-          <a href="/" class="flex flex-row gap-4">
+          <router-link to="/" class="flex flex-row gap-4">
             <img
               src="@/assets/branding/raster/pokaimon.png"
               alt="Pokaimon logo"
@@ -17,12 +17,13 @@
               class="my-auto cursor-pointer text-lg font-bold text-white"
               >Pokaimon</label
             >
-          </a>
+          </router-link>
           <p>
             Made with
             <span class="text-brand-main">❤</span>
             by
-            <a href="/docs/contributors" class="text-white"> the team</a
+            <router-link to="/docs/contributors" class="text-white">
+              the team</router-link
             ><br /><span class="flex">
               <span>in </span>
               <FlagID class="my-auto ml-1 h-3 rounded-sm" /><span>, </span>
@@ -37,10 +38,14 @@
           <div>
             <p>© 2022 undefined labs</p>
             <div class="flex space-x-2 text-sm">
-              <a class="text-grey-300" href="/privacy">Privacy Policy</a>
+              <router-link class="text-grey-300" to="/privacy"
+                >Privacy Policy</router-link
+              >
               <p>•</p>
 
-              <a class="text-grey-300" href="/docs/licenses">License Notice</a>
+              <router-link class="text-grey-300" to="/docs/licenses"
+                >License Notice</router-link
+              >
             </div>
           </div>
         </div>
@@ -51,28 +56,20 @@
             About Pokaimon
           </h2>
           <div class="grid grid-cols-2 gap-x-12 gap-y-4">
-            <a href="/game">Play Now</a>
-            <a href="/get-started"> Get Started </a>
-            <button
-              onclick="showInstallPromotion()"
-              class="transition duration-300 hover:text-brand-second hover:underline"
+            <router-link to="/game">Play Now</router-link>
+            <router-link to="/get-started"> Get Started </router-link>
+            <router-link to="/docs/branding">Branding</router-link>
+            <router-link
+              to="/linkout?url=aHR0cHM6Ly9naXRodWIuY29tL3Ryb2Jvbm94L3Bva2FpbW9uL2Jsb2IvbWFpbi9DT05UUklCVVRJTkcubWQ="
+              >Contributing
+            </router-link>
+            <router-link
+              to="/linkout?url=aHR0cHM6Ly9naXRodWIuY29tL3Ryb2Jvbm94L3Bva2FpbW9uL2lzc3Vlcw=="
+              >Issue Tracker</router-link
             >
-              <!-- if someone can make this work that'd be amazing ty -->
-              <!-- need this button to trigger the 'Install App' pop-up -->
-              Install Pokaimon
-            </button>
-            <a href="/docs/branding">Branding</a>
-            <a
-              href="/linkout?url=aHR0cHM6Ly9naXRodWIuY29tL3Ryb2Jvbm94L3Bva2FpbW9uL2Jsb2IvbWFpbi9DT05UUklCVVRJTkcubWQ="
-              >Contributing</a
-            >
-            <a
-              href="/linkout?url=aHR0cHM6Ly9naXRodWIuY29tL3Ryb2Jvbm94L3Bva2FpbW9uL2lzc3Vlcw=="
-              >Issue Tracker</a
-            >
-            <a
-              href="/linkout?url=aHR0cHM6Ly9naXRodWIuY29tL3Ryb2Jvbm94L3Bva2FpbW9u"
-              >GitHub Repo</a
+            <router-link
+              to="/linkout?url=aHR0cHM6Ly9naXRodWIuY29tL3Ryb2Jvbm94L3Bva2FpbW9u"
+              >GitHub Repo</router-link
             >
           </div>
         </div>
@@ -83,27 +80,27 @@
             Pokaimon Community
           </h2>
           <div class="grid grid-cols-2 gap-x-12 gap-y-4">
-            <a
-              href="/linkout?url=aHR0cHM6Ly9naXRodWIuY29tL3Ryb2Jvbm94L3Bva2FpbW9u"
+            <router-link
+              to="/linkout?url=aHR0cHM6Ly9naXRodWIuY29tL3Ryb2Jvbm94L3Bva2FpbW9u"
               class="flex gap-2"
             >
               <IconGitHub class="my-auto h-5 w-5" />
               GitHub
-            </a>
-            <a
-              href="/linkout?url=L2Vhc3Rlci1lZ2dzL2Rpc2NvcmQtc2VydmVy"
+            </router-link>
+            <router-link
+              to="/linkout?url=L2Vhc3Rlci1lZ2dzL2Rpc2NvcmQtc2VydmVy"
               class="flex gap-2"
             >
               <IconDiscord class="my-auto h-5 w-5" />
               Discord Server
-            </a>
-            <a
-              href="/linkout?url=L2Vhc3Rlci1lZ2dzL3R3aXR0ZXItYWNjb3VudA=="
+            </router-link>
+            <router-link
+              to="/linkout?url=L2Vhc3Rlci1lZ2dzL3R3aXR0ZXItYWNjb3VudA=="
               class="flex gap-2"
             >
               <IconTwitter class="my-auto h-5 w-5" />
               @PokaimonGame
-            </a>
+            </router-link>
           </div>
         </div>
       </div>

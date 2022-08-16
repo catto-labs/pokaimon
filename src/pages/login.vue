@@ -61,11 +61,12 @@
     </div>
     <span class="text-lg text-grey-400"
       >Need an account?
-      <a
-        href="/register"
+      <router-link
+        to="/register"
         class="text-brand-main filter transition duration-300 ease-in-out hover:underline hover:brightness-125"
-        >Create one here.</a
       >
+        Create one here.
+      </router-link>
     </span>
   </div>
 </template>

@@ -10,12 +10,12 @@
           the Genshin Impact world.
         </p>
         <div class="mt-4 flex flex-row gap-4">
-          <a
-            href="/game"
+          <router-link
+            to="/game"
             class="transform rounded-2xl bg-brand-main px-8 py-2 text-center font-bold text-white duration-300 ease-in-out hover:-translate-y-0.5 hover:text-white sm:text-xl"
           >
             Play Now
-          </a>
+          </router-link>
           <button
             class="transform rounded-2xl border-2 border-brand-second px-8 py-2 text-center font-bold text-white transition duration-300 ease-in-out hover:-translate-y-0.5 hover:bg-brand-second sm:text-xl"
           >
@@ -67,21 +67,24 @@
 
         <div class="flex flex-col space-x-8 sm:flex-row">
           <h2 class="text-xl">Check out more Pokaimon news:</h2>
-          <a
-            href="/news#featured"
+          <router-link
+            to="/news#featured"
             class="text-xl text-brand-main transition duration-300 ease-in-out hover:underline hover:brightness-125"
-            >Featured</a
           >
-          <a
-            href="/news#patches"
+            Featured
+          </router-link>
+          <router-link
+            to="/news#patches"
             class="text-xl text-brand-main transition duration-300 ease-in-out hover:underline hover:brightness-125"
-            >Patch Notes</a
           >
-          <a
-            href="/news#all"
+            Patch Notes
+          </router-link>
+          <router-link
+            to="/news#all"
             class="text-xl text-brand-main transition duration-300 ease-in-out hover:underline hover:brightness-125"
-            >All</a
           >
+            All
+          </router-link>
         </div>
       </section>
     </main>
@@ -102,7 +105,7 @@ import { store } from "@/utils/store";
 
 const router = useRouter();
 
-onBeforeMount(async () => {
+onBeforeMount(() => {
   const showOnboardingSaved = localStorage.getItem("showOnboarding");
   if (showOnboardingSaved === "true") {
     store.showOnboarding = true; // Save value to JS global state

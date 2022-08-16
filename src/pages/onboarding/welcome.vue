@@ -9,11 +9,12 @@
       <h2 class="mb-8 text-xl text-body">
         You can now enter the game and start exploring!
       </h2>
-      <a
-        href="/game"
+      <router-link
+        to="/game"
         class="transform rounded-2xl bg-brand-main px-8 py-2 text-center font-bold text-white duration-300 ease-in-out hover:-translate-y-0.5 hover:text-white sm:text-xl"
-        >Enter Game</a
       >
+        Enter Game
+      </router-link>
     </div>
   </div>
 </template>
