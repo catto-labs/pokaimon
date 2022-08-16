@@ -24,9 +24,26 @@ import routes from "virtual:generated-pages";
 
 import tippy from "vue-tippy";
 
+import { supabase } from "@/utils/supabase";
+
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach(async (to) => {
+  const authSession = await supabase.auth.getSession();
+  if (authSession.error) alert(authSession.error.message);
+
+  if (to.meta.requiresAuth && authSession.data.session === null) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    if (to.meta.registerRedirect) return { path: "/register" };
+
+    return {
+      path: "/login",
+    };
+  }
 });
 
 createApp(App)
