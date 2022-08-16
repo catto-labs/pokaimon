@@ -107,22 +107,18 @@ const signUpWithEmail = async (email: string, password: string) => {
   } catch (error: Error) {
     alert(error.error_description || error.message);
   } finally {
-    store.showOnboarding = true;
-    router.push("/");
+    router.push("/onboarding/user");
   }
 };
 
 const signInWithProvider = async (provider: Provider) => {
-  localStorage.setItem("showOnboarding", "true");
-  try {
-    const { error } = await supabase.auth.signIn({
-      provider: provider,
-    });
-    if (error) throw error;
-  } catch (error: Error) {
-    localStorage.setItem("showOnboarding", "false");
-    return alert(error.error_description || error.message);
-  }
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: provider,
+    options: {
+      redirectTo: "http://localhost:3000/onboarding/user",
+    },
+  });
+  if (error) alert(error.message);
 };
 
 onMounted(() => {

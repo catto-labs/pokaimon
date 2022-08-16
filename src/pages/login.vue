@@ -117,7 +117,7 @@ const signInWithProvider = async (provider: Provider) => {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: provider,
     options: {
-      redirectTo: "http://localhost:3000/onboarding",
+      redirectTo: "http://localhost:3000/game",
     },
   });
   if (error) alert(error.message);
