@@ -80,10 +80,6 @@ import IconSwordCross from "virtual:icons/mdi/sword-cross";
 import IconUser from "virtual:icons/mdi/user";
 
 import { Map, Marker, TileLayer, LatLngBounds, LatLng } from "leaflet";
-const map_ref = ref<HTMLElement | null>(null);
-
-// this is just for testing purposes, they shouldn't be hard-coded.
-const primo = 13525;
 
 import { reactive, onBeforeMount, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
@@ -101,13 +97,16 @@ const state = reactive<{
   username: null,
 });
 
+const map_ref = ref<HTMLElement | null>(null);
+
+// this is just for testing purposes, they shouldn't be hard-coded.
+const primo = 13525;
+
 onBeforeMount(() => {
   if (supabase.auth.session() === null) router.push("/login");
 });
 
 onMounted(async () => {
-  if (supabase.auth.session() === null) return;
-
   const { data, error } = await supabase
     .from("users")
     .select()
