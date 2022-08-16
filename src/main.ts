@@ -25,6 +25,7 @@ import routes from "virtual:generated-pages";
 import tippy from "vue-tippy";
 
 import { supabase } from "@/utils/supabase";
+import { store } from "@/utils/store";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -35,7 +36,7 @@ router.beforeEach(async (to) => {
   const authSession = await supabase.auth.getSession();
   if (authSession.error) alert(authSession.error.message);
 
-  if (to.meta.requiresAuth && authSession.data.session === null) {
+  if (to.meta.requiresAuth && !authSession.data.session) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     if (to.meta.registerRedirect) return { path: "/register" };
@@ -43,6 +44,30 @@ router.beforeEach(async (to) => {
     return {
       path: "/login",
     };
+  }
+
+  if (authSession.data.session && !authSession.error) {
+    store.authSession = authSession.data.session; // Set the supabase session in our global state
+  }
+
+  if (to.meta.checkForCompletedOnboarding) {
+    const { data, error } = await supabase
+      .from("users")
+      .select()
+      .match({ id: store.authSession?.user?.id })
+      .select();
+
+    if (error) throw error;
+
+    if (!error && data.length !== 0) {
+      if (data[0].username !== null && data[0].starter_traveller !== null) {
+        // If username and traveller are set we are assuming full signup has been completed already
+        return;
+      }
+    }
+
+    // Otherwise, push the user to do the onboarding process
+    router.push("/onboarding/user");
   }
 });
 
