@@ -11,6 +11,7 @@
     "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
     "@fontsource/raleway": "^4.5.10",
     "@fontsource/roboto-mono": "^4.5.8",
+    "@headlessui/vue": "^1.6.7",
     "@supabase/supabase-js": "^1.35.6",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
