@@ -1,5 +1,10 @@
 import { reactive } from "vue";
+import { Session } from "@supabase/gotrue-js";
 
-export const store = reactive({
-  showOnboarding: false,
+interface globalStore {
+  authSession: Session | null;
+}
+
+export const store: globalStore = reactive({
+  authSession: null,
 });
