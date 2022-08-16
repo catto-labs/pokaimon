@@ -74,8 +74,6 @@ import LabelledInput from "@/components/LabelledInput.vue";
 import { supabase } from "@/utils/supabase";
 import { Provider } from "@supabase/gotrue-js";
 
-import { store } from "@/utils/store";
-
 import IconDiscord from "virtual:icons/fa6-brands/discord";
 import IconGoogle from "virtual:icons/fa6-brands/google";
 import IconGitHub from "virtual:icons/fa6-brands/github";
