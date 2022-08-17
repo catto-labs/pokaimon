@@ -120,7 +120,7 @@ const signInWithProvider = async (provider: Provider) => {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: provider,
     options: {
-      redirectTo: window.location.origin + "/game",
+      redirectTo: window.location.origin + "/oauth-login",
     },
   });
   if (error) alert(error.message);
