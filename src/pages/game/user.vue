@@ -58,21 +58,28 @@
   </div>
 </template>
 
+<route>
+{
+  meta: {
+    requiresAuth: true,
+    checkForCompletedOnboarding: true
+  }
+}
+</route>
+
 <script setup lang="ts">
 import IconConstruction from "virtual:icons/mdi/construction";
 import IconGestureTap from "virtual:icons/mdi/gesture-tap";
 import IconChartBar from "virtual:icons/mdi/chart-bar";
 import IconBrush from "virtual:icons/mdi/brush";
 
-import { reactive, onBeforeMount, onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { reactive, onMounted } from "vue";
 
 import { supabase } from "@/utils/supabase";
+import { store } from "@/utils/store";
 
 // this isnt supposed to be permanent if it wasnt obvious
 const joinTime = new Date();
-
-const router = useRouter();
 
 const state = reactive<{
   traveller: "lumine" | "aether" | null;
@@ -82,28 +89,23 @@ const state = reactive<{
   username: null,
 });
 
-onBeforeMount(() => {
-  if (supabase.auth.session() === null) router.push("/login");
-});
-
 onMounted(async () => {
   const { data, error } = await supabase
     .from("users")
     .select()
-    .match({ id: supabase.auth.session()?.user?.id });
+    .match({ id: store.authSession?.user?.id })
+    .select();
 
   if (error) alert(error.message);
 
-  if (data !== null) {
-    if (data[0].username === null) state.username = "Traveller";
-    else state.username = data[0].username;
+  if (data) {
+    state.username = data[0].username;
   } else {
     state.username = "Traveller";
   }
 
-  if (data !== null) {
-    if (data[0].starter_traveller === null) state.traveller = "aether";
-    else state.traveller = data[0].starter_traveller;
+  if (data) {
+    state.traveller = data[0].starter_traveller;
   } else {
     state.traveller = null;
   }
