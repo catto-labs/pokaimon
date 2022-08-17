@@ -26,7 +26,6 @@ import tippy from "vue-tippy";
 
 import { supabase } from "@/utils/supabase";
 import { store } from "@/utils/store";
-import { wait } from "@/utils/globals";
 
 const router = createRouter({
   history: createWebHistory(),
