@@ -30,7 +30,7 @@
           />
           <License
             name="Supabase-JS"
-            :version="pkg.dependencies['@supabase/supabase-js'].slice(1, 10)"
+            :version="pkg.dependencies['@supabase/supabase-js'].slice(1, 15)"
             license="MIT"
             copyright="2020 Supabase"
           />
@@ -58,6 +58,12 @@
             license="MIT"
             copyright="2020 Anthony Fu"
           />
+          <License
+            name="Leaflet"
+            :version="pkg.dependencies.leaflet.slice(1, 10)"
+            license="BSD-2 Clause"
+            copyright="2022 Vladimir Agafonkin"
+          />
         </div>
       </div>
       <div class="mt-8 flex flex-col items-center justify-center space-y-4">
@@ -73,6 +79,7 @@
             license="Apache 2.0"
             copyright="Google, Inc."
           />
+          <License name="Flagpack" license="MIT" copyright="2021 Yummygum" />
           <License
             name="Genshin Character Designs"
             license="???"
