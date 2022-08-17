@@ -63,15 +63,6 @@ const state = reactive<{
   username: null,
 });
 
-interface CharacterInventory {
-  id: number;
-  base_character: number;
-  health: number;
-  xp: number;
-  owner: string;
-  created_at: string;
-}
-
 const handleSubmit = async (e: Event) => {
   e.preventDefault();
   if (!state.traveller) return alert("Please choose a traveller");
