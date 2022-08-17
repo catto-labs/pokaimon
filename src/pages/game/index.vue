@@ -4,10 +4,18 @@
       <div
         class="my-auto flex cursor-default items-center gap-8 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md"
       >
-        <IconSettings class="my-auto text-3xl" />
-        <IconPerson class="my-auto text-3xl" />
-        <IconBackpack class="my-auto text-3xl" />
-        <IconSwordCross class="my-auto text-3xl" />
+        <IconPerson
+          @click="router.push('/game/user')"
+          class="my-auto cursor-pointer text-2xl hover:text-brand-main"
+        />
+        <IconBackpack
+          @click="router.push('/game/inventory')"
+          class="my-auto cursor-pointer text-2xl hover:text-brand-main"
+        />
+        <IconSwordCross
+          @click="router.push('/game/new-game')"
+          class="my-auto cursor-pointer text-2xl hover:text-brand-main"
+        />
       </div>
       <div class="flex items-center gap-4">
         <Menu as="div">
@@ -40,10 +48,11 @@
                       active
                         ? 'bg-brand-main bg-opacity-60 text-white'
                         : 'text-white',
-                      'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                      'group flex w-full flex-row items-center gap-4 rounded-md px-2 py-2 text-sm',
                     ]"
                   >
-                    Copy to clipboard
+                    <IconContentCopy />
+                    <span>Copy to clipboard</span>
                   </button>
                 </MenuItem>
                 <MenuItem v-slot="{ active }">
@@ -53,10 +62,11 @@
                       active
                         ? 'bg-brand-main bg-opacity-60 text-white'
                         : 'text-white',
-                      'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                      'group flex w-full flex-row items-center gap-4 rounded-md px-2 py-2 text-sm',
                     ]"
                   >
-                    Logout of Pokaimon
+                    <IconLogout />
+                    <span>Logout of Pokaimon</span>
                   </button>
                 </MenuItem>
               </div>
@@ -93,13 +103,17 @@
 
 <script setup lang="ts">
 import "leaflet/dist/leaflet.css";
-import IconSettings from "virtual:icons/mdi/settings";
-import IconPerson from "virtual:icons/mdi/person";
-import IconBackpack from "virtual:icons/mdi/backpack";
+
+import IconContentCopy from "virtual:icons/mdi/content-copy";
 import IconSwordCross from "virtual:icons/mdi/sword-cross";
+import IconSettings from "virtual:icons/mdi/settings";
+import IconBackpack from "virtual:icons/mdi/backpack";
+import IconPerson from "virtual:icons/mdi/person";
+import IconLogout from "virtual:icons/mdi/logout";
 import IconUser from "virtual:icons/mdi/user";
 
 import { reactive, onMounted, ref, onBeforeUnmount } from "vue";
+import { useRouter } from "vue-router";
 
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 
@@ -115,6 +129,8 @@ import {
   LatLng,
   MarkerOptions,
 } from "leaflet";
+
+const router = useRouter();
 
 const map_element_ref = ref<HTMLElement | null>(null);
 const map_ref = ref<Map | null>(null);
