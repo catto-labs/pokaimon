@@ -18,11 +18,38 @@
 
 <script setup lang="ts">
 import { onMounted } from "vue";
+import { useRouter } from "vue-router";
+
+import { supabase } from "@/utils/supabase";
+import { store } from "@/utils/store";
 
 import PrimoIcon from "@/components/game/PrimoIcon.vue";
 
-onMounted(() => {
-  console.log("pog");
+const router = useRouter();
+
+onMounted(async () => {
+  const user_id = store.authSession?.user?.id;
+  if (!user_id) return router.push("/game");
+
+  const { data, error } = await supabase
+    .from("games")
+    .insert([
+      {
+        player1: user_id,
+        player2: null /** Since it's a bot. */,
+      },
+    ])
+    .select();
+
+  const game = data[0];
+
+  if (error || !game.id) {
+    alert("An error occurred when creating the game. Redirecitng to map...");
+    router.push("/game");
+    return;
+  }
+
+  router.push(`/game/fighting?id=${game.id}`);
 });
 </script>
 
