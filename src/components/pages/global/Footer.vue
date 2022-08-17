@@ -1,10 +1,10 @@
 <template>
   <div>
     <footer
-      class="flex w-full flex-row justify-between rounded-t-xl border-t border-grey-700 bg-grey-800 bg-opacity-60 py-8 px-8 filter backdrop-blur-md"
+      class="flex w-full flex-col justify-between gap-6 rounded-t-xl border-t border-grey-700 bg-grey-800 bg-opacity-60 py-8 px-8 filter backdrop-blur-md sm:flex-row sm:flex-wrap md:flex-nowrap md:gap-16"
     >
       <div class="items-center space-y-8 text-body">
-        <div class="space-y-4">
+        <div class="flex flex-col gap-4">
           <router-link to="/" class="flex flex-row gap-4">
             <img
               src="@/assets/branding/raster/pokaimon.png"
@@ -33,11 +33,11 @@
           </p>
         </div>
 
-        <div class="space-y-4">
+        <div class="flex flex-col gap-4">
           <img src="@/assets/branding/vector/undefined.svg" class="w-56" />
           <div>
             <p>© 2022 undefined labs</p>
-            <div class="flex space-x-2 text-sm">
+            <div class="flex items-center gap-2 text-sm">
               <router-link class="text-grey-300" to="/privacy"
                 >Privacy Policy</router-link
               >
@@ -50,12 +50,13 @@
           </div>
         </div>
       </div>
-      <div class="items-center space-y-12 text-body">
-        <div class="space-y-4">
+
+      <div class="flex flex-col gap-12 text-body">
+        <div class="flex w-max flex-col gap-4">
           <h2 for="logo" class="my-auto text-lg font-bold text-white">
             About Pokaimon
           </h2>
-          <div class="grid grid-cols-2 gap-x-12 gap-y-4">
+          <div class="grid w-full grid-cols-2 gap-x-12 gap-y-4">
             <router-link to="/game">Play Now</router-link>
             <router-link to="/get-started"> Get Started </router-link>
             <router-link to="/docs/branding">Branding</router-link>
@@ -74,29 +75,30 @@
           </div>
         </div>
       </div>
+
       <div class="items-center space-y-12 text-body">
         <div class="space-y-4">
           <h2 for="logo" class="my-auto text-lg font-bold text-white">
             Pokaimon Community
           </h2>
-          <div class="grid grid-cols-2 gap-x-12 gap-y-4">
+          <div class="flex flex-wrap gap-y-4 gap-x-12">
             <router-link
               to="/linkout?url=aHR0cHM6Ly9naXRodWIuY29tL3Ryb2Jvbm94L3Bva2FpbW9u"
-              class="flex gap-2"
+              class="flex w-full gap-4"
             >
               <IconGitHub class="my-auto h-5 w-5" />
               GitHub
             </router-link>
             <router-link
               to="/linkout?url=L2Vhc3Rlci1lZ2dzL2Rpc2NvcmQtc2VydmVy"
-              class="flex gap-2"
+              class="flex w-full gap-4"
             >
               <IconDiscord class="my-auto h-5 w-5" />
               Discord Server
             </router-link>
             <router-link
               to="/linkout?url=L2Vhc3Rlci1lZ2dzL3R3aXR0ZXItYWNjb3VudA=="
-              class="flex gap-2"
+              class="flex w-full gap-4"
             >
               <IconTwitter class="my-auto h-5 w-5" />
               @PokaimonGame
