@@ -19,14 +19,8 @@ import { onBeforeMount } from "vue";
 onBeforeMount(async () => {
   const uri = window.location.href.split("?")[1];
 
-  // const buffer = Buffer.from(uri, "base64url");
-  // const decode = buffer.toString("ascii");
-
-  // console.log(decode);
-
   setTimeout(() => {
-    window.location.href = atob(uri.slice(4));
-    console.log(uri.slice(4));
+    window.location.href = window.atob(uri.slice(4));
   }, 2500);
 });
 </script>
