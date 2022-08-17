@@ -71,7 +71,7 @@ router.beforeEach(async (to, from) => {
     if (!error && data.length !== 0) {
       if (data[0].username !== null && data[0].starter_traveller !== null) {
         // If username and traveller are set we are assuming full signup has been completed already
-        return router.push("/");
+        return;
       }
     }
 
