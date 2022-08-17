@@ -5,8 +5,8 @@
     <div
       class="mb-4 flex w-full max-w-4xl justify-between rounded-xl bg-black p-8"
     >
-      <div class="flex flex-col space-y-8">
-        <div class="flex space-x-8">
+      <div class="mx-8 flex flex-col space-y-8">
+        <div class="flex flex-col">
           <img
             v-if="state.traveller === 'aether'"
             src="@/assets/game/traveller/aether.png"
@@ -17,6 +17,12 @@
             src="@/assets/game/traveller/lumine.png"
             class="aspect-square h-auto w-40 rounded-full border-2 border-grey-700 bg-grey-800 outline-none transition hover:bg-opacity-80 focus:border-grey-500"
           />
+          <div class="my-4">
+            <h2 class="text-4xl font-bold">{{ state.username }}</h2>
+            <h3 class="text-xl">
+              Joined at {{ joinTime.toLocaleDateString("en-GB") }}
+            </h3>
+          </div>
           <div class="mt-auto mb-4 flex space-x-4">
             <IconConstruction
               class="mt-auto text-2xl"
@@ -36,23 +42,26 @@
             />
           </div>
         </div>
-        <div>
-          <h2 class="text-4xl font-bold">{{ state.username }}</h2>
-          <h3 class="text-xl">
-            Joined at {{ joinTime.toLocaleDateString("en-GB") }}
-          </h3>
-        </div>
       </div>
-      <div class="mx-auto w-fit rounded-full bg-grey-700 p-1"></div>
-      <div class="grid grid-cols-4 gap-4">
-        <img src="@/assets/game/cards/back.svg" class="h-28" />
-        <img src="@/assets/game/cards/back.svg" class="h-28" />
-        <img src="@/assets/game/cards/back.svg" class="h-28" />
-        <img src="@/assets/game/cards/back.svg" class="h-28" />
-        <img src="@/assets/game/cards/back.svg" class="h-28" />
-        <img src="@/assets/game/cards/back.svg" class="h-28" />
-        <img src="@/assets/game/cards/back.svg" class="h-28" />
-        <img src="@/assets/game/cards/back.svg" class="h-28" />
+      <div class="mx-auto rounded-full bg-grey-700 p-1"></div>
+      <div class="mx-16 flex max-w-md flex-col">
+        <h2 class="text-2xl font-bold">Stats:</h2>
+        <div class="mb-4">
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo beatae
+            laudantium nisi...
+          </p>
+        </div>
+        <div class="grid grid-cols-4 gap-4">
+          <img src="@/assets/game/cards/back.svg" class="h-28" />
+          <img src="@/assets/game/cards/back.svg" class="h-28" />
+          <img src="@/assets/game/cards/back.svg" class="h-28" />
+          <img src="@/assets/game/cards/back.svg" class="h-28" />
+          <img src="@/assets/game/cards/back.svg" class="h-28" />
+          <img src="@/assets/game/cards/back.svg" class="h-28" />
+          <img src="@/assets/game/cards/back.svg" class="h-28" />
+          <img src="@/assets/game/cards/back.svg" class="h-28" />
+        </div>
       </div>
     </div>
   </div>
