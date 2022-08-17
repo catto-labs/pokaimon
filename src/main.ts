@@ -33,15 +33,7 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach(async (to, from) => {
-  // If we are coming from the register page, wait for the session to be filled
-  if (
-    (to.path === "/onboarding/user" && from.path === "/") ||
-    (to.path === "/game" && from.path === "/")
-  ) {
-    await wait(1000);
-  }
-
+router.beforeEach(async (to) => {
   const authSession = await supabase.auth.getSession();
   if (authSession.error) alert(authSession.error.message);
 
