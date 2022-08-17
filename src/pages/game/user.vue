@@ -4,10 +4,14 @@
   >
     <router-link
       to="/game"
-      class="absolute top-0 left-0 z-10 flex flex-row items-center gap-4 p-4 hover:text-brand-second hover:no-underline"
+      class="group absolute top-0 left-0 z-10 flex flex-row items-center gap-4 p-4 hover:no-underline"
     >
-      <IconArrowLeft />
-      <span> Go back </span>
+      <IconArrowLeft
+        class="text-grey-400 transition-colors group-hover:text-brand-second"
+      />
+      <span class="transition-colors group-hover:text-brand-second">
+        Go back
+      </span>
     </router-link>
     <div
       class="mb-4 flex w-full max-w-4xl justify-between rounded-xl bg-black p-8"
