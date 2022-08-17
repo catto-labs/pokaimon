@@ -9,5 +9,5 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
  * Get the `maps` bucket URL.
  * The `.replace` method is used to remove the URL - if there is - trailing slash.
  */
-export const storedMapsUrl = (map_name: "teyvat") =>
+export const storedMapsUrl = (map_name: "teyvat" | "error.png") =>
   supabaseUrl.replace(/\/$/, "") + `/storage/v1/object/public/maps/${map_name}`;
