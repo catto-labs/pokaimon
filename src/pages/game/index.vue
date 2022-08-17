@@ -35,7 +35,7 @@
               <div class="px-2 py-2">
                 <MenuItem v-slot="{ active }">
                   <button
-                    @click="copyToClipboard(state.username as string)"
+                    @click="copyToClipboard(state.username)"
                     :class="[
                       active
                         ? 'bg-brand-main bg-opacity-60 text-white'
@@ -68,7 +68,7 @@
         >
           <img src="@/assets/game/primogem.svg" class="my-auto h-4" />
           <span class="my-auto text-white">{{
-            primo.toLocaleString("en-GB")
+            state.primos.toLocaleString("en-GB")
           }}</span>
         </div>
       </div>
@@ -81,7 +81,7 @@
     ref="map_element_ref"
   ></div>
 
-  <TransitionRoot appear :show="state.openedDialogData !== null" as="template">
+  <TransitionRoot appear :show="state.dialogOpen" as="template">
     <Dialog as="div" @close="closeDialog" class="relative z-10">
       <TransitionChild
         as="template"
@@ -111,29 +111,34 @@
             <DialogPanel
               class="w-full max-w-md transform overflow-hidden rounded-2xl border border-grey-700 bg-grey-800 p-6 text-left align-middle shadow-xl transition-all"
             >
-              <DialogTitle
-                as="h3"
-                class="text-gray-900 text-lg font-bold leading-6"
-              >
-                {{ state.openedDialogData?.title }}
-              </DialogTitle>
-              <DialogDescription class="text-gray-500 mt-2 text-sm">
-                {{ state.openedDialogData?.description }}
-              </DialogDescription>
+              <div v-if="state.openedDialogData !== null">
+                <DialogTitle
+                  as="h3"
+                  class="text-gray-900 text-lg font-bold leading-6"
+                >
+                  {{ state.openedDialogData.title }}
+                </DialogTitle>
+                <DialogDescription
+                  v-if="state.openedDialogData.description"
+                  class="text-gray-500 mt-2 text-sm"
+                >
+                  {{ state.openedDialogData.description }}
+                </DialogDescription>
 
-              <div class="mt-6 flex justify-end gap-6">
-                <button
-                  class="rounded-md bg-grey bg-opacity-20 px-6 py-1 transition-colors hover:bg-opacity-40"
-                  @click="closeDialog()"
-                >
-                  Close
-                </button>
-                <button
-                  class="rounded-md bg-brand-main px-6 py-1 transition-colors hover:bg-opacity-80"
-                  @click="joinFight(state.openedDialogData?.id as string)"
-                >
-                  Join
-                </button>
+                <div class="mt-6 flex justify-end gap-6">
+                  <button
+                    class="rounded-md bg-grey bg-opacity-20 px-6 py-1 transition-colors hover:bg-opacity-40"
+                    @click="closeDialog()"
+                  >
+                    Close
+                  </button>
+                  <button
+                    class="rounded-md bg-brand-main px-6 py-1 transition-colors hover:bg-opacity-80"
+                    @click="joinFight(state.openedDialogData!.id)"
+                  >
+                    Join
+                  </button>
+                </div>
               </div>
             </DialogPanel>
           </TransitionChild>
@@ -163,6 +168,8 @@ import IconUser from "virtual:icons/mdi/user";
 import type { MarkerOptions } from "@/types/Marker";
 
 import { reactive, onMounted, ref, onBeforeUnmount } from "vue";
+import { useRouter } from "vue-router";
+
 import {
   Menu,
   MenuButton,
@@ -185,21 +192,24 @@ import { Map, Marker, TileLayer, LatLngBounds, LatLng, CRS } from "leaflet";
 const map_element_ref = ref<HTMLElement | null>(null);
 const map_ref = ref<Map | null>(null);
 
-// this is just for testing purposes, they shouldn't be hard-coded.
-const primo = 13525;
+const router = useRouter();
 
 const state = reactive<{
-  username: string | null;
+  username: string;
+  primos: number;
+
+  dialogOpen: boolean;
   openedDialogData: MarkerOptions | null;
 }>({
-  username: null,
+  username: "Loading...",
+  primos: 0,
+
+  dialogOpen: false,
   openedDialogData: null,
 });
 
 /** Short-hand to close the dialog. */
-const closeDialog = () => {
-  state.openedDialogData = null;
-};
+const closeDialog = () => (state.dialogOpen = false);
 
 const joinFight = (id: string) => {
   // TODO: join fight
@@ -232,6 +242,7 @@ const createMarker = (options: MarkerOptions) => {
   // Open the marker's dialog on click.
   marker.on("click", () => {
     state.openedDialogData = options;
+    state.dialogOpen = true;
   });
 
   marker.addTo(map);
@@ -242,15 +253,16 @@ onMounted(async () => {
     .from("users")
     .select()
     .match({ id: store.authSession?.user?.id })
-    .select();
+    .single();
 
-  if (error) alert(error.message);
-
-  if (data) {
-    state.username = data[0].username;
-  } else {
-    state.username = "Traveller#1234";
+  if (error || !data) {
+    alert(error?.message || "Something went wrong, redirecting to homepage.");
+    router.push("/");
+    return;
   }
+
+  state.username = data.username;
+  state.primos = data.primos;
 
   const southWest = new LatLng(-128, 0);
   const northEast = new LatLng(0, 128);
@@ -301,8 +313,6 @@ onMounted(async () => {
     type: "fight",
     id: "12345678",
   });
-
-  map.on("click", console.log);
 });
 
 onBeforeUnmount(() => {
