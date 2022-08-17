@@ -38,7 +38,7 @@
             leave-to-class="transform scale-95 opacity-0"
           >
             <MenuItems
-              class="absolute mt-2 mr-auto w-56 origin-top-right divide-y divide-grey-100 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 shadow-lg ring-1 ring-black ring-opacity-5 backdrop-blur-md focus:outline-none"
+              class="absolute mt-2 mr-auto origin-top-right divide-y divide-grey-100 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 shadow-lg ring-1 ring-black ring-opacity-5 backdrop-blur-md focus:outline-none"
             >
               <div class="px-2 py-2">
                 <MenuItem v-slot="{ active }">
@@ -48,7 +48,7 @@
                       active
                         ? 'bg-brand-main bg-opacity-60 text-white'
                         : 'text-white',
-                      'group flex w-full flex-row items-center gap-4 rounded-md px-2 py-2 text-sm',
+                      'group flex w-full flex-row items-center gap-2 rounded-md px-2 py-2 text-sm',
                     ]"
                   >
                     <IconContentCopy />
@@ -62,7 +62,7 @@
                       active
                         ? 'bg-brand-main bg-opacity-60 text-white'
                         : 'text-white',
-                      'group flex w-full flex-row items-center gap-4 rounded-md px-2 py-2 text-sm',
+                      'group flex w-full flex-row items-center gap-2 rounded-md px-2 py-2 text-sm',
                     ]"
                   >
                     <IconLogout />
