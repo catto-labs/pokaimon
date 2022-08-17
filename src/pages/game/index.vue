@@ -77,7 +77,7 @@
 
   <div
     class="fixed top-0 left-0 h-screen w-screen"
-    style="background-color: #040e10"
+    style="background-color: #1c293c"
     ref="map_element_ref"
   ></div>
 
@@ -180,7 +180,7 @@ import { supabase, storedMapsUrl } from "@/utils/supabase";
 import { copyToClipboard } from "@/utils/globals";
 import { store } from "@/utils/store";
 
-import { Map, Marker, TileLayer, LatLngBounds, LatLng } from "leaflet";
+import { Map, Marker, TileLayer, LatLngBounds, LatLng, CRS } from "leaflet";
 
 const map_element_ref = ref<HTMLElement | null>(null);
 const map_ref = ref<Map | null>(null);
@@ -206,7 +206,7 @@ const joinFight = (id: string) => {
   console.info("joining...", id);
 };
 
-// const MONDSTADT_LOCATION = new LatLng(5.96575367, -96.02050781);
+const MONDSTADT_LOCATION = new LatLng(-19.15562605857849, 41.16369414329529);
 
 /**
  * @example
@@ -231,7 +231,6 @@ const createMarker = (options: MarkerOptions) => {
 
   // Open the marker's dialog on click.
   marker.on("click", () => {
-    console.log("clicked", options.id);
     state.openedDialogData = options;
   });
 
@@ -250,25 +249,18 @@ onMounted(async () => {
   if (data) {
     state.username = data[0].username;
   } else {
-    state.username = "traveller#123";
+    state.username = "Traveller#1234";
   }
 
-  const mapWidth = 32768; // Total width of original map.
-  const mapHeight = mapWidth; // Total height of original map.
-  const extraBounds = mapWidth - 18609;
-
-  const southWest = new LatLng(extraBounds * 0.35, 0 - extraBounds);
-  const northEast = new LatLng(
-    -66.52 - extraBounds * 0.08,
-    90.02 + extraBounds
-  );
-
+  const southWest = new LatLng(-128, 0);
+  const northEast = new LatLng(0, 128);
   const bounds = new LatLngBounds(southWest, northEast);
 
   if (!map_element_ref.value) return;
   const map = new Map(map_element_ref.value, {
-    center: [-78, 83],
-    zoom: 4,
+    center: MONDSTADT_LOCATION,
+    zoom: 6,
+    crs: CRS.Simple,
 
     zoomDelta: 1,
     zoomSnap: 1,
@@ -283,67 +275,34 @@ onMounted(async () => {
     attributionControl: false,
   });
 
-  const TileExtendedLayer = TileLayer.extend({
-    getTileUrl: (coords: { x: number; y: number; z: number }) => {
-      const powZoom = Math.pow(2, coords.z - 1); // 2 ^ (current zoom level - 1)
-      const deltaX = coords.x - powZoom;
-      const deltaY = coords.y - powZoom;
+  const tile = new TileLayer(`${storedMapsUrl("teyvat")}/{z}/{x}/{y}.png`, {
+    tms: true,
+    noWrap: true,
+    tileSize: 256,
 
-      const powDeltaZoom = Math.pow(2, map.getMaxZoom() - coords.z); // 2 ^ (8 - current zoom level)
-      const rowCount = mapWidth / 256; // 96 = size of a tile
-      const columnCount = mapHeight / 256; // 96 = size of a tile
-      const limitWidth = rowCount / powDeltaZoom - 1; // - 1 because file count start from 0
-      const limitHeight = columnCount / powDeltaZoom - 1; // - 1 because file count start from 0
+    bounds,
+    minZoom: 3,
+    maxZoom: 8,
 
-      if (
-        deltaX < 0 ||
-        deltaX > limitWidth ||
-        deltaY < 0 ||
-        deltaY > limitHeight
-      ) {
-        // Load an empty tile if the tile is out of bounds.
-        return storedMapsUrl("error.png");
-      }
-
-      return `${storedMapsUrl("teyvat")}/${coords.z}/${deltaX}/${deltaY}.png`;
-    },
+    attribution: "&copy; Pokaimon",
   });
 
-  map.addLayer(new TileExtendedLayer());
-
-  map.on("drag", () => {
-    // Disable boucing effect animation when dragging out of the map
-    map.panInsideBounds(bounds, {
-      animate: false,
-    });
-  });
-
-  // const tile = new TileLayer(`${storedMapsUrl("teyvat")}/{z}/{x}/{y}.png`, {
-  //   tms: true,
-  //   noWrap: true,
-  //   tileSize: 256,
-
-  //   bounds,
-  //   minZoom: 0,
-  //   maxZoom: 6,
-
-  //   attribution: "&copy; Pokaimon",
-  // });
-
-  // tile.addTo(map);
+  tile.addTo(map);
 
   // When the map is ready, store the map reference for access later.
   map.whenReady(() => (map_ref.value = map));
 
   // TODO: remove this when we have a proper API.
   createMarker({
-    latitude: -78,
-    longitude: 83,
+    latitude: -19.15562605857849,
+    longitude: 41.16369414329529,
     title: "This is some fight",
     description: "Hey, I am the cool description.",
     type: "fight",
     id: "12345678",
   });
+
+  map.on("click", console.log);
 });
 
 onBeforeUnmount(() => {
