@@ -2,6 +2,13 @@
   <div
     class="bg-gray-900 flex h-screen w-screen flex-col items-center justify-center"
   >
+    <router-link
+      to="/game"
+      class="absolute top-0 left-0 z-10 flex flex-row items-center gap-4 p-4 hover:text-brand-second hover:no-underline"
+    >
+      <IconArrowLeft />
+      <span> Go back </span>
+    </router-link>
     <div
       class="mb-4 flex w-full max-w-4xl justify-between rounded-xl bg-black p-8"
     >
@@ -77,12 +84,14 @@
 </route>
 
 <script setup lang="ts">
+import IconArrowLeft from "virtual:icons/mdi/arrow-left";
 import IconConstruction from "virtual:icons/mdi/construction";
 import IconGestureTap from "virtual:icons/mdi/gesture-tap";
 import IconChartBar from "virtual:icons/mdi/chart-bar";
 import IconBrush from "virtual:icons/mdi/brush";
 
 import { reactive, onMounted } from "vue";
+import { RouterLink } from "vue-router";
 
 import { supabase } from "@/utils/supabase";
 import { store } from "@/utils/store";
