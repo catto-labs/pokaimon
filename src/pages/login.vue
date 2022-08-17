@@ -61,12 +61,12 @@
     </div>
     <span class="text-lg text-grey-400"
       >Need an account?
-      <router-link
+      <RouterLink
         to="/register"
         class="text-brand-main filter transition duration-300 ease-in-out hover:underline hover:brightness-125"
       >
         Create one here.
-      </router-link>
+      </RouterLink>
     </span>
   </div>
 </template>
@@ -94,7 +94,7 @@ const handleSubmit = (e: Event) => {
   e.preventDefault();
 
   const email = state.email.trim();
-  const password = state.passsord.trim();
+  const password = state.password.trim();
 
   if (email.length <= 0) return alert("Please enter an email adress");
   if (password.length <= 0) return alert("Please enter a password");
