@@ -106,7 +106,6 @@ import "leaflet/dist/leaflet.css";
 
 import IconContentCopy from "virtual:icons/mdi/content-copy";
 import IconSwordCross from "virtual:icons/mdi/sword-cross";
-import IconSettings from "virtual:icons/mdi/settings";
 import IconBackpack from "virtual:icons/mdi/backpack";
 import IconPerson from "virtual:icons/mdi/person";
 import IconLogout from "virtual:icons/mdi/logout";
