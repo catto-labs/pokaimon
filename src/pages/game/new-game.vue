@@ -31,21 +31,23 @@ onMounted(async () => {
   const user_id = store.authSession?.user?.id;
   if (!user_id) return router.push("/game");
 
-  const { data, error } = await supabase.functions.invoke("create-game", {
-    body: {
-      player1: user_id,
-      player2: null /** Since it's a bot. */,
-    },
-  });
-  console.log(data);
-  const game = data[0];
+  const { data: response, error } = await supabase.functions.invoke(
+    "create-game",
+    {
+      body: {
+        player1: user_id,
+        player2: null /** Since it's a bot. */,
+      },
+    }
+  );
 
-  if (error || !game.id) {
+  if (error || !response.data || response.error) {
     alert("An error occurred when creating the game. Redirecitng to map...");
     router.push("/game");
     return;
   }
 
+  const game = response.data[0];
   router.push(`/game/fighting/${game.id}`);
 });
 </script>
