@@ -49,7 +49,7 @@ onMounted(async () => {
     return;
   }
 
-  router.push(`/game/fighting?id=${game.id}`);
+  router.push(`/game/fighting/${game.id}`);
 });
 </script>
 
