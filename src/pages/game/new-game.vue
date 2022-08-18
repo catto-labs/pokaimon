@@ -7,7 +7,7 @@
       <h2 class="mb-2 text-xl text-body">
         Hang on for a few seconds, you'll be redirected soon!
       </h2>
-      <div class="mt-4 flex items-center justify-center gap-4">
+      <div class="mt-6 flex items-center justify-center gap-4">
         <PrimoIcon class="dot-flashing h-8" />
         <PrimoIcon class="dot-flashing h-8" />
         <PrimoIcon class="dot-flashing h-8" />
@@ -18,60 +18,55 @@
 
 <script setup lang="ts">
 import { onMounted } from "vue";
+import { useRouter } from "vue-router";
+
+import { supabase } from "@/utils/supabase";
+import { store } from "@/utils/store";
 
 import PrimoIcon from "@/components/game/PrimoIcon.vue";
 
-onMounted(() => {
-  console.log("pog");
+const router = useRouter();
+
+onMounted(async () => {
+  const user_id = store.authSession?.user?.id;
+  if (!user_id) return router.push("/game");
+
+  const { data, error } = await supabase.functions.invoke("create-game", {
+    body: {
+      player1: user_id,
+      player2: null /** Since it's a bot. */,
+    },
+  });
+  console.log(data);
+  const game = data[0];
+
+  if (error || !game.id) {
+    alert("An error occurred when creating the game. Redirecitng to map...");
+    router.push("/game");
+    return;
+  }
+
+  router.push(`/game/fighting/${game.id}`);
 });
 </script>
 
 <style>
-.dot-flashing:first-of-type {
-  color: white;
-  animation: dotFlashing 1s infinite linear alternate;
-  animation-delay: 1s;
+.dot-flashing {
+  @apply text-white;
+  animation: dotFlashing 1s infinite;
 }
 
 .dot-flashing:nth-of-type(2) {
-  color: white;
-  animation: dotFlashing 1s infinite linear alternate;
-  animation-delay: 2s;
+  animation-delay: 250ms;
 }
 
-.dot-flashing:last-of-type {
-  color: white;
-  animation: dotFlashing 1s infinite linear alternate;
-  animation-delay: 3s;
-}
-
-.dot-flashing::before,
-.dot-flashing::after {
-  content: "";
-  display: inline-block;
-  position: absolute;
-  top: 0;
-}
-
-.dot-flashing::before {
-  color: white;
-  animation: dotFlashing 1s infinite alternate;
-  animation-delay: 0s;
-}
-
-.dot-flashing::after {
-  color: white;
-  animation: dotFlashing 1s infinite alternate;
-  animation-delay: 1s;
+.dot-flashing:nth-of-type(3) {
+  animation-delay: 500ms;
 }
 
 @keyframes dotFlashing {
-  0% {
-    color: white;
-  }
-  50%,
-  100% {
-    color: #c084fc;
+  50% {
+    @apply text-brand-main;
   }
 }
 </style>

@@ -123,8 +123,43 @@
 
 <script setup lang="ts">
 import type { Character } from "@/types/Character";
-import { reactive } from "vue";
+import { reactive, onBeforeMount } from "vue";
+import { useRouter } from "vue-router";
 import { wait, randomBetween } from "@/utils/globals";
+import { supabase } from "@/utils/supabase";
+import { store } from "@/utils/store";
+
+const router = useRouter();
+
+const props = defineProps({
+  id: String,
+});
+
+onBeforeMount(async () => {
+  const user = store.authSession?.user;
+  const { data, error } = await supabase
+    .from("games")
+    .select()
+    .match({ id: props.id })
+    .single();
+
+  if (error || !data || !user) {
+    alert("An error occurred. Redirecting to map...");
+    router.push("/game");
+    return;
+  }
+
+  const isUserInFight = data.player1 === user.id || data.player2 === user.id;
+  if (!isUserInFight) {
+    alert("You're not allowed to join this fight. Redirecting to map...");
+    router.push("/game");
+    return;
+  }
+
+  const enemyIsBot = data.player1 === null || data.player2 === null;
+
+  console.log(data, user, enemyIsBot);
+});
 
 const firstTurn = Math.random() > 0.5 ? "player" : "enemy";
 

@@ -55,12 +55,12 @@ router.beforeEach(async (to) => {
       .from("users")
       .select()
       .match({ id: store.authSession?.user?.id })
-      .select();
+      .single();
 
     if (error) throw error;
 
-    if (!error && data.length !== 0) {
-      if (data[0].username !== null && data[0].starter_traveller !== null) {
+    if (!error) {
+      if (data.username !== null && data.starter_traveller !== null) {
         // If username and traveller are set we are assuming full signup has been completed already
         return;
       }
