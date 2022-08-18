@@ -1,7 +1,7 @@
 <template>
   <div>
     <footer
-      class="flex w-full flex-col justify-between gap-6 rounded-t-xl border-t border-grey-700 bg-grey-800 bg-opacity-60 py-8 px-8 filter backdrop-blur-md sm:flex-row sm:flex-wrap md:flex-nowrap md:gap-16"
+      class="flex w-full flex-col justify-between gap-6 rounded-t-xl border-t border-grey-700 bg-grey-800 bg-opacity-60 py-8 px-8 sm:flex-row sm:flex-wrap md:flex-nowrap md:gap-16"
     >
       <div class="items-center space-y-8 text-body">
         <div class="flex flex-col gap-4">
