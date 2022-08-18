@@ -2,7 +2,7 @@
 // https://deno.land/manual/getting_started/setup_your_environment
 // This enables autocomplete, go to definition, etc.
 import { serve } from "https://deno.land/std@0.131.0/http/server.ts";
-import { supabaseClient } from "../_shared/supabaseClient.ts";
+import { supabase } from "../_shared/supabaseClient.ts";
 import { corsHeaders } from "../_shared/cors.ts";
 
 serve(async (req: Request) => {
@@ -14,12 +14,6 @@ serve(async (req: Request) => {
   }
 
   try {
-    // Set the Auth context of the user that called the function.
-    // This way our row-level-security (RLS) policies are applied.
-    const supabase = supabaseClient(
-      req.headers.get("Authorization")!.replace("Bearer ", "")
-    );
-
     const { player1, player2 } = await req.json();
 
     const { data, error } = await supabase
