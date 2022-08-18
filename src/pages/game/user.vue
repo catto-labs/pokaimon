@@ -14,6 +14,7 @@
       </span>
     </router-link>
     <div
+      v-if="!state.loading"
       class="mb-4 flex w-full max-w-4xl justify-between rounded-xl bg-black p-8"
     >
       <div class="mx-8 flex flex-col space-y-8">
@@ -36,18 +37,22 @@
           </div>
           <div class="mt-auto mb-4 flex space-x-4">
             <IconConstruction
+              v-if="state.is_developer"
               class="mt-auto text-2xl"
               v-tippy="{ content: 'Pokaimon Developer' }"
             />
             <IconGestureTap
+              v-if="state.is_ui_designer"
               class="mt-auto mb-[0.1rem] text-2xl"
               v-tippy="{ content: 'Pokaimon User Interface' }"
             />
             <IconChartBar
+              v-if="state.is_character_designer"
               class="mt-auto text-2xl"
               v-tippy="{ content: 'Pokaimon Characters' }"
             />
             <IconBrush
+              v-if="state.is_artwork_designer"
               class="mt-auto text-2xl"
               v-tippy="{ content: 'Pokaimon Artwork' }"
             />
@@ -55,26 +60,49 @@
         </div>
       </div>
       <div class="mx-auto rounded-full bg-grey-700 p-1"></div>
-      <div class="mx-16 flex max-w-md flex-col">
+      <div class="mx-16 flex w-[50%] flex-col">
         <h2 class="text-2xl font-bold">Stats:</h2>
         <div class="mb-4">
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo beatae
-            laudantium nisi...
-          </p>
+          <p>Experience points: {{ state.xp }}</p>
+          <p>Primos: {{ state.primos }}</p>
         </div>
-        <div class="grid grid-cols-4 gap-4">
-          <img src="@/assets/game/cards/back.svg" class="h-28" />
-          <img src="@/assets/game/cards/back.svg" class="h-28" />
-          <img src="@/assets/game/cards/back.svg" class="h-28" />
-          <img src="@/assets/game/cards/back.svg" class="h-28" />
-          <img src="@/assets/game/cards/back.svg" class="h-28" />
-          <img src="@/assets/game/cards/back.svg" class="h-28" />
-          <img src="@/assets/game/cards/back.svg" class="h-28" />
-          <img src="@/assets/game/cards/back.svg" class="h-28" />
+        <h2 class="mb-4 text-2xl font-bold">Equipped card:</h2>
+        <div class="mb-4 flex gap-4">
+          <div class="flex w-32 flex-col justify-end rounded-md bg-grey-700">
+            <img
+              v-if="state.traveller === 'lumine'"
+              src="@/assets/game/traveller/lumine.png"
+              class="h-fit"
+            />
+            <img
+              v-if="state.traveller === 'aether'"
+              src="@/assets/game/traveller/aether.png"
+              class="h-fit"
+            />
+            <!-- TODO: Add traveller images to supabase and select based on name fetched from db-->
+          </div>
+          <div class="flex flex-col gap-1">
+            <h3 class="text-xl font-semibold">
+              {{ state.selected_character.base_character.name }}
+            </h3>
+            <p>Experience points: {{ state.selected_character.xp }}</p>
+            <p>Health: {{ state.selected_character.health }}</p>
+            <p>
+              Element: {{ state.selected_character.base_character.element }}
+            </p>
+            <p>
+              Region:
+              {{
+                capitalizeFirstLetter(
+                  state.selected_character.base_character.region
+                )
+              }}
+            </p>
+          </div>
         </div>
       </div>
     </div>
+    <div v-else>Loading...</div>
   </div>
 </template>
 
@@ -94,42 +122,81 @@ import IconGestureTap from "virtual:icons/mdi/gesture-tap";
 import IconChartBar from "virtual:icons/mdi/chart-bar";
 import IconBrush from "virtual:icons/mdi/brush";
 
-import { reactive, onMounted } from "vue";
-import { RouterLink } from "vue-router";
+import { reactive, onBeforeMount } from "vue";
+import { RouterLink, useRouter } from "vue-router";
 
 import { supabase } from "@/utils/supabase";
 import { store } from "@/utils/store";
+import { capitalizeFirstLetter } from "@/utils/globals";
+
+const router = useRouter();
 
 // this isnt supposed to be permanent if it wasnt obvious
 const joinTime = new Date();
 
-const state = reactive<{
-  traveller: "lumine" | "aether" | null;
-  username: string | null;
-}>({
-  traveller: null,
-  username: null,
+const state = reactive<
+  | {
+      loading: false;
+      traveller: "lumine" | "aether" | null;
+      username: string | null;
+      xp: number | null;
+      primos: number | null;
+      selected_character: unknown | null;
+      is_developer: boolean;
+      is_ui_designer: boolean;
+      is_character_designer: boolean;
+      is_artwork_designer: boolean;
+    }
+  | { loading: true }
+>({
+  loading: true,
 });
 
-onMounted(async () => {
+onBeforeMount(async () => {
   const { data, error } = await supabase
     .from("users")
-    .select()
+    .select(
+      `
+      username,
+      starter_traveller,
+      primos,
+      xp,
+      selected_character(
+        id,
+        xp,
+        health,
+        base_character(
+          name,
+          region,
+          element
+        )
+      ),
+      is_developer,
+      is_ui_designer,
+      is_character_designer,
+      is_artwork_designer
+    `
+    )
     .match({ id: store.authSession?.user?.id })
-    .select();
+    .single();
 
-  if (error) alert(error.message);
-
-  if (data) {
-    state.username = data[0].username;
-  } else {
-    state.username = "Traveller";
+  if (error || !data) {
+    console.log(error);
+    alert("Something went wrong getting your user info, redirecting...");
+    return router.push("/game");
   }
 
-  if (data) {
-    state.traveller = data[0].starter_traveller;
-  } else {
-    state.traveller = null;
-  }
+  Object.assign(state, {
+    loading: false,
+    traveller: data.starter_traveller,
+    username: data.username,
+    xp: data.xp,
+    primos: data.primos,
+    selected_character: data.selected_character,
+    is_developer: data.is_developer,
+    is_ui_designer: data.is_ui_designer,
+    is_character_designer: data.is_character_designer,
+    is_artwork_designer: data.is_artwork_designer,
+  });
 });
 </script>
