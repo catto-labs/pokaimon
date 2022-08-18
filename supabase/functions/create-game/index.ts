@@ -50,7 +50,7 @@ serve(async (req: Request) => {
         .match({ id: player1 })
         .single();
 
-      if (data || error) {
+      if (!data || error) {
         return new Response(JSON.stringify({ success: false, error }), {
           headers: {
             ...corsHeaders,
@@ -76,7 +76,7 @@ serve(async (req: Request) => {
         .match({ id: player2 })
         .single();
 
-      if (data || error) {
+      if (!data || error) {
         return new Response(JSON.stringify({ success: false, error }), {
           headers: {
             ...corsHeaders,
