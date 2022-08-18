@@ -11,18 +11,22 @@
         <button type="button" @click="state.traveller = 'aether'">
           <img
             src="@/assets/game/traveller/aether.png"
-            class="aspect-square h-auto w-40 rounded-full border-2 border-grey-700 bg-grey-800 outline-none transition hover:bg-opacity-80 focus:border-grey-500"
+            class="aspect-square h-auto w-40 rounded-full border-2 outline-none transition"
             :class="{
               'border-brand-main bg-grey-700': state.traveller === 'aether',
+              'border-grey-700 bg-grey-800 hover:bg-opacity-80 focus:border-grey-500':
+                state.traveller !== 'aether',
             }"
           />
         </button>
         <button type="button" @click="state.traveller = 'lumine'">
           <img
             src="@/assets/game/traveller/lumine.png"
-            class="aspect-square h-auto w-40 rounded-full border-2 border-grey-700 bg-grey-800 outline-none transition hover:bg-opacity-80 focus:border-grey-500"
+            class="aspect-square h-auto w-40 rounded-full border-2 outline-none transition"
             :class="{
               'border-brand-main bg-grey-700': state.traveller === 'lumine',
+              'border-grey-700 bg-grey-800 hover:bg-opacity-80 focus:border-grey-500':
+                state.traveller !== 'lumine',
             }"
           />
         </button>
