@@ -67,12 +67,31 @@ const handleSubmit = async (e: Event) => {
   e.preventDefault();
   if (!state.traveller) return alert("Please choose a traveller");
 
-  const { error } = await supabase
+  // Insert character card to inventory
+  const { data, error: err1 } = await supabase
+    .from("character_inventory")
+    .insert({
+      base_character: state.traveller === "aether" ? 1 : 2,
+      health: 1000,
+      xp: 0,
+      owner: store.authSession?.user?.id,
+    })
+    .select();
+
+  if (err1) return alert(err1.message);
+  if (data.length <= 0) {
+    return alert("Something went wrong setting your character.");
+  }
+
+  const { error: err2 } = await supabase
     .from("users")
-    .update({ starter_traveller: state.traveller })
+    .update({
+      starter_traveller: state.traveller,
+      selected_character: data[0].id,
+    })
     .match({ id: store.authSession?.user?.id });
 
-  if (error) return alert(error.message);
+  if (err2) return alert(err2.message);
 
   router.push("/onboarding/welcome");
 };
@@ -81,12 +100,13 @@ onMounted(async () => {
   const { data, error } = await supabase
     .from("users")
     .select()
-    .match({ id: store.authSession?.user?.id });
+    .match({ id: store.authSession?.user?.id })
+    .single();
 
   if (error) alert(error.message);
 
-  if (data && data.length > 0) {
-    state.username = data[0].username;
+  if (data && !error) {
+    state.username = data.username;
   } else {
     state.username = "Traveller";
   }
