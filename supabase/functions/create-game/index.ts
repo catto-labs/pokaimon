@@ -14,7 +14,7 @@ serve(async (req: Request) => {
   }
 
   try {
-    const { player1, player2 } = await req.json();
+    const { player1, player2, player1_card, player2_card } = await req.json();
 
     const { data, error } = await supabase
       .from("games")
@@ -22,6 +22,8 @@ serve(async (req: Request) => {
         {
           player1,
           player2,
+          player1_card,
+          player2_card,
         },
       ])
       .select();

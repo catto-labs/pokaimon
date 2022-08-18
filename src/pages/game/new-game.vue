@@ -31,12 +31,28 @@ onMounted(async () => {
   const user_id = store.authSession?.user?.id;
   if (!user_id) return router.push("/game");
 
+  const { data: userData, error: userErr } = await supabase
+    .from("users")
+    .select()
+    .match({ id: user_id })
+    .single();
+
+  if (userErr || !userData.data || userData.error) {
+    alert(
+      "An error occurred when reading your selected character. Redirecitng to map..."
+    );
+    router.push("/game");
+    return;
+  }
+
   const { data: response, error } = await supabase.functions.invoke(
     "create-game",
     {
       body: {
         player1: user_id,
         player2: null /** Since it's a bot. */,
+        player1_card: userData.selected_character,
+        player2_card: 2 /** Hardcoded value, needs to be changed soon based on region param */,
       },
     }
   );
