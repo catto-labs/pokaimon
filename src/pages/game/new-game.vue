@@ -37,27 +37,12 @@ onMounted(async () => {
   const user_id = store.authSession?.user?.id;
   if (!user_id) return router.push("/game");
 
-  const { data: user, error: user_error } = await supabase
-    .from("users")
-    .select()
-    .match({ id: user_id })
-    .single();
-
-  if (user_error || !user.selected_character) {
-    alert(
-      "An error occurred when reading your selected character. Redirecitng to map..."
-    );
-    router.push("/game");
-    return;
-  }
-
   const { data: response, error } = await supabase.functions.invoke(
     "create-game",
     {
       body: {
         region,
         player1: user_id,
-        player1_card: user.selected_character,
       },
     }
   );
