@@ -119,7 +119,7 @@
             leave-to="opacity-0 scale-95"
           >
             <DialogPanel
-              class="w-full max-w-md transform overflow-hidden rounded-2xl border border-grey-700 bg-grey-800 p-6 text-left align-middle shadow-xl transition-all"
+              class="w-full max-w-xl transform overflow-hidden rounded-2xl border border-grey-700 bg-grey-800 p-6 text-left align-middle shadow-xl transition-all"
             >
               <div v-if="state.openedDialogData !== null">
                 <DialogTitle
@@ -135,19 +135,31 @@
                   {{ state.openedDialogData.description }}
                 </DialogDescription>
 
-                <div class="mt-6 flex justify-end gap-6">
+                <div class="mt-12 flex flex-col justify-end gap-6 sm:flex-row">
                   <button
                     class="rounded-md bg-grey bg-opacity-20 px-6 py-1 transition-colors hover:bg-opacity-40"
                     @click="closeDialog()"
                   >
                     Close
                   </button>
-                  <button
-                    class="rounded-md bg-brand-main px-6 py-1 transition-colors hover:bg-opacity-80"
-                    @click="joinFight(state.openedDialogData!.id)"
-                  >
-                    Join
-                  </button>
+                  <div class="flex flex-row justify-end gap-2">
+                    <button
+                      class="w-full rounded-md bg-brand-second px-6 py-1 transition-colors hover:bg-opacity-80 sm:w-auto"
+                      onclick="
+                        window.alert(
+                          '1v1 is currently not done... Come back later traveller !'
+                        )
+                      "
+                    >
+                      Matchmaking
+                    </button>
+                    <button
+                      class="w-full rounded-md bg-brand-main px-6 py-1 transition-colors hover:bg-opacity-80 sm:w-auto"
+                      @click="createFightIn(state.openedDialogData!.region)"
+                    >
+                      Play against a bot
+                    </button>
+                  </div>
                 </div>
               </div>
             </DialogPanel>
@@ -177,7 +189,10 @@ import IconPerson from "virtual:icons/mdi/person";
 import IconLogout from "virtual:icons/mdi/logout";
 import IconUser from "virtual:icons/mdi/user";
 
-import type { MarkerOptions } from "@/types/Marker";
+import RawIconSwordCross from "@/assets/icons/sword-cross.png";
+import RawIconInformation from "@/assets/icons/information.png";
+
+import type { MarkerOptions, FightMarkerOptions } from "@/types/Marker";
 
 import { reactive, onMounted, ref, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
@@ -199,7 +214,15 @@ import { supabase, storedMapsUrl } from "@/utils/supabase";
 import { copyToClipboard } from "@/utils/globals";
 import { store } from "@/utils/store";
 
-import { Map, Marker, TileLayer, LatLngBounds, LatLng, CRS } from "leaflet";
+import {
+  Map,
+  Marker,
+  TileLayer,
+  LatLngBounds,
+  LatLng,
+  CRS,
+  Icon,
+} from "leaflet";
 
 const map_element_ref = ref<HTMLElement | null>(null);
 const map_ref = ref<Map | null>(null);
@@ -223,12 +246,42 @@ const state = reactive<{
 /** Short-hand to close the dialog. */
 const closeDialog = () => (state.dialogOpen = false);
 
-const joinFight = (id: string) => {
-  // TODO: join fight
-  console.info("joining...", id);
+/**
+ * Creates a new game with a bot.
+ * @param region The bot will use this info to build his deck. Defaults to `mondstadt`.
+ */
+const createFightIn = (region: FightMarkerOptions["region"] = "mondstadt") => {
+  console.info("Starting a new game in region", region, "...");
+  router.push({ name: "new-game", params: { region } });
 };
 
 const MONDSTADT_LOCATION = new LatLng(-19.15562605857849, 41.16369414329529);
+const LIYUE_LOCATION = new LatLng(-48.4375, 28.265625);
+
+const DEFAULT_FIGHT_MARKERS: FightMarkerOptions[] = [
+  {
+    type: "fight",
+
+    region: "mondstadt",
+    latitude: MONDSTADT_LOCATION.lat,
+    longitude: MONDSTADT_LOCATION.lng,
+
+    title: "Fight - Mondstadt",
+    description: "Wanna fight with someone in Mondstadt?",
+  },
+  {
+    type: "fight",
+
+    region: "liyue",
+    latitude: LIYUE_LOCATION.lat,
+    longitude: LIYUE_LOCATION.lng,
+
+    title: "Fight - Liyue",
+    description: "Wanna fight with someone in Liyue?",
+  },
+];
+
+const DEFAULT_MARKERS = [...DEFAULT_FIGHT_MARKERS];
 
 /**
  * @example
@@ -246,7 +299,21 @@ const createMarker = (options: MarkerOptions) => {
   if (!map_ref.value) return;
   const map = map_ref.value as Map;
 
+  const ICON_SIZE = 36;
+  const icon = new Icon({
+    iconUrl:
+      options.type === "fight"
+        ? RawIconSwordCross
+        : // TODO: add other icons
+          RawIconInformation,
+    className:
+      "!p-1 bg-grey-800 rounded-md border border-grey-700 bg-opacity-70 filter backdrop-blur-sm",
+    iconSize: [ICON_SIZE, ICON_SIZE],
+    iconAnchor: [ICON_SIZE / 2, ICON_SIZE / 2],
+  });
+
   const marker = new Marker(new LatLng(options.latitude, options.longitude), {
+    icon,
     title: options.title,
     alt: options.title,
   });
@@ -312,19 +379,13 @@ onMounted(async () => {
   });
 
   tile.addTo(map);
-
   // When the map is ready, store the map reference for access later.
   map.whenReady(() => (map_ref.value = map));
 
-  // TODO: remove this when we have a proper API.
-  createMarker({
-    latitude: -19.15562605857849,
-    longitude: 41.16369414329529,
-    title: "This is some fight",
-    description: "Hey, I am the cool description.",
-    type: "fight",
-    id: "12345678",
-  });
+  // Add the default markers to the map.
+  DEFAULT_MARKERS.forEach(createMarker);
+
+  map.on("click", console.log);
 });
 
 onBeforeUnmount(() => {

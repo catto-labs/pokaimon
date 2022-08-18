@@ -1,10 +1,14 @@
-export interface MarkerOptions {
+interface DefaultMarkerOptions {
   latitude: number;
   longitude: number;
-
-  id: string;
-  type: "fight" | "event" | "story";
 
   title: string;
   description?: string;
 }
+
+export interface FightMarkerOptions extends DefaultMarkerOptions {
+  type: "fight";
+  region: "mondstadt" | "liyue";
+}
+
+export type MarkerOptions = FightMarkerOptions;
