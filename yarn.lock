@@ -1139,10 +1139,10 @@
   dependencies:
     cross-fetch "^3.1.5"
 
-"@supabase/gotrue-js@^2.0.0-rc.1":
-  version "2.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@supabase/gotrue-js/-/gotrue-js-2.0.0-rc.1.tgz#5c0b3a20eb14534f1b7086c26ccad032e413a38c"
-  integrity sha512-mzDVMEqWOSZ45XnwSftpNQjHWBtMcg4uLOfJ3rvHvD0M3y8oKnPHC69zv1JQ2vHhQhsarhIgD44mCNG4adorfQ==
+"@supabase/gotrue-js@^2.0.0-rc.2":
+  version "2.0.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@supabase/gotrue-js/-/gotrue-js-2.0.0-rc.2.tgz#080e59b5205d792001dfc59d65884a032298e898"
+  integrity sha512-tkmm6UoKiRpuRs9twEaDSEbXDzXIscwO5OoaKGRXOc67DgqqYzLD7AVKXenAC6tPxyw7MYD6a0qIguzqX/+NLQ==
   dependencies:
     cross-fetch "^3.1.5"
 
@@ -1153,10 +1153,10 @@
   dependencies:
     cross-fetch "^3.1.5"
 
-"@supabase/realtime-js@^2.0.0-rc.1":
-  version "2.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@supabase/realtime-js/-/realtime-js-2.0.0-rc.1.tgz#95207a85094bc2cd8cf142b2649df6e0dc2c60b1"
-  integrity sha512-WQtBZluEO0nzP7aw4WpiQkBWFxk1f6uPm07Hq2b1hmJ/xw3sHInxZSQY6EZw9IBx6h5s1EuA+XlGiIE0NYGmOQ==
+"@supabase/realtime-js@^2.0.0-rc.2":
+  version "2.0.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@supabase/realtime-js/-/realtime-js-2.0.0-rc.2.tgz#d04af070cc150f5f5b0e4237d96756ff588b5f32"
+  integrity sha512-rYhs8z6RLbYxuYRpY9cnqEAWanl12X1JNrWgzjCMYnckCzsxroNDh35TNp8ufqY9NyhQO6H6iVQ+c85q7DVBHQ==
   dependencies:
     "@types/phoenix" "^1.5.4"
     websocket "^1.0.34"
@@ -1168,15 +1168,15 @@
   dependencies:
     cross-fetch "^3.1.5"
 
-"@supabase/supabase-js@^2.0.0-rc.1":
-  version "2.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@supabase/supabase-js/-/supabase-js-2.0.0-rc.1.tgz#da13660a42e7248ef3160ca85db2c793e7bc3221"
-  integrity sha512-3wFXNPp1ZrpZjs4hqCqjHhhrvqBoMnVptpHmIysLhlLOOC62pfQa0SuuWE/z1ZCqIYsOORcWEj/cQLj80c2XRw==
+"@supabase/supabase-js@^2.0.0-rc.3":
+  version "2.0.0-rc.3"
+  resolved "https://registry.yarnpkg.com/@supabase/supabase-js/-/supabase-js-2.0.0-rc.3.tgz#7fa8f60b10ccc0c39c211d5c3767885747b975d3"
+  integrity sha512-M4V7cg5gWBZBJxMUerj4nLJZwlmB8oQguswt1Grurn073azDgDqBrxVtxeAnnmabcc+PoSqPTH1mLRTbSkMpTQ==
   dependencies:
     "@supabase/functions-js" "^2.0.0-rc.1"
-    "@supabase/gotrue-js" "^2.0.0-rc.1"
+    "@supabase/gotrue-js" "^2.0.0-rc.2"
     "@supabase/postgrest-js" "^1.0.0-rc.1"
-    "@supabase/realtime-js" "^2.0.0-rc.1"
+    "@supabase/realtime-js" "^2.0.0-rc.2"
     "@supabase/storage-js" "^2.0.0-rc.1"
     cross-fetch "^3.1.5"
 
