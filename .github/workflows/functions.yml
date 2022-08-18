@@ -20,9 +20,9 @@ jobs:
 
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
-          SUPABASE_PASSWORD: ${{ secrets.SUPABASE_PASSWORD }}
+          #SUPABASE_PASSWORD: ${{ secrets.SUPABASE_PASSWORD }}
         run: |
-          supabase link --project-ref $SUPABASE_PROJECT_REF -p $SUPABASE_PASSWORD
-      - name: Deploy functions
-        run: |
-          supabase functions deploy create-game
+          # supabase link --project-ref $SUPABASE_PROJECT_REF -p $SUPABASE_PASSWORD
+          #- name: Deploy functions
+          #run: |
+          supabase functions deploy create-game --project-ref $SUPABASE_PROJECT_REF
