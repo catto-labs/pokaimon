@@ -73,6 +73,32 @@ export interface Database {
           created_at?: string | null;
         };
       };
+      articles: {
+        Row: {
+          id: number;
+          created_at: string | null;
+          title: string | null;
+          "description ": string | null;
+          author: string | null;
+          content: Json | null;
+        };
+        Insert: {
+          id?: number;
+          created_at?: string | null;
+          title?: string | null;
+          "description "?: string | null;
+          author?: string | null;
+          content?: Json | null;
+        };
+        Update: {
+          id?: number;
+          created_at?: string | null;
+          title?: string | null;
+          "description "?: string | null;
+          author?: string | null;
+          content?: Json | null;
+        };
+      };
       character_actions: {
         Row: {
           id: number;
@@ -113,22 +139,25 @@ export interface Database {
           id: number;
           player1: string | null;
           player2: string | null;
-          player1_card: number | null;
-          player2_card: number | null;
+          player1_card: number;
+          player2_card: number;
+          region: string;
         };
         Insert: {
           id?: number;
           player1?: string | null;
           player2?: string | null;
-          player1_card?: number | null;
-          player2_card?: number | null;
+          player1_card: number;
+          player2_card: number;
+          region?: string;
         };
         Update: {
           id?: number;
           player1?: string | null;
           player2?: string | null;
-          player1_card?: number | null;
-          player2_card?: number | null;
+          player1_card?: number;
+          player2_card?: number;
+          region?: string;
         };
       };
       users: {
