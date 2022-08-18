@@ -22,12 +22,19 @@ import { wait } from "@/utils/globals";
 
 const router = useRouter();
 
-onMounted(() => {
+onMounted(async () => {
   supabase.auth.onAuthStateChange(async (event, session) => {
+    console.log(event, session);
     if (event === "SIGNED_IN" && session !== null) {
-      await wait(100); // Small timeout to wait for everything to be loaded
+      await wait(100); // Small timeout to wait for everything to be loaded.
       router.push("/game");
     }
   });
+
+  const { data } = await supabase.auth.getSession();
+  if (data.session) {
+    router.push("/game");
+    return;
+  }
 });
 </script>
