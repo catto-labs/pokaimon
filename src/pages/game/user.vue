@@ -63,8 +63,8 @@
       <div class="mx-16 flex w-[50%] flex-col">
         <h2 class="text-2xl font-bold">Stats:</h2>
         <div class="mb-4">
-          <p>Experience points: {{ state.xp }}</p>
-          <p>Primos: {{ state.primos }}</p>
+          <p>Experience points: {{ state.xp.toLocaleString("en-GB") }}</p>
+          <p>Primos: {{ state.primos.toLocaleString("en-GB") }}</p>
         </div>
         <h2 class="mb-4 text-2xl font-bold">Equipped card:</h2>
         <div class="mb-4 flex gap-4">
@@ -85,8 +85,14 @@
             <h3 class="text-xl font-semibold">
               {{ state.selected_character.base_character.name }}
             </h3>
-            <p>Experience points: {{ state.selected_character.xp }}</p>
-            <p>Health: {{ state.selected_character.health }}</p>
+            <p>
+              Experience points:
+              {{ state.selected_character.xp.toLocaleString("en-GB") }}
+            </p>
+            <p>
+              Health:
+              {{ state.selected_character.health.toLocaleString("en-GB") }}
+            </p>
             <p>
               Element: {{ state.selected_character.base_character.element }}
             </p>
