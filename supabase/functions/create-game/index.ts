@@ -47,7 +47,7 @@ serve(async (req: Request) => {
           player1,
           player2: null,
           player1_card,
-          player2_card: random_character,
+          player2_card: random_character.id,
         },
       ])
       .select();
