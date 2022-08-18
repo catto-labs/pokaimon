@@ -1,6 +1,3 @@
-// Follow this setup guide to integrate the Deno language server with your editor:
-// https://deno.land/manual/getting_started/setup_your_environment
-// This enables autocomplete, go to definition, etc.
 import { serve } from "https://deno.land/std@0.131.0/http/server.ts";
 import { supabase } from "../_shared/supabaseClient.ts";
 import { corsHeaders } from "../_shared/cors.ts";
@@ -14,55 +11,109 @@ serve(async (req: Request) => {
   }
 
   try {
-    const { player1, player1_card, region } = await req.json();
+    const { player1, player2, region } = await req.json();
     const selected_region = region || "mondstadt";
 
-    const { data: characters, error: characters_error } = await supabase
-      .from("character_info")
-      .select()
-      .match({ region: selected_region })
-      .select();
+    /** Used when one of the players is a bot. */
+    let region_characters = [];
 
-    if (characters_error) {
-      return new Response(
-        JSON.stringify({ success: false, error: characters_error }),
-        {
+    /** When there's a bot, get available characters for the region. */
+    if (!player1 || !player2) {
+      const { data: characters, error } = await supabase
+        .from("character_info")
+        .select()
+        .match({ region: selected_region })
+        .select();
+
+      if (error) {
+        return new Response(JSON.stringify({ success: false, error }), {
           headers: {
             ...corsHeaders,
             "Content-Type": "application/json",
           },
           status: 500,
-        }
-      );
+        });
+      }
+
+      // Store them for later use.
+      region_characters = characters;
     }
 
-    // Select a random character in the array for the bot.
-    const random_character =
-      characters[Math.floor(Math.random() * characters.length)];
+    /** Filled when we fetch the users. */
+    let player1_card, player2_card;
 
-    const { data: game, error: games_error } = await supabase
+    // Check and fetch data for `player1`.
+    if (player1) {
+      const { data, error } = await supabase
+        .from("users")
+        .select()
+        .match({ id: player1 })
+        .single();
+
+      if (data || error) {
+        return new Response(JSON.stringify({ success: false, error }), {
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
+          status: 500,
+        });
+      }
+
+      player1_card = data.selected_character;
+    } else {
+      /** When the user is a bot, give a random `character_info` ID. */
+      player1_card =
+        region_characters[Math.floor(Math.random() * region_characters.length)]
+          .id;
+    }
+
+    // Check and fetch data for `player2`.
+    if (player2) {
+      const { data, error } = await supabase
+        .from("users")
+        .select()
+        .match({ id: player2 })
+        .single();
+
+      if (data || error) {
+        return new Response(JSON.stringify({ success: false, error }), {
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
+          status: 500,
+        });
+      }
+
+      player2_card = data.selected_character;
+    } else {
+      /** When the user is a bot, give a random `character_info` ID. */
+      player2_card =
+        region_characters[Math.floor(Math.random() * region_characters.length)]
+          .id;
+    }
+
+    const { data: game, error } = await supabase
       .from("games")
       .insert([
         {
           player1,
-          player2: null,
           player1_card,
-          player2_card: random_character.id,
+          player2,
+          player2_card,
         },
       ])
       .select();
 
-    if (games_error) {
-      return new Response(
-        JSON.stringify({ success: false, error: games_error }),
-        {
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
-          status: 500,
-        }
-      );
+    if (error) {
+      return new Response(JSON.stringify({ success: false, error }), {
+        headers: {
+          ...corsHeaders,
+          "Content-Type": "application/json",
+        },
+        status: 500,
+      });
     }
 
     return new Response(JSON.stringify({ success: true, data: game }), {
