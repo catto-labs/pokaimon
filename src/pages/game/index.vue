@@ -257,6 +257,7 @@ const createFightIn = (region: FightMarkerOptions["region"] = "mondstadt") => {
 
 const MONDSTADT_LOCATION = new LatLng(-19.15562605857849, 41.16369414329529);
 const LIYUE_LOCATION = new LatLng(-48.4375, 28.265625);
+const INAZUMA_LOCATION = new LatLng(-77.15562605857849, 79.16369414329529);
 
 const DEFAULT_FIGHT_MARKERS: FightMarkerOptions[] = [
   {
@@ -278,6 +279,16 @@ const DEFAULT_FIGHT_MARKERS: FightMarkerOptions[] = [
 
     title: "Fight - Liyue",
     description: "Wanna fight with someone in Liyue?",
+  },
+  {
+    type: "fight",
+
+    region: "inazuma",
+    latitude: INAZUMA_LOCATION.lat,
+    longitude: INAZUMA_LOCATION.lng,
+
+    title: "Fight - Inazuma",
+    description: "Wanna fight with someone in Inazuma?",
   },
 ];
 

@@ -8,7 +8,7 @@ interface DefaultMarkerOptions {
 
 export interface FightMarkerOptions extends DefaultMarkerOptions {
   type: "fight";
-  region: "mondstadt" | "liyue";
+  region: "mondstadt" | "liyue" | "inazuma";
 }
 
 export type MarkerOptions = FightMarkerOptions;
