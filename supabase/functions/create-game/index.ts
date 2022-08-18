@@ -17,7 +17,7 @@ serve(async (req: Request) => {
     const { player1, player1_card, region } = await req.json();
     const selected_region = region || "mondstadt";
 
-    const { characters, error: characters_error } = await supabase
+    const { data: characters, error: characters_error } = await supabase
       .from("character_info")
       .select()
       .match({ region: selected_region })
