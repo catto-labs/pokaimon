@@ -366,7 +366,8 @@ onMounted(async () => {
     enemyIsBot: !enemy_received_data.id,
   });
 
-  wait(2000).then(processNextTurn);
+  // Only useful when the other player is a bot.
+  processNextTurn();
 });
 
 /**
