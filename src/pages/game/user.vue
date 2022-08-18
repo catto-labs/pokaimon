@@ -70,13 +70,7 @@
         <div class="mb-4 flex gap-4">
           <div class="flex w-32 flex-col justify-end rounded-md bg-grey-700">
             <img
-              v-if="state.traveller === 'lumine'"
-              src="@/assets/game/traveller/lumine.png"
-              class="h-fit"
-            />
-            <img
-              v-if="state.traveller === 'aether'"
-              src="@/assets/game/traveller/aether.png"
+              :src="`https://flkaastenubusimwykpj.supabase.co/storage/v1/object/public/character-images/heads/${state.selected_character.base_character.name.toLowerCase()}.png`"
               class="h-fit"
             />
             <!-- TODO: Add traveller images to supabase and select based on name fetched from db-->
