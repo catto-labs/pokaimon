@@ -14,21 +14,58 @@ serve(async (req: Request) => {
   }
 
   try {
-    const { player1, player2, player1_card, player2_card } = await req.json();
+    const { player1, player1_card, region } = await req.json();
+    const selected_region = region || "mondstadt";
 
-    const { data, error } = await supabase
+    const { characters, error: characters_error } = await supabase
+      .from("character_info")
+      .select()
+      .match({ region: selected_region })
+      .select();
+
+    if (characters_error) {
+      return new Response(
+        JSON.stringify({ success: false, error: characters_error }),
+        {
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
+          status: 500,
+        }
+      );
+    }
+
+    // Select a random character in the array for the bot.
+    const random_character =
+      characters[Math.floor(Math.random() * characters.length)];
+
+    const { data: game, error: games_error } = await supabase
       .from("games")
       .insert([
         {
           player1,
-          player2,
+          player2: null,
           player1_card,
-          player2_card,
+          player2_card: random_character,
         },
       ])
       .select();
 
-    return new Response(JSON.stringify({ data, error }), {
+    if (games_error) {
+      return new Response(
+        JSON.stringify({ success: false, error: games_error }),
+        {
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
+          status: 500,
+        }
+      );
+    }
+
+    return new Response(JSON.stringify({ success: true, data: game }), {
       headers: {
         ...corsHeaders,
         "Content-Type": "application/json",
@@ -38,7 +75,7 @@ serve(async (req: Request) => {
   } catch (error) {
     return new Response(
       JSON.stringify({
-        data: null,
+        success: false,
         error: error.message,
       }),
       {

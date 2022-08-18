@@ -1,10 +1,12 @@
 <template>
   <div
-    class="bg-gray-900 flex h-screen w-screen flex-col items-center justify-center"
+    class="bg-gray-900 flex h-screen w-screen flex-col items-center justify-center px-2"
   >
     <div class="text-center">
-      <h1 class="mb-2 text-4xl font-bold text-head">Loading game...</h1>
-      <h2 class="mb-2 text-xl text-body">
+      <h1 class="mb-2 text-4xl font-bold text-head">
+        Creating game in {{ capitalizeFirstLetter(region) }}...
+      </h1>
+      <h2 class="mb-2 text-xl text-note">
         Hang on for a few seconds, you'll be redirected soon!
       </h2>
       <div class="mt-6 flex items-center justify-center gap-4">
@@ -18,26 +20,30 @@
 
 <script setup lang="ts">
 import { onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 
+import { capitalizeFirstLetter } from "@/utils/globals";
 import { supabase } from "@/utils/supabase";
 import { store } from "@/utils/store";
 
 import PrimoIcon from "@/components/game/PrimoIcon.vue";
 
 const router = useRouter();
+const route = useRoute();
+
+const region = (route.params.region as string) || "mondstadt";
 
 onMounted(async () => {
   const user_id = store.authSession?.user?.id;
   if (!user_id) return router.push("/game");
 
-  const { data: userData, error: userErr } = await supabase
+  const { data: user, error: user_error } = await supabase
     .from("users")
     .select()
     .match({ id: user_id })
     .single();
 
-  if (userErr || !userData.data || userData.error) {
+  if (user_error || !user.selected_character) {
     alert(
       "An error occurred when reading your selected character. Redirecitng to map..."
     );
@@ -49,15 +55,14 @@ onMounted(async () => {
     "create-game",
     {
       body: {
+        region,
         player1: user_id,
-        player2: null /** Since it's a bot. */,
-        player1_card: userData.selected_character,
-        player2_card: 2 /** Hardcoded value, needs to be changed soon based on region param */,
+        player1_card: user.selected_character,
       },
     }
   );
 
-  if (error || !response.data || response.error) {
+  if (error || response.error || !response.success) {
     alert("An error occurred when creating the game. Redirecitng to map...");
     router.push("/game");
     return;
@@ -88,3 +93,9 @@ onMounted(async () => {
   }
 }
 </style>
+
+<route>
+{
+  name: "new-game"
+}
+</route>
