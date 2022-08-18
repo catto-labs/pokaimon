@@ -16,13 +16,13 @@ serve(async (req: Request) => {
   try {
     // Set the Auth context of the user that called the function.
     // This way our row-level-security (RLS) policies are applied.
-    supabaseClient.auth.setAuth(
-      req.headers.get("Authorization").replace("Bearer ", "")
+    const supabase = supabaseClient(
+      req.headers.get("Authorization")!.replace("Bearer ", "")
     );
 
     const { player1, player2 } = await req.json();
 
-    const { data, error } = await supabaseClient
+    const { data, error } = await supabase
       .from("games")
       .insert([
         {
