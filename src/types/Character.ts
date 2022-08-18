@@ -1,6 +1,6 @@
 export interface Character {
   name: string;
-  level: number;
+  // level: number;
   health: number;
   maxHealth: number;
 
@@ -11,13 +11,17 @@ export interface Character {
 export interface CharacterAction {
   name: string;
 
-  /** Min and max damage. */
-  enemyHitDamage: number[];
+  /** Min damage. */
+  enemy_min_damage: number;
+  /** Max damage. */
+  enemy_max_damage: number;
   /** Decimal percentage (e.g 0.1 for 10%) */
-  enemyHitChance: number;
+  enemy_hit_chance: number;
 
-  /** Min and max damage. */
-  selfHitDamage: number[];
+  /** Min damage. */
+  self_min_damage: number;
+  /** Max damage. */
+  self_max_damage: number;
   /** Decimal percentage (e.g 0.1 for 10%) */
-  selfHitChance: number;
+  self_hit_chance: number;
 }

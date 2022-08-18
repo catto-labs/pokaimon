@@ -4,8 +4,5 @@
   },
 
   "editor.tabSize": 2,
-  "typescript.tsdk": "node_modules/typescript/lib",
-
-  "deno.enable": true,
-  "deno.unstable": true
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
