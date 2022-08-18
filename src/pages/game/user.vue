@@ -73,7 +73,6 @@
               :src="`https://flkaastenubusimwykpj.supabase.co/storage/v1/object/public/character-images/heads/${state.selected_character.base_character.name.toLowerCase()}.png`"
               class="h-fit"
             />
-            <!-- TODO: Add traveller images to supabase and select based on name fetched from db-->
           </div>
           <div class="flex flex-col gap-1">
             <h3 class="text-xl font-semibold">
