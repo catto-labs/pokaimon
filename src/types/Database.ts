@@ -70,4 +70,9 @@ export interface UsersTable {
   id: string;
   username: string | null;
   starter_traveller: string | null;
+
+  is_developer: boolean;
+  is_ui_designer: boolean;
+  is_character_designer: boolean;
+  is_artwork_designer: boolean;
 }
