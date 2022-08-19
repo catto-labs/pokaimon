@@ -254,8 +254,11 @@ const createFightIn = (
   region: FightMarkerOptions["region"] = "mondstadt",
   offline: "yes" | "no"
 ) => {
-  console.info("Starting a new game in region", region, "...");
-  router.push({ name: "new-game", params: { region, offline } });
+  if (offline === "yes") {
+    router.push({ name: "new-game", params: { region, offline } });
+  } else if (offline === "no") {
+    router.push("/game/join-game");
+  }
 };
 
 const MONDSTADT_LOCATION = new LatLng(-19.15562605857849, 41.16369414329529);

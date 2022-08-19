@@ -401,6 +401,10 @@ onMounted(async () => {
               table_new_data[userIsPlayer === 2 ? "player1_hp" : "player2_hp"],
           },
         });
+
+        if (state.winner) {
+          supabase.removeAllChannels();
+        }
       }
     )
     .subscribe();

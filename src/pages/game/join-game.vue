@@ -46,7 +46,7 @@ const joinGame = async (id: number) => {
     return false;
   }
 
-  router.push(`/game/fighting/${game_id}`);
+  router.push(`/game/fighting/${id}`);
   return true;
 };
 

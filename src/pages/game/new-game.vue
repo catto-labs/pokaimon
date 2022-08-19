@@ -43,6 +43,7 @@
 </template>
 
 <script setup lang="ts">
+import type { GamesTable } from "@/types/Database";
 import { onMounted, reactive } from "vue";
 import { useRouter, useRoute } from "vue-router";
 
@@ -92,6 +93,27 @@ onMounted(async () => {
 
   if (isOffline) {
     router.push(`/game/fighting/${game.id}`);
+  } else {
+    // Listen to table changes.
+    supabase
+      .channel(`public:games:id=eq.${game.id}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "games",
+          filter: `id=eq.${game.id}`,
+        },
+        (data: { new: GamesTable }) => {
+          const table_new_data = data.new;
+          if (table_new_data.player2) {
+            supabase.removeAllChannels();
+            router.push(`/game/fighting/${game.id}`);
+          }
+        }
+      )
+      .subscribe();
   }
 });
 </script>
