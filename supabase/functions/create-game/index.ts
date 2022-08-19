@@ -15,7 +15,11 @@ serve(async (req: Request) => {
     const selected_region = region || "mondstadt";
 
     /** Used when one of the players is a bot. */
-    let region_characters = [];
+    let region_characters: {
+      id: number;
+      region: string;
+      base_health: number;
+    }[] = [];
 
     /** When there's a bot, get available characters for the region. */
     if (!player1 || !player2) {
@@ -41,12 +45,13 @@ serve(async (req: Request) => {
 
     /** Filled when we fetch the users. */
     let player1_card, player2_card;
+    let player1_hp, player2_hp;
 
     // Check and fetch data for `player1`.
     if (player1) {
       const { data, error } = await supabase
         .from("users")
-        .select()
+        .select(`id, selected_character(id, health)`)
         .match({ id: player1 })
         .single();
 
@@ -60,19 +65,25 @@ serve(async (req: Request) => {
         });
       }
 
-      player1_card = data.selected_character;
+      const character = data.selected_character as {
+        id: number;
+        health: number;
+      };
+
+      player1_card = character.id;
+      player1_hp = character.health;
     } else {
+      const random_index = Math.floor(Math.random() * region_characters.length);
       /** When the user is a bot, give a random `character_info` ID. */
-      player1_card =
-        region_characters[Math.floor(Math.random() * region_characters.length)]
-          .id;
+      player1_card = region_characters[random_index].id;
+      player1_hp = region_characters[random_index].base_health;
     }
 
     // Check and fetch data for `player2`.
     if (player2) {
       const { data, error } = await supabase
         .from("users")
-        .select()
+        .select(`id, selected_character(id, health)`)
         .match({ id: player2 })
         .single();
 
@@ -86,12 +97,18 @@ serve(async (req: Request) => {
         });
       }
 
-      player2_card = data.selected_character;
+      const character = data.selected_character as {
+        id: number;
+        health: number;
+      };
+
+      player2_card = character.id;
+      player2_hp = character.health;
     } else {
+      const random_index = Math.floor(Math.random() * region_characters.length);
       /** When the user is a bot, give a random `character_info` ID. */
-      player2_card =
-        region_characters[Math.floor(Math.random() * region_characters.length)]
-          .id;
+      player2_card = region_characters[random_index].id;
+      player2_hp = region_characters[random_index].base_health;
     }
 
     const { data: game, error } = await supabase
@@ -100,8 +117,10 @@ serve(async (req: Request) => {
         {
           player1,
           player1_card,
+          player1_hp,
           player2,
           player2_card,
+          player2_hp,
         },
       ])
       .select();
