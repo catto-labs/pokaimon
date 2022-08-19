@@ -11,6 +11,8 @@ import {
 } from "../_shared/supabase.ts";
 import cors from "../_shared/cors.ts";
 
+console.log("STARTING");
+
 const randomBetween = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1) + min);
 
@@ -99,12 +101,6 @@ serve(async (req: Request) => {
     if (!isUserTurn) {
       return sendErrorResponse({ message: "It's not your turn", status: 400 });
     }
-
-    // Set the current action index as the one we're going to use.
-    await supabase
-      .from("games")
-      .update({ action_index: body.action_index })
-      .match({ id: game.data.id });
 
     // Re-structure game's data about the player.
     const player_received_data = {
@@ -217,8 +213,15 @@ serve(async (req: Request) => {
       userIsPlayer,
     };
 
+    let winner: 1 | 2 | 3 | null = null;
     const playTurn = async (action_index: number) => {
       if (!game.data) return;
+
+      // Set the current action index as the one we're going to use.
+      await supabase
+        .from("games")
+        .update({ action_index })
+        .match({ id: game.data.id });
 
       const fight_player =
         fight_data.turn === fight_data.userIsPlayer ? "player" : "enemy";
@@ -263,20 +266,27 @@ serve(async (req: Request) => {
 
       // Switch turns.
       fight_data.turn = fight_data.turn === 1 ? 2 : 1;
+      console.log("switching turns", winner);
 
-      let winner: 1 | 2 | 3 | null = null;
       if (new_player1_hp <= 0 && new_player2_hp > 0) {
+        console.log("Player 2 won!");
         winner = 2;
       } else if (new_player1_hp > 0 && new_player2_hp <= 0) {
+        console.log("Player 1 won!");
         winner = 1;
       } else if (new_player1_hp <= 0 && new_player2_hp <= 0) {
+        console.log("Tie!");
         winner = 3;
       }
+
+      console.log("winner", winner);
 
       if (
         (winner === 1 && game.data.player1) ||
         (winner === 2 && game.data.player2)
       ) {
+        console.log("winner check is valid.");
+
         // If the winner is not a bot, proceed to give rewards.
         const rewards = game.data.rewards as {
           primos: number;
@@ -292,19 +302,16 @@ serve(async (req: Request) => {
             .single();
 
         if (error_rewarded_user || !rewarded_user) {
-          return sendErrorResponse({
-            message:
-              error_rewarded_user?.message ||
-              "Can't get informations about the rewarded user.",
-            status: 500,
-          });
+          throw Error(
+            error_rewarded_user.message ||
+              "Can't get informations about the rewarded user."
+          );
         }
 
         const selected_character = rewarded_user.selected_character as {
           id: number;
-          xp: number | null;
+          xp: number;
         };
-        const card_xp = selected_character.xp || 0;
 
         await supabase
           .from("users")
@@ -316,30 +323,23 @@ serve(async (req: Request) => {
 
         await supabase
           .from("character_inventory")
-          .update({ xp: card_xp + rewards.card_xp })
+          .update({ xp: selected_character.xp + rewards.card_xp })
           .match({ id: selected_character.id });
 
         // When the enemy is a bot, reward the user with the bot's character.
         if (!enemy_received_data.id) {
           // Check if we already have the bot's character in the user's inventory.
-          const { data: bot_character, error: error_bot_character } =
-            await supabase
-              .from("character_inventory")
-              .select("id")
-              .match({
-                owner: user_id,
-                base_character: enemy_received_data.card,
-              })
-              .single();
-
-          if (error_bot_character) {
-            return sendErrorResponse({
-              message: error_bot_character.message,
-              status: 500,
-            });
-          }
+          const { data: bot_character } = await supabase
+            .from("character_inventory")
+            .select("id")
+            .match({
+              owner: user_id,
+              base_character: enemy_received_data.card,
+            })
+            .single();
 
           if (!bot_character) {
+            console.info("check bot character", bot_character);
             // If we don't have the bot's character, create it.
             await supabase.from("character_inventory").insert({
               owner: user_id,
@@ -355,6 +355,9 @@ serve(async (req: Request) => {
           }
         }
       }
+
+      // Wait a little bit before updating the game.
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
       const updated_fight_data = {
         rewards: game.data.rewards,
@@ -372,19 +375,18 @@ serve(async (req: Request) => {
     };
 
     await playTurn(body.action_index);
+    console.log("usr index:", body.action_index);
 
     // When it's a bot, play with random action.
-    if (!enemy_received_data.id) {
-      // Wait 2s until bot interaction.
+    if (!enemy_received_data.id && winner === null) {
+      // Wait 2s until to simulate bot's choice.
       await new Promise((resolve) => setTimeout(resolve, 2000));
-
       const action_index = Math.floor(Math.random() * 4);
-      await supabase
-        .from("games")
-        .update({ action_index })
-        .match({ id: game.data.id });
+      console.log("bot index:", action_index);
 
+      // Simulate the bot's network server latence.
       await playTurn(action_index);
+      console.log("SHOULD BE END");
     }
 
     return sendSuccessResponse(null);

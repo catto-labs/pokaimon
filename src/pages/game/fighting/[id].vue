@@ -388,6 +388,7 @@ onMounted(async () => {
         Object.assign(state, {
           turn: table_new_data.turn,
           winner: table_new_data.winner,
+          rewards: table_new_data.rewards,
           current_attack_index: table_new_data.action_index,
           player: {
             ...state.player,
