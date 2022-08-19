@@ -374,8 +374,6 @@ onMounted(async () => {
     enemyIsBot: !enemy_received_data.id,
   });
 
-  console.log(state);
-
   // Listen to table changes.
   supabase
     .channel(`public:games:id=eq.${game_id}`)
@@ -389,12 +387,12 @@ onMounted(async () => {
       },
       (data: { new: GamesTable }) => {
         if (!state.loaded || state.winner) return;
-
         const table_new_data = data.new;
+
         Object.assign(state, {
           turn: table_new_data.turn,
           winner: table_new_data.winner,
-          current_attack_index: table_new_data.attack_index,
+          current_attack_index: table_new_data.action_index,
           player: {
             ...state.player,
             health:

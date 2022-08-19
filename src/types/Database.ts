@@ -66,7 +66,7 @@ export interface GamesTable {
   turn: 1 | 2;
   /** `null` for not finished. `3` for tie. */
   winner: 1 | 2 | 3 | null;
-  attack_index?: number | null;
+  action_index?: number | null;
   created_at: string;
 }
 
