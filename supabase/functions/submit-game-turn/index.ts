@@ -348,11 +348,10 @@ serve(async (req: Request) => {
         winner = 3;
       }
 
-      if (winner === 1 || winner === 2) {
-        // Check if a bot won or not.
-        if (winner === 1 && !game_data.player1) return;
-        if (winner === 2 && !game_data.player2) return;
-
+      if (
+        (winner === 1 && game_data.player1) ||
+        (winner === 2 && game_data.player2)
+      ) {
         // If it's not a bot, proceed to give rewards.
         const rewards = game_data.rewards as {
           primos: number;
