@@ -66,7 +66,7 @@ onMounted(async () => {
     .from("games")
     .select()
     .match({ available: true, hidden: false })
-    .select(`id, region`);
+    .select();
 
   const games = data as {
     id: number;
@@ -81,14 +81,18 @@ onMounted(async () => {
     return;
   }
 
+  let noGame = true;
   for (const game of games) {
     if (await joinGame(game.id)) {
+      noGame = false;
       return;
     }
   }
 
-  alert("No game found, creating one for you...");
-  router.push({ name: "new-game", params: { offline: "no" } });
+  if (noGame) {
+    alert("No game found, creating one for you...");
+    router.push({ name: "new-game", params: { offline: "no" } });
+  }
 });
 </script>
 
