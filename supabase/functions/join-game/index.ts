@@ -67,6 +67,13 @@ serve(async (req: Request) => {
       });
     }
 
+    if (!game.data.available) {
+      return sendErrorResponse({
+        message: "This game is not available anymore.",
+        status: 401,
+      });
+    }
+
     if (game.data.player2) {
       return sendErrorResponse({
         message: "This game is already full.",
