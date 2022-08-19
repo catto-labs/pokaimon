@@ -8,10 +8,16 @@
         class="flex items-end justify-between rounded-lg bg-grey-700 px-4 pt-8 pb-0"
       >
         <div class="ml-8 flex flex-row items-end">
-          <img src="https://i.imgur.com/NxUiA4N.png" class="aspect-auto h-56" />
+          <img
+            :src="`https://flkaastenubusimwykpj.supabase.co/storage/v1/object/public/character-images/bodies/${state.player.name.toLowerCase()}.png`"
+            class="aspect-auto h-56"
+          />
         </div>
         <div class="mr-8">
-          <img src="https://i.imgur.com/RMUyb2Q.png" class="aspect-auto h-56" />
+          <img
+            :src="`https://flkaastenubusimwykpj.supabase.co/storage/v1/object/public/character-images/bodies/${state.enemy.name.toLowerCase()}.png`"
+            class="aspect-auto h-56"
+          />
         </div>
       </div>
 
