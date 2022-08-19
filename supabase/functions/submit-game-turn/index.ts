@@ -380,7 +380,11 @@ serve(async (req: Request) => {
           );
         }
 
-        const card_xp = rewarded_user.selected_character?.xp || 0;
+        const selected_character = rewarded_user.selected_character as {
+          id: number;
+          xp: number | null;
+        };
+        const card_xp = selected_character.xp || 0;
 
         await supabase
           .from("users")
@@ -393,7 +397,7 @@ serve(async (req: Request) => {
         await supabase
           .from("character_inventory")
           .update({ xp: card_xp + rewards.card_xp })
-          .match({ id: rewarded_user.selected_character?.id });
+          .match({ id: selected_character.id });
       }
 
       const updated_fight_data = {
