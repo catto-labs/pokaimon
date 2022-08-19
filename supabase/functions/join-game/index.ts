@@ -113,7 +113,7 @@ serve(async (req: Request) => {
 
     await supabase
       .from("games")
-      .update({ player2, player2_card, player2_hp, turn })
+      .update({ player2, player2_card, player2_hp, turn, available: false })
       .match({ id: game_id });
 
     return sendSuccessResponse(null);
