@@ -145,14 +145,21 @@
 
 <script setup lang="ts">
 import type { Character } from "@/types/Character";
+
 import { reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { wait, randomBetween } from "@/utils/globals";
-import { supabase } from "@/utils/supabase";
+
+import {
+  supabase,
+  getGame,
+  getCharacterInfo,
+  getFromInventoryCharacter,
+} from "@/utils/supabase";
+
 import { store } from "@/utils/store";
+import { wait, randomBetween } from "@/utils/globals";
 
 const router = useRouter();
-
 const props = defineProps({
   id: String,
 });
@@ -180,20 +187,17 @@ const state = reactive<
 });
 
 onMounted(async () => {
-  const game_id = props.id;
   const user_session = store.authSession?.user;
 
-  if (!game_id || !user_session) {
+  if (!props.id || !user_session) {
     router.push("/game");
     return;
   }
 
+  const game_id = parseInt(props.id);
+
   // Get global informations about the game.
-  const { data: game_data, error: game_error } = await supabase
-    .from("games")
-    .select()
-    .match({ id: game_id })
-    .single();
+  const { data: game_data, error: game_error } = await getGame(game_id);
 
   // The game doesn't exist.
   if (game_error || !game_data) {
@@ -229,25 +233,8 @@ onMounted(async () => {
   }
 
   // Get the player's informations.
-  const { data: player_card, error: player_card_error } = await supabase
-    .from("character_inventory")
-    .select(
-      `
-      id,
-      xp,
-      health,
-      base_character(
-        name,
-        element,
-        action_1(*),
-        action_2(*),
-        action_3(*),
-        action_4(*)
-      )
-    `
-    )
-    .match({ id: player_received_data.card })
-    .single();
+  const { data: player_card, error: player_card_error } =
+    await getFromInventoryCharacter(player_received_data.card);
 
   if (!player_card || player_card_error) {
     alert("Couldn't get data on current player. Confirm to reload page.");
@@ -275,21 +262,8 @@ onMounted(async () => {
 
   // If the enemy is a bot, build a character based on the random `character_info` ID.
   if (!enemy_received_data.id) {
-    const { data: enemy_card, error: enemy_card_error } = await supabase
-      .from("character_info")
-      .select(
-        `
-        name,
-        element,
-        base_health,
-        action_1(*),
-        action_2(*),
-        action_3(*),
-        action_4(*)
-      `
-      )
-      .match({ id: enemy_received_data.card })
-      .single();
+    const { data: enemy_card, error: enemy_card_error } =
+      await getCharacterInfo(enemy_received_data.card);
 
     if (!enemy_card || enemy_card_error) {
       alert("An error occurred. Refreshing...");
@@ -312,25 +286,8 @@ onMounted(async () => {
   }
   // If the enemy is a real player, get the enemy's character informations.
   else {
-    const { data: enemy_card, error: enemy_card_error } = await supabase
-      .from("character_inventory")
-      .select(
-        `
-        id,
-        xp,
-        health,
-        base_character(
-          name,
-          element,
-          action_1(*),
-          action_2(*),
-          action_3(*),
-          action_4(*)
-        )
-      `
-      )
-      .match({ id: enemy_received_data.card })
-      .single();
+    const { data: enemy_card, error: enemy_card_error } =
+      await getFromInventoryCharacter(enemy_received_data.card);
 
     if (!enemy_card || enemy_card_error) {
       alert("An error occurred. Refreshing...");

@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite",
     "lint": "eslint . --fix",
-    "build": "yarn lint && vue-tsc --noEmit && vite build"
+    "build": "eslint . && vue-tsc --noEmit && vite build"
   },
   "dependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.1.1",

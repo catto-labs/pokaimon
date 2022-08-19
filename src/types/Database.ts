@@ -1,192 +1,73 @@
-export type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json }
-  | Json[];
+export interface CharacterInfoTable {
+  id: number;
+  name: string;
+  description: string;
 
-export interface Database {
-  public: {
-    Tables: {
-      character_info: {
-        Row: {
-          description: string | null;
-          id: number;
-          region: string | null;
-          name: string | null;
-          element: string | null;
-          base_health: number | null;
-          action_1: number | null;
-          action_2: number | null;
-          action_3: number | null;
-          action_4: number | null;
-        };
-        Insert: {
-          description?: string | null;
-          id?: number;
-          region?: string | null;
-          name?: string | null;
-          element?: string | null;
-          base_health?: number | null;
-          action_1?: number | null;
-          action_2?: number | null;
-          action_3?: number | null;
-          action_4?: number | null;
-        };
-        Update: {
-          description?: string | null;
-          id?: number;
-          region?: string | null;
-          name?: string | null;
-          element?: string | null;
-          base_health?: number | null;
-          action_1?: number | null;
-          action_2?: number | null;
-          action_3?: number | null;
-          action_4?: number | null;
-        };
-      };
-      character_inventory: {
-        Row: {
-          id: number;
-          base_character: number | null;
-          health: number | null;
-          xp: number | null;
-          owner: string | null;
-          created_at: string | null;
-        };
-        Insert: {
-          id?: number;
-          base_character?: number | null;
-          health?: number | null;
-          xp?: number | null;
-          owner?: string | null;
-          created_at?: string | null;
-        };
-        Update: {
-          id?: number;
-          base_character?: number | null;
-          health?: number | null;
-          xp?: number | null;
-          owner?: string | null;
-          created_at?: string | null;
-        };
-      };
-      articles: {
-        Row: {
-          id: number;
-          created_at: string | null;
-          title: string | null;
-          "description ": string | null;
-          author: string | null;
-          content: Json | null;
-        };
-        Insert: {
-          id?: number;
-          created_at?: string | null;
-          title?: string | null;
-          "description "?: string | null;
-          author?: string | null;
-          content?: Json | null;
-        };
-        Update: {
-          id?: number;
-          created_at?: string | null;
-          title?: string | null;
-          "description "?: string | null;
-          author?: string | null;
-          content?: Json | null;
-        };
-      };
-      character_actions: {
-        Row: {
-          id: number;
-          name: string | null;
-          enemy_min_damage: number | null;
-          enemy_max_damage: number | null;
-          enemy_hit_chance: number | null;
-          self_min_damage: number | null;
-          self_max_damage: number | null;
-          self_hit_chance: number | null;
-          description: string | null;
-        };
-        Insert: {
-          id?: number;
-          name?: string | null;
-          enemy_min_damage?: number | null;
-          enemy_max_damage?: number | null;
-          enemy_hit_chance?: number | null;
-          self_min_damage?: number | null;
-          self_max_damage?: number | null;
-          self_hit_chance?: number | null;
-          description?: string | null;
-        };
-        Update: {
-          id?: number;
-          name?: string | null;
-          enemy_min_damage?: number | null;
-          enemy_max_damage?: number | null;
-          enemy_hit_chance?: number | null;
-          self_min_damage?: number | null;
-          self_max_damage?: number | null;
-          self_hit_chance?: number | null;
-          description?: string | null;
-        };
-      };
-      games: {
-        Row: {
-          id: number;
-          player1: string | null;
-          player2: string | null;
-          player1_card: number;
-          player2_card: number;
-          region: string;
-        };
-        Insert: {
-          id?: number;
-          player1?: string | null;
-          player2?: string | null;
-          player1_card: number;
-          player2_card: number;
-          region?: string;
-        };
-        Update: {
-          id?: number;
-          player1?: string | null;
-          player2?: string | null;
-          player1_card?: number;
-          player2_card?: number;
-          region?: string;
-        };
-      };
-      users: {
-        Row: {
-          selected_character: number | null;
-          primos: number | null;
-          xp: number | null;
-          id: string;
-          username: string | null;
-          starter_traveller: string | null;
-        };
-        Insert: {
-          selected_character?: number | null;
-          primos?: number | null;
-          xp?: number | null;
-          id: string;
-          username?: string | null;
-          starter_traveller?: string | null;
-        };
-        Update: {
-          selected_character?: number | null;
-          primos?: number | null;
-          xp?: number | null;
-          id?: string;
-          username?: string | null;
-          starter_traveller?: string | null;
-        };
-      };
-    };
-    Functions: Record<string, unknown>;
-  };
+  region: string;
+  element: string;
+
+  /** Default health for this character. */
+  base_health: number;
+
+  // Actions' ID from `character_actions` table.
+  action_1: number;
+  action_2: number;
+  action_3: number;
+  action_4: number;
+}
+
+export interface CharacterInventoryTable {
+  id: number;
+  base_character: number;
+  health: number;
+  xp: number;
+  owner: string;
+  created_at: string;
+}
+
+export interface ArticlesTable {
+  id: number;
+  /** timestampz */
+  created_at: string;
+  title: string;
+  description?: string;
+  author: string;
+  content: unknown /** @todo Add interface. */;
+}
+
+export interface CharacterActionsTable {
+  id: number;
+  name: string;
+  description?: string;
+
+  enemy_min_damage: number;
+  enemy_max_damage: number;
+  enemy_hit_chance: number;
+
+  self_min_damage: number;
+  self_max_damage: number;
+  self_hit_chance: number;
+}
+
+export interface GamesTable {
+  id: number;
+  region: string;
+
+  player1: string | null;
+  player2: string | null;
+
+  player1_card: number;
+  player2_card: number;
+
+  turn: 1 | 2;
+  created_at: string;
+}
+
+export interface UsersTable {
+  selected_character: number | null;
+  primos: number;
+  xp: number;
+  id: string;
+  username: string | null;
+  starter_traveller: string | null;
 }
