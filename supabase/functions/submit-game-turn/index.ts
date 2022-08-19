@@ -360,11 +360,12 @@ serve(async (req: Request) => {
           user_xp: number;
         };
 
-        const { rewarded_user, error_rewarded_user } = await supabase
-          .from("users")
-          .select(`id, xp, primos, selected_character(id, xp)`)
-          .match({ id: winner === 1 ? game_data.player1 : game_data.player2 })
-          .single();
+        const { data: rewarded_user, error: error_rewarded_user } =
+          await supabase
+            .from("users")
+            .select(`id, xp, primos, selected_character(id, xp)`)
+            .match({ id: winner === 1 ? game_data.player1 : game_data.player2 })
+            .single();
 
         if (error_rewarded_user) {
           return new Response(
