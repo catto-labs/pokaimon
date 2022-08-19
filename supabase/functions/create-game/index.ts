@@ -1,15 +1,16 @@
 import { serve } from "https://deno.land/std@0.131.0/http/server.ts";
-import { supabase } from "../_shared/supabaseClient.ts";
-import { corsHeaders } from "../_shared/cors.ts";
+import { supabase } from "../_shared/supabase.ts";
+import cors from "../_shared/cors.ts";
+
+import { sendErrorResponse, sendSuccessResponse } from "../_shared/globals.ts";
 
 const randomBetween = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1) + min);
 
 serve(async (req: Request) => {
-  // This is needed if you're planning to invoke your function from a browser.
   if (req.method === "OPTIONS") {
     return new Response("ok", {
-      headers: corsHeaders,
+      headers: cors,
     });
   }
 
@@ -32,12 +33,9 @@ serve(async (req: Request) => {
         .match({ region: selected_region })
         .select();
 
-      if (error) {
-        return new Response(JSON.stringify({ success: false, error }), {
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
+      if (!characters || error) {
+        return sendErrorResponse({
+          message: error?.message || "Can't get the characters of this region.",
           status: 500,
         });
       }
@@ -59,11 +57,8 @@ serve(async (req: Request) => {
         .single();
 
       if (!data || error) {
-        return new Response(JSON.stringify({ success: false, error }), {
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
+        return sendErrorResponse({
+          message: error?.message || "Can't get the character.",
           status: 500,
         });
       }
@@ -91,11 +86,8 @@ serve(async (req: Request) => {
         .single();
 
       if (!data || error) {
-        return new Response(JSON.stringify({ success: false, error }), {
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
+        return sendErrorResponse({
+          message: error?.message || "Can't get the character.",
           status: 500,
         });
       }
@@ -114,6 +106,7 @@ serve(async (req: Request) => {
       player2_hp = region_characters[random_index].base_health;
     }
 
+    // Calculate random rewards.
     const rewards = {
       user_xp: randomBetween(50, 150),
       card_xp: randomBetween(20, 80),
@@ -136,35 +129,17 @@ serve(async (req: Request) => {
       .select();
 
     if (error) {
-      return new Response(JSON.stringify({ success: false, error }), {
-        headers: {
-          ...corsHeaders,
-          "Content-Type": "application/json",
-        },
+      return sendErrorResponse({
+        message: error.message,
         status: 500,
       });
     }
 
-    return new Response(JSON.stringify({ success: true, data: game }), {
-      headers: {
-        ...corsHeaders,
-        "Content-Type": "application/json",
-      },
-      status: 200,
-    });
+    return sendSuccessResponse(game);
   } catch (error) {
-    return new Response(
-      JSON.stringify({
-        success: false,
-        error: error.message,
-      }),
-      {
-        headers: {
-          ...corsHeaders,
-          "Content-Type": "application/json",
-        },
-        status: 400,
-      }
-    );
+    return sendErrorResponse({
+      message: error.message,
+      status: 400,
+    });
   }
 });

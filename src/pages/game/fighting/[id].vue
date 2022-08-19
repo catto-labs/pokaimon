@@ -135,6 +135,7 @@
     <h2 class="text-xl font-bold">
       <span class="text-head" v-if="state.winner === state.userIsPlayer">
         You won this fight!
+        <p v-if="state.rewards">{{ JSON.stringify(state.rewards) }}</p>
       </span>
       <span class="text-head" v-else-if="state.winner === 3">
         This fight resulted in a tie!
@@ -364,9 +365,9 @@ onMounted(async () => {
     winner: null,
     game_id,
     current_attack_index:
-      typeof game_data.attack_index === "undefined"
+      typeof game_data.action_index === "undefined"
         ? null
-        : game_data.attack_index,
+        : game_data.action_index,
     player,
     enemy,
 
@@ -407,15 +408,9 @@ onMounted(async () => {
       }
     )
     .subscribe();
-
-  // Only useful when the other player is a bot.
-  processNextTurn();
 });
 
-/**
- * If we don't choose an action, it will select one for us.
- * @action - The action to perform (can choose between 4 actions, `0` to `3`).
- */
+/** Submit your turn to the server. */
 const playTurn = async (action_index: number) => {
   if (!state.loaded || state.winner) return;
 
@@ -425,37 +420,5 @@ const playTurn = async (action_index: number) => {
       action_index,
     },
   });
-
-  return;
-};
-
-/**
- * Checks if someone has `health` <= 0`.
- *
- * When the turn is `enemy`, run `playTurn` directly.
- * When the turn is `player`, we need to wait for the player to choose an action.
- */
-const processNextTurn = async () => {
-  if (!state.loaded || state.winner) return;
-
-  if (state.player.health <= 0) {
-    Object.assign(state, {
-      loaded: true,
-      winner: state.userIsPlayer === 1 ? 2 : 1,
-      userIsPlayer: state.userIsPlayer,
-    });
-
-    alert("Enemy won :(");
-    return;
-  } else if (state.enemy.health <= 0) {
-    Object.assign(state, {
-      loaded: true,
-      winner: state.userIsPlayer,
-      userIsPlayer: state.userIsPlayer,
-    });
-
-    alert("You won!");
-    return;
-  }
 };
 </script>

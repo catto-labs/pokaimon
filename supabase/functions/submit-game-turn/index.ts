@@ -1,17 +1,23 @@
-import { serve } from "https://deno.land/std@0.131.0/http/server.ts";
-import { supabase } from "../_shared/supabaseClient.ts";
-import { corsHeaders } from "../_shared/cors.ts";
+import type { PostgrestError } from "https://esm.sh/@supabase/supabase-js@2.0.0-rc.3";
+import type { GamesTable } from "../../../src/types/Database.ts";
+import type { Character } from "../../../src/types/Character.ts";
 
-import type { CharacterActionsTable } from "../../../src/types/Database.ts";
+import { serve } from "https://deno.land/std@0.131.0/http/server.ts";
+import { sendErrorResponse, sendSuccessResponse } from "../_shared/globals.ts";
+import {
+  supabase,
+  getFromInventoryCharacter,
+  getCharacterInfo,
+} from "../_shared/supabase.ts";
+import cors from "../_shared/cors.ts";
 
 const randomBetween = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1) + min);
 
 serve(async (req: Request) => {
-  // This is needed if you're planning to invoke your function from a browser.
   if (req.method === "OPTIONS") {
     return new Response("ok", {
-      headers: corsHeaders,
+      headers: cors,
     });
   }
 
@@ -29,284 +35,191 @@ serve(async (req: Request) => {
       | string
       | undefined;
     if (!authorization) {
-      return new Response(
-        JSON.stringify({ success: false, error: "No authorization header" }),
-        {
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
-          status: 400,
-        }
-      );
+      return sendErrorResponse({
+        message: "Missing authorization header.",
+        status: 401,
+      });
     }
 
-    const jwt = authorization.replace("Bearer", "").trim();
+    const USER_JWT = authorization.replace("Bearer", "").trim();
     const { data: user_data, error: user_error } = await supabase.auth.getUser(
-      jwt
+      USER_JWT
     );
 
-    if (user_error) {
-      return new Response(
-        JSON.stringify({ success: false, error: user_error }),
-        {
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
-          status: 500,
-        }
-      );
+    if (user_error || !user_data) {
+      return sendErrorResponse({
+        message: user_error?.message || "Invalid authorization header.",
+        status: 403,
+      });
     }
 
     const user_id = user_data.user.id;
 
-    const { data: game_data, error: game_error } = await supabase
+    const game = (await supabase
       .from("games")
       .select()
       .match({ id: body.game_id })
-      .single();
+      .single()) as {
+      data: GamesTable | null;
+      error?: PostgrestError;
+    };
 
-    if (game_error) {
-      return new Response(
-        JSON.stringify({ success: false, error: game_error }),
-        {
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
-          status: 500,
-        }
-      );
+    if (game.error || !game.data) {
+      return sendErrorResponse({
+        message: game.error?.message || "Invalid game ID.",
+        status: 401,
+      });
     }
 
+    // Check if the user is allowed to play this fight.
     const userIsInGame =
-      game_data.player1 === user_id || game_data.player2 === user_id;
+      game.data.player1 === user_id || game.data.player2 === user_id;
 
     if (!userIsInGame) {
-      return new Response(
-        JSON.stringify({ success: false, error: "User is not in game" }),
-        {
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
-          status: 403,
-        }
-      );
+      return sendErrorResponse({
+        message: "Current user is not in this fight.",
+        status: 403,
+      });
     }
 
-    const userIsPlayer = game_data.player1 === user_id ? 1 : 2;
+    // Know which player (1 or 2) is the current user.
+    const userIsPlayer = game.data.player1 === user_id ? 1 : 2;
 
-    const isGameNotFinished = !game_data.winner;
+    // Check if the game is finished or not.
+    const isGameNotFinished = !game.data.winner;
     if (!isGameNotFinished) {
-      return new Response(
-        JSON.stringify({ success: false, error: "Game is already finished" }),
-        {
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
-          status: 403,
-        }
-      );
+      return sendErrorResponse({
+        message: "Fight is already finished.",
+        status: 400,
+      });
     }
 
-    const isUserTurn = game_data.turn === userIsPlayer;
-
+    // Check if the current turn is for us.
+    const isUserTurn = game.data.turn === userIsPlayer;
     if (!isUserTurn) {
-      return new Response(
-        JSON.stringify({ success: false, error: "It's not your turn" }),
-        {
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
-          status: 403,
-        }
-      );
+      return sendErrorResponse({ message: "It's not your turn", status: 400 });
     }
 
+    // Set the current action index as the one we're going to use.
     await supabase
       .from("games")
       .update({ action_index: body.action_index })
-      .match({ id: game_data.id });
+      .match({ id: game.data.id });
 
     // Re-structure game's data about the player.
     const player_received_data = {
-      id: userIsPlayer === 1 ? game_data.player1 : game_data.player2,
+      id: userIsPlayer === 1 ? game.data.player1 : game.data.player2,
       card:
-        userIsPlayer === 1 ? game_data.player1_card : game_data.player2_card,
-      health: userIsPlayer === 1 ? game_data.player1_hp : game_data.player2_hp,
+        userIsPlayer === 1 ? game.data.player1_card : game.data.player2_card,
+      health: userIsPlayer === 1 ? game.data.player1_hp : game.data.player2_hp,
     };
+
+    // Re-structure game's data about the enemy.
     const enemy_received_data = {
-      id: userIsPlayer === 1 ? game_data.player2 : game_data.player1,
+      id: userIsPlayer === 1 ? game.data.player2 : game.data.player1,
       card:
-        userIsPlayer === 1 ? game_data.player2_card : game_data.player1_card,
-      health: userIsPlayer === 1 ? game_data.player2_hp : game_data.player1_hp,
+        userIsPlayer === 1 ? game.data.player2_card : game.data.player1_card,
+      health: userIsPlayer === 1 ? game.data.player2_hp : game.data.player1_hp,
     };
 
-    type BaseCard = {
-      name: string;
-      action_1: CharacterActionsTable;
-      action_2: CharacterActionsTable;
-      action_3: CharacterActionsTable;
-      action_4: CharacterActionsTable;
-    };
+    const { data: player_card, error: player_card_error } =
+      await getFromInventoryCharacter(player_received_data.card);
 
-    type Card = {
-      base_character: BaseCard;
-    };
-
-    const { data: player_card, error: player_card_error } = await supabase
-      .from("character_inventory")
-      .select(
-        `
-          id, xp, health, created_at, owner,
-          base_character(
-            id, region, description,
-            name, element,
-            base_health,
-            action_1(*),
-            action_2(*),
-            action_3(*),
-            action_4(*)
-          )
-        `
-      )
-      .match({ id: player_received_data.card })
-      .single();
-
-    if (player_card_error) {
-      return new Response(
-        JSON.stringify({ success: false, error: player_card_error }),
-        {
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
-          status: 500,
-        }
-      );
+    if (player_card_error || !player_card) {
+      return sendErrorResponse({
+        message:
+          player_card_error?.message ||
+          "Can't get informations about player's character.",
+        status: 500,
+      });
     }
 
-    const player_typed_card = player_card as Card;
-
-    const player = {
-      name: player_typed_card.base_character.name,
+    const player: Character = {
+      name: player_card.base_character.name,
       health: player_received_data.health,
+      maxHealth: player_card.health,
 
       actions: [
-        player_typed_card.base_character.action_1,
-        player_typed_card.base_character.action_2,
-        player_typed_card.base_character.action_3,
-        player_typed_card.base_character.action_4,
+        player_card.base_character.action_1,
+        player_card.base_character.action_2,
+        player_card.base_character.action_3,
+        player_card.base_character.action_4,
       ],
     };
 
     // Initialize the enemy's fight data.
-    let enemy;
+    let enemy: Character;
 
     // If the enemy is a bot, build a character based on the random `character_info` ID.
     if (!enemy_received_data.id) {
-      const { data: enemy_card, error: enemy_card_error } = await supabase
-        .from("character_info")
-        .select(
-          `
-            id, region, description,
-            name, element,
-            base_health,
-            action_1(*),
-            action_2(*),
-            action_3(*),
-            action_4(*)
-          `
-        )
-        .match({ id: enemy_received_data.card })
-        .single();
+      const { data: enemy_card, error: enemy_card_error } =
+        await getCharacterInfo(enemy_received_data.card);
 
-      if (enemy_card_error) {
-        return new Response(
-          JSON.stringify({ success: false, error: enemy_card_error }),
-          {
-            headers: {
-              ...corsHeaders,
-              "Content-Type": "application/json",
-            },
-            status: 500,
-          }
-        );
+      if (enemy_card_error || !enemy_card) {
+        return sendErrorResponse({
+          message:
+            enemy_card_error?.message ||
+            "Can't get informations about enemy's character.",
+          status: 500,
+        });
       }
-
-      const card = enemy_card as BaseCard;
 
       // Build the enemy's fight data.
       enemy = {
-        name: card.name,
+        name: enemy_card.name,
         health: enemy_received_data.health,
+        maxHealth: enemy_card.base_health,
 
-        actions: [card.action_1, card.action_2, card.action_3, card.action_4],
+        actions: [
+          enemy_card.action_1,
+          enemy_card.action_2,
+          enemy_card.action_3,
+          enemy_card.action_4,
+        ],
       };
     }
     // If the enemy is a real player, get the enemy's character informations.
     else {
-      const { data: enemy_card, error: enemy_card_error } = await supabase
-        .from("character_inventory")
-        .select(
-          `
-          id, xp, health, created_at, owner,
-          base_character(
-            id, region, description,
-            name, element,
-            base_health,
-            action_1(*),
-            action_2(*),
-            action_3(*),
-            action_4(*)
-          )
-        `
-        )
-        .match({ id: enemy_received_data.card })
-        .single();
+      const { data: enemy_card, error: enemy_card_error } =
+        await getFromInventoryCharacter(enemy_received_data.card);
 
-      if (enemy_card_error) {
-        return new Response(
-          JSON.stringify({ success: false, error: enemy_card_error }),
-          {
-            headers: {
-              ...corsHeaders,
-              "Content-Type": "application/json",
-            },
-            status: 500,
-          }
-        );
+      if (enemy_card_error || !enemy_card) {
+        return sendErrorResponse({
+          message:
+            enemy_card_error?.message ||
+            "Can't get informations about enemy's character.",
+          status: 500,
+        });
       }
-
-      const card = enemy_card as Card;
 
       // Build the enemy's fight data.
       enemy = {
-        name: card.base_character.name,
+        name: enemy_card.base_character.name,
         health: enemy_received_data.health,
+        maxHealth: enemy_card.health,
 
         actions: [
-          card.base_character.action_1,
-          card.base_character.action_2,
-          card.base_character.action_3,
-          card.base_character.action_4,
+          enemy_card.base_character.action_1,
+          enemy_card.base_character.action_2,
+          enemy_card.base_character.action_3,
+          enemy_card.base_character.action_4,
         ],
       };
     }
 
     // Initialize the fight data.
     const fight_data = {
+      turn: game.data.turn,
       player,
       enemy,
-      turn: game_data.turn,
+
+      // Helper variable.
       userIsPlayer,
     };
 
     const playTurn = async (action_index: number) => {
+      if (!game.data) return;
+
       const fight_player =
         fight_data.turn === fight_data.userIsPlayer ? "player" : "enemy";
       const fight_enemy = fight_player === "player" ? "enemy" : "player";
@@ -349,11 +262,11 @@ serve(async (req: Request) => {
       }
 
       if (
-        (winner === 1 && game_data.player1) ||
-        (winner === 2 && game_data.player2)
+        (winner === 1 && game.data.player1) ||
+        (winner === 2 && game.data.player2)
       ) {
-        // If it's not a bot, proceed to give rewards.
-        const rewards = game_data.rewards as {
+        // If the winner is not a bot, proceed to give rewards.
+        const rewards = game.data.rewards as {
           primos: number;
           card_xp: number;
           user_xp: number;
@@ -363,20 +276,16 @@ serve(async (req: Request) => {
           await supabase
             .from("users")
             .select(`id, xp, primos, selected_character(id, xp)`)
-            .match({ id: winner === 1 ? game_data.player1 : game_data.player2 })
+            .match({ id: winner === 1 ? game.data.player1 : game.data.player2 })
             .single();
 
-        if (error_rewarded_user) {
-          return new Response(
-            JSON.stringify({ success: false, error: error_rewarded_user }),
-            {
-              headers: {
-                ...corsHeaders,
-                "Content-Type": "application/json",
-              },
-              status: 500,
-            }
-          );
+        if (error_rewarded_user || !rewarded_user) {
+          return sendErrorResponse({
+            message:
+              error_rewarded_user?.message ||
+              "Can't get informations about the rewarded user.",
+            status: 500,
+          });
         }
 
         const selected_character = rewarded_user.selected_character as {
@@ -391,12 +300,43 @@ serve(async (req: Request) => {
             xp: rewarded_user.xp + rewards.user_xp,
             primos: rewarded_user.primos + rewards.primos,
           })
-          .match({ id: winner === 1 ? game_data.player1 : game_data.player2 });
+          .match({ id: winner === 1 ? game.data.player1 : game.data.player2 });
 
         await supabase
           .from("character_inventory")
           .update({ xp: card_xp + rewards.card_xp })
           .match({ id: selected_character.id });
+
+        // When the enemy is a bot, reward the user with the bot's character.
+        if (!enemy_received_data.id) {
+          // Check if we already have the bot's character in the user's inventory.
+          const { data: bot_character, error: error_bot_character } =
+            await supabase
+              .from("character_inventory")
+              .select("id")
+              .match({
+                owner: user_id,
+                base_character: enemy_received_data.card,
+              })
+              .single();
+
+          if (error_bot_character) {
+            return sendErrorResponse({
+              message: error_bot_character.message,
+              status: 500,
+            });
+          }
+
+          if (!bot_character) {
+            // If we don't have the bot's character, create it.
+            await supabase.from("character_inventory").insert({
+              owner: user_id,
+              base_character: enemy_received_data.card,
+              health: fight_data.enemy.maxHealth,
+              xp: 0,
+            });
+          }
+        }
       }
 
       const updated_fight_data = {
@@ -410,7 +350,7 @@ serve(async (req: Request) => {
       await supabase
         .from("games")
         .update(updated_fight_data)
-        .match({ id: game_data.id });
+        .match({ id: game.data.id });
     };
 
     await playTurn(body.action_index);
@@ -424,36 +364,16 @@ serve(async (req: Request) => {
       await supabase
         .from("games")
         .update({ action_index })
-        .match({ id: game_data.id });
+        .match({ id: game.data.id });
 
       await playTurn(action_index);
     }
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-      }),
-      {
-        headers: {
-          ...corsHeaders,
-          "Content-Type": "application/json",
-        },
-        status: 200,
-      }
-    );
+    return sendSuccessResponse(null);
   } catch (error) {
-    return new Response(
-      JSON.stringify({
-        success: false,
-        error: error.message,
-      }),
-      {
-        headers: {
-          ...corsHeaders,
-          "Content-Type": "application/json",
-        },
-        status: 400,
-      }
-    );
+    return sendErrorResponse({
+      message: error.message,
+      status: 500,
+    });
   }
 });

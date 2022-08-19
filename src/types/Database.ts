@@ -68,6 +68,12 @@ export interface GamesTable {
   winner: 1 | 2 | 3 | null;
   action_index?: number | null;
   created_at: string;
+
+  rewards: {
+    primos: number;
+    card_xp: number;
+    user_xp: number;
+  };
 }
 
 export interface UsersTable {
