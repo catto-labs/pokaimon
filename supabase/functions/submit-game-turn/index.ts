@@ -236,9 +236,21 @@ serve(async (req: Request) => {
         ? randomBetween(action.self_min_damage, action.self_max_damage)
         : 0;
 
+      // Check if the health is below `maxHealth`.
+      let new_enemy_health = fight_data[fight_enemy].health - enemy_damage;
+      if (new_enemy_health >= fight_data[fight_enemy].maxHealth) {
+        new_enemy_health = fight_data[fight_enemy].maxHealth;
+      }
+
+      // Check if the health is below `maxHealth`.
+      let new_player_health = fight_data[fight_player].health - self_damage;
+      if (new_player_health >= fight_data[fight_player].maxHealth) {
+        new_player_health = fight_data[fight_player].maxHealth;
+      }
+
       // Update the health.
-      fight_data[fight_enemy].health -= enemy_damage;
-      fight_data[fight_player].health -= self_damage;
+      fight_data[fight_enemy].health = new_enemy_health;
+      fight_data[fight_player].health = new_player_health;
 
       const new_player1_hp =
         fight_data.userIsPlayer === 1
@@ -335,11 +347,17 @@ serve(async (req: Request) => {
               health: fight_data.enemy.maxHealth,
               xp: 0,
             });
+
+            // Add the character to the rewards.
+            Object.assign(game.data.rewards, {
+              character_name: enemy.name,
+            });
           }
         }
       }
 
       const updated_fight_data = {
+        rewards: game.data.rewards,
         player1_hp: new_player1_hp,
         player2_hp: new_player2_hp,
         turn: fight_data.turn,

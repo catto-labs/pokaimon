@@ -40,6 +40,7 @@
               v-for="(action, action_index) in state.player.actions"
               @click="playTurn(action_index)"
               class="rounded-lg bg-grey-700 py-2 transition duration-300 hover:-translate-y-0.5 hover:bg-grey-600"
+              :disabled="state.sendingToServer"
             >
               {{ action.name }}
             </button>
@@ -132,16 +133,25 @@
     v-else-if="state.loaded && state.winner"
     class="bg-gray-900 flex h-screen w-screen flex-col items-center justify-center"
   >
-    <h2 class="text-xl font-bold">
-      <span class="text-head" v-if="state.winner === state.userIsPlayer">
-        You won this fight!
-        <p v-if="state.rewards">{{ JSON.stringify(state.rewards) }}</p>
-      </span>
-      <span class="text-head" v-else-if="state.winner === 3">
-        This fight resulted in a tie!
-      </span>
-      <span class="text-head" v-else>You lost this fight</span>
+    <div v-if="state.winner === state.userIsPlayer">
+      <h2 class="text-xl font-bold text-head">You won this fight!</h2>
+
+      <div>
+        <p>
+          Gained +{{ state.rewards.user_xp }}XP and +{{
+            state.rewards.card_xp
+          }}XP for {{ state.player.name }} !
+        </p>
+        <p>Gained +{{ state.rewards.primos }} primogens !</p>
+        <p v-if="state.rewards.character_name">
+          Gained {{ state.rewards.character_name }} ! Go check your inventory.
+        </p>
+      </div>
+    </div>
+    <h2 class="text-xl font-bold text-head" v-else-if="state.winner === 3">
+      This fight resulted in a tie!
     </h2>
+    <h2 class="text-xl font-bold text-head" v-else>You lost this fight</h2>
 
     <router-link
       to="/game"
@@ -196,27 +206,20 @@ const state = reactive<
   | {
       loaded: true;
       enemyIsBot: boolean;
+      sendingToServer: boolean;
 
-      turn: number;
-      winner: null;
-      game_id: number;
+      turn: GamesTable["turn"];
+      winner: GamesTable["winner"];
+      game_id: GamesTable["id"];
       /** `null` when no selected. Goes from `1` to `4` (in DB: `action_{index}`). */
-      current_attack_index: number | null;
+      current_attack_index: GamesTable["action_index"];
 
       userIsPlayer: 1 | 2;
 
       player: Character;
       enemy: Character;
-    }
-  | {
-      loaded: true;
-      winner: 1 | 2 | 3;
-      userIsPlayer: 1 | 2;
 
-      rewards?: {
-        xp: number;
-        primos: number;
-      };
+      rewards: GamesTable["rewards"];
     }
 >({
   loaded: false,
@@ -252,16 +255,6 @@ onMounted(async () => {
   }
 
   const userIsPlayer = game_data.player1 === user_session.id ? 1 : 2;
-
-  // Check if the game is already finished or no.
-  if (game_data.winner) {
-    Object.assign(state, {
-      loaded: true,
-      winner: game_data.winner,
-    });
-
-    return;
-  }
 
   // Re-structure game's data about the player.
   const player_received_data = {
@@ -362,7 +355,8 @@ onMounted(async () => {
   Object.assign(state, {
     loaded: true,
     turn: game_data.turn,
-    winner: null,
+    sendingToServer: false,
+    winner: game_data.winner || null,
     game_id,
     current_attack_index:
       typeof game_data.action_index === "undefined"
@@ -371,8 +365,9 @@ onMounted(async () => {
     player,
     enemy,
 
-    userIsPlayer: game_data.player1 === user_session.id ? 1 : 2,
+    userIsPlayer,
     enemyIsBot: !enemy_received_data.id,
+    rewards: game_data.rewards,
   });
 
   // Listen to table changes.
@@ -413,6 +408,7 @@ onMounted(async () => {
 /** Submit your turn to the server. */
 const playTurn = async (action_index: number) => {
   if (!state.loaded || state.winner) return;
+  state.sendingToServer = true;
 
   await supabase.functions.invoke("submit-game-turn", {
     body: {
@@ -420,5 +416,7 @@ const playTurn = async (action_index: number) => {
       action_index,
     },
   });
+
+  state.sendingToServer = false;
 };
 </script>
