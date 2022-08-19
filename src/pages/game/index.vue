@@ -192,10 +192,12 @@ import IconUser from "virtual:icons/mdi/user";
 import RawIconSwordCross from "@/assets/icons/sword-cross.png";
 import RawIconInformation from "@/assets/icons/information.png";
 
+import type { RealtimeChannel } from "@supabase/realtime-js";
 import type { MarkerOptions, FightMarkerOptions } from "@/types/Marker";
 
 import { reactive, onMounted, ref, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
+import throttle from "lodash.throttle";
 
 import {
   Menu,
@@ -224,6 +226,17 @@ import {
   Icon,
 } from "leaflet";
 
+interface MousePositionPayload {
+  type: string;
+  event: string;
+  payload: {
+    username: string;
+    lat: number;
+    lng: number;
+  };
+  key?: string;
+}
+
 const map_element_ref = ref<HTMLElement | null>(null);
 const map_ref = ref<Map | null>(null);
 
@@ -233,15 +246,34 @@ const state = reactive<{
   username: string;
   primos: number;
 
+  connected_users_channel: RealtimeChannel | null;
+  connected_users: {
+    [username: string]: Marker;
+  };
+
   dialogOpen: boolean;
   openedDialogData: MarkerOptions | null;
 }>({
   username: "Loading...",
   primos: 0,
 
+  connected_users_channel: null,
+  connected_users: {},
+
   dialogOpen: false,
   openedDialogData: null,
 });
+
+const sendMouseBroadcast = throttle(({ lat, lng }) => {
+  if (!state.connected_users_channel) return;
+  if (state.username === "Loading...") return;
+
+  state.connected_users_channel.send({
+    type: "broadcast",
+    event: "location",
+    payload: { username: state.username, lat, lng },
+  });
+}, 1000 / 10);
 
 /** Short-hand to close the dialog. */
 const closeDialog = () => (state.dialogOpen = false);
@@ -398,12 +430,52 @@ onMounted(async () => {
   tile.addTo(map);
   // When the map is ready, store the map reference for access later.
   map.whenReady(() => (map_ref.value = map));
-
   // Add the default markers to the map.
   DEFAULT_MARKERS.forEach(createMarker);
+
+  // Add the connected users to the map.
+  state.connected_users_channel = supabase.channel("map_cursors", {
+    configs: {
+      broadcast: { ack: true },
+    },
+  });
+
+  state.connected_users_channel
+    .on(
+      "broadcast",
+      { event: "location" },
+      (event_data: MousePositionPayload) => {
+        if (!state.connected_users[event_data.payload.username]) {
+          state.connected_users[event_data.payload.username] = new Marker(
+            new LatLng(event_data.payload.lat, event_data.payload.lng)
+          );
+
+          state.connected_users[event_data.payload.username].addTo(map);
+        }
+
+        state.connected_users[event_data.payload.username].setLatLng(
+          new LatLng(event_data.payload.lat, event_data.payload.lng)
+        );
+      }
+    )
+    .subscribe(async (status: string) => {
+      if (status === "SUBSCRIBED") {
+        map.on("mousemove", ({ latlng }) => {
+          sendMouseBroadcast({
+            username: state.username,
+            lat: latlng.lat,
+            lng: latlng.lng,
+          });
+        });
+      }
+    });
 });
 
 onBeforeUnmount(() => {
+  if (state.connected_users_channel) {
+    state.connected_users_channel.unsubscribe();
+  }
+
   if (map_ref.value) map_ref.value.remove();
   if (map_element_ref.value) map_element_ref.value.remove();
 });

@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive } from "vue";
+import { onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 
 import { supabase } from "@/utils/supabase";
