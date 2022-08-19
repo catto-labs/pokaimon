@@ -72,9 +72,3 @@ onMounted(async () => {
   }
 }
 </style>
-
-<route>
-{
-  name: "new-game"
-}
-</route>
