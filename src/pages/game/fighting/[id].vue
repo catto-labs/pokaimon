@@ -1,28 +1,28 @@
 <template>
   <div
     v-if="state.loaded && !state.winner"
-    class="bg-gray-900 flex h-screen w-screen flex-col items-center justify-center"
+    class="flex h-screen w-screen flex-col items-center justify-center bg-black md:bg-grey-900"
   >
-    <div class="mb-4 w-full max-w-6xl rounded-xl bg-black p-8">
+    <div class="mb-4 w-full rounded-xl bg-black p-8 md:h-fit md:max-w-6xl">
       <div
-        class="flex items-end justify-between rounded-lg bg-grey-700 px-4 pt-8 pb-0"
+        class="flex items-end justify-between rounded-lg bg-grey-700 pt-8 pb-0 md:px-4"
       >
-        <div class="ml-8 flex flex-row items-end">
+        <div class="flex flex-row items-end md:ml-8">
           <img
             :src="`https://flkaastenubusimwykpj.supabase.co/storage/v1/object/public/character-images/bodies/${state.player.name.toLowerCase()}.png`"
-            class="aspect-auto h-56"
+            class="aspect-auto md:h-56"
           />
         </div>
-        <div class="mr-8">
+        <div class="md:mr-8">
           <img
             :src="`https://flkaastenubusimwykpj.supabase.co/storage/v1/object/public/character-images/bodies/${state.enemy.name.toLowerCase()}.png`"
-            class="aspect-auto h-56"
+            class="aspect-auto md:h-56"
           />
         </div>
       </div>
 
       <hr class="my-4 text-grey-700" />
-      <div class="grid grid-cols-2 gap-8">
+      <div class="grid gap-8 md:grid-cols-2">
         <div
           v-if="
             state.turn === state.userIsPlayer &&
@@ -70,9 +70,9 @@
           </h2>
         </div>
 
-        <div class="flex gap-8">
+        <div class="gap-8 md:flex">
           <div
-            class="mb-8 flex h-full w-64 flex-col space-y-2 rounded-lg bg-grey-700 p-4"
+            class="mb-8 flex w-full flex-col space-y-2 rounded-lg bg-grey-700 p-4 md:h-full md:w-64"
           >
             <div class="flex flex-row justify-between space-x-16">
               <strong>{{ state.player.name }}</strong>
@@ -98,7 +98,7 @@
             </span>
           </div>
           <div
-            class="mb-8 flex h-full w-64 flex-col space-y-2 rounded-lg bg-grey-700 p-4"
+            class="mb-8 flex w-full flex-col space-y-2 rounded-lg bg-grey-700 p-4 md:h-full md:w-64"
           >
             <div class="flex flex-row justify-between space-x-16">
               <strong>{{ state.enemy.name }}</strong>
