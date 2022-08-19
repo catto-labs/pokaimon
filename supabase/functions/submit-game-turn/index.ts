@@ -339,11 +339,68 @@ serve(async (req: Request) => {
       // Switch turns.
       fight_data.turn = fight_data.turn === 1 ? 2 : 1;
 
+      let winner: 1 | 2 | 3 | null = null;
+      if (new_player1_hp <= 0 && new_player2_hp > 0) {
+        winner = 2;
+      } else if (new_player1_hp > 0 && new_player2_hp <= 0) {
+        winner = 1;
+      } else if (new_player1_hp <= 0 && new_player2_hp <= 0) {
+        winner = 3;
+      }
+
+      if (winner === 1 || winner === 2) {
+        // Check if a bot won or not.
+        if (winner === 1 && !game_data.player1) return;
+        if (winner === 2 && !game_data.player2) return;
+
+        // If it's not a bot, proceed to give rewards.
+        const rewards = game_data.rewards as {
+          primos: number;
+          card_xp: number;
+          user_xp: number;
+        };
+
+        const { rewarded_user, error_rewarded_user } = await supabase
+          .from("users")
+          .select(`id, xp, primos, selected_character(id, xp)`)
+          .match({ id: winner === 1 ? game_data.player1 : game_data.player2 })
+          .single();
+
+        if (error_rewarded_user) {
+          return new Response(
+            JSON.stringify({ success: false, error: error_rewarded_user }),
+            {
+              headers: {
+                ...corsHeaders,
+                "Content-Type": "application/json",
+              },
+              status: 500,
+            }
+          );
+        }
+
+        const card_xp = rewarded_user.selected_character?.xp || 0;
+
+        await supabase
+          .from("users")
+          .update({
+            xp: rewarded_user.xp + rewards.user_xp,
+            primos: rewarded_user.primos + rewards.primos,
+          })
+          .match({ id: winner === 1 ? game_data.player1 : game_data.player2 });
+
+        await supabase
+          .from("character_inventory")
+          .update({ xp: card_xp + rewards.card_xp })
+          .match({ id: rewarded_user.selected_character?.id });
+      }
+
       const updated_fight_data = {
         player1_hp: new_player1_hp,
         player2_hp: new_player2_hp,
         turn: fight_data.turn,
         action_index: null,
+        winner,
       };
 
       await supabase
@@ -356,8 +413,8 @@ serve(async (req: Request) => {
 
     // When it's a bot, play with random action.
     if (!enemy_received_data.id) {
-      // Wait 1s until bot interaction.
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Wait 2s until bot interaction.
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
       const action_index = Math.floor(Math.random() * 4);
       await supabase

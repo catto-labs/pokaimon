@@ -2,6 +2,9 @@ import { serve } from "https://deno.land/std@0.131.0/http/server.ts";
 import { supabase } from "../_shared/supabaseClient.ts";
 import { corsHeaders } from "../_shared/cors.ts";
 
+const randomBetween = (min: number, max: number) =>
+  Math.floor(Math.random() * (max - min + 1) + min);
+
 serve(async (req: Request) => {
   // This is needed if you're planning to invoke your function from a browser.
   if (req.method === "OPTIONS") {
@@ -111,6 +114,12 @@ serve(async (req: Request) => {
       player2_hp = region_characters[random_index].base_health;
     }
 
+    const rewards = {
+      user_xp: randomBetween(50, 150),
+      card_xp: randomBetween(20, 80),
+      primos: randomBetween(10, 100),
+    };
+
     const { data: game, error } = await supabase
       .from("games")
       .insert([
@@ -121,6 +130,7 @@ serve(async (req: Request) => {
           player2,
           player2_card,
           player2_hp,
+          rewards,
         },
       ])
       .select();
