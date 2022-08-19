@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="state.loaded"
+    v-if="state.loaded && !state.winner"
     class="bg-gray-900 flex h-screen w-screen flex-col items-center justify-center"
   >
     <div class="mb-4 w-full max-w-6xl rounded-xl bg-black p-8">
@@ -129,14 +129,32 @@
   </div>
 
   <div
-    v-else
+    v-else-if="state.loaded && state.winner"
     class="bg-gray-900 flex h-screen w-screen flex-col items-center justify-center"
   >
-    <div class="mb-4 w-full max-w-6xl rounded-xl bg-black p-8">
-      <div class="flex items-center justify-center">
-        Gathering fight informations...
-      </div>
-    </div>
+    <h2 class="text-xl font-bold">
+      <span class="text-head" v-if="state.winner === state.userIsPlayer">
+        You won this fight!
+      </span>
+      <span class="text-head" v-else-if="state.winner === 3">
+        This fight resulted in a tie!
+      </span>
+      <span class="text-head" v-else>You lost this fight</span>
+    </h2>
+
+    <router-link
+      to="/game"
+      class="mt-6 rounded-xl bg-brand-main px-4 py-1 hover:text-head hover:no-underline"
+    >
+      Go back to map
+    </router-link>
+  </div>
+
+  <div
+    v-else-if="!state.loaded"
+    class="bg-gray-900 flex h-screen w-screen flex-col items-center justify-center"
+  >
+    <h2>Gathering fight informations...</h2>
   </div>
 </template>
 
@@ -150,6 +168,7 @@
 </route>
 
 <script setup lang="ts">
+import type { GamesTable } from "@/types/Database";
 import type { Character } from "@/types/Character";
 
 import { reactive, onMounted } from "vue";
@@ -159,6 +178,7 @@ import {
   getGame,
   getCharacterInfo,
   getFromInventoryCharacter,
+  supabase,
 } from "@/utils/supabase";
 
 import { store } from "@/utils/store";
@@ -178,7 +198,7 @@ const state = reactive<
       enemyIsBot: boolean;
 
       turn: number;
-      winner: "enemy" | "player" | null;
+      winner: null;
       /** `null` when no selected. Goes from `1` to `4` (in DB: `action_{index}`). */
       current_attack_index: number | null;
 
@@ -186,6 +206,16 @@ const state = reactive<
 
       player: Character;
       enemy: Character;
+    }
+  | {
+      loaded: true;
+      winner: 1 | 2 | 3;
+      userIsPlayer: 1 | 2;
+
+      rewards?: {
+        xp: number;
+        primos: number;
+      };
     }
 >({
   loaded: false,
@@ -221,6 +251,16 @@ onMounted(async () => {
   }
 
   const userIsPlayer = game_data.player1 === user_session.id ? 1 : 2;
+
+  // Check if the game is already finished or no.
+  if (game_data.winner) {
+    Object.assign(state, {
+      loaded: true,
+      winner: game_data.winner,
+    });
+
+    return;
+  }
 
   // Re-structure game's data about the player.
   const player_received_data = {
@@ -328,6 +368,24 @@ onMounted(async () => {
     enemyIsBot: !enemy_received_data.id,
   });
 
+  // Listen to table changes.
+  supabase
+    .channel(`public:games:id=eq.${game_id}`)
+    .on(
+      "postgres_changes",
+      {
+        event: "UPDATE",
+        schema: "public",
+        table: "games",
+        filter: `id=eq.${game_id}`,
+      },
+      (data: { new: GamesTable }) => {
+        const table_new_data = data.new;
+        console.info(table_new_data);
+      }
+    )
+    .subscribe();
+
   // Only useful when the other player is a bot.
   processNextTurn();
 });
@@ -337,7 +395,7 @@ onMounted(async () => {
  * @action - The action to perform (can choose between 4 actions, `0` to `3`).
  */
 const playTurn = async (action_index?: number) => {
-  if (!state.loaded) return;
+  if (!state.loaded || state.winner) return;
 
   if (typeof action_index === "undefined") {
     action_index = Math.floor(Math.random() * 4);
@@ -383,14 +441,24 @@ const playTurn = async (action_index?: number) => {
  * When the turn is `player`, we need to wait for the player to choose an action.
  */
 const processNextTurn = async () => {
-  if (!state.loaded) return;
+  if (!state.loaded || state.winner) return;
 
   if (state.player.health <= 0) {
-    state.winner = "enemy";
+    Object.assign(state, {
+      loaded: true,
+      winner: state.userIsPlayer === 1 ? 2 : 1,
+      userIsPlayer: state.userIsPlayer,
+    });
+
     alert("Enemy won :(");
     return;
   } else if (state.enemy.health <= 0) {
-    state.winner = "player";
+    Object.assign(state, {
+      loaded: true,
+      winner: state.userIsPlayer,
+      userIsPlayer: state.userIsPlayer,
+    });
+
     alert("You won!");
     return;
   }
