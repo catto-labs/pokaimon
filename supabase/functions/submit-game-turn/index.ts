@@ -205,7 +205,7 @@ serve(async (req: Request) => {
     // If the enemy is a bot, build a character based on the random `character_info` ID.
     if (!enemy_received_data.id) {
       const { data: enemy_card, error: enemy_card_error } = await supabase
-        .from("character_inventory")
+        .from("character_info")
         .select(
           `
             id, region, description,
