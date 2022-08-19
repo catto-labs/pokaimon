@@ -59,10 +59,14 @@ export interface GamesTable {
   player1_card: number;
   player2_card: number;
 
+  player1_hp: number;
+  player2_hp: number;
+
   /** `1` for `player1`, `2` for `player2`. */
   turn: 1 | 2;
   /** `null` for not finished. `3` for tie. */
   winner: 1 | 2 | 3 | null;
+  attack_index?: number | null;
   created_at: string;
 }
 

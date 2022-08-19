@@ -127,6 +127,11 @@ serve(async (req: Request) => {
       );
     }
 
+    await supabase
+      .from("games")
+      .update({ action_index: body.action_index })
+      .match({ id: game_data.id });
+
     // Re-structure game's data about the player.
     const player_received_data = {
       id: userIsPlayer === 1 ? game_data.player1 : game_data.player2,
@@ -301,53 +306,71 @@ serve(async (req: Request) => {
       userIsPlayer,
     };
 
-    const fight_player =
-      fight_data.turn === fight_data.userIsPlayer ? "player" : "enemy";
-    const fight_enemy = fight_player === "player" ? "enemy" : "player";
+    const playTurn = async (action_index: number) => {
+      const fight_player =
+        fight_data.turn === fight_data.userIsPlayer ? "player" : "enemy";
+      const fight_enemy = fight_player === "player" ? "enemy" : "player";
 
-    const action = fight_data[fight_player].actions[body.action_index];
+      const action = fight_data[fight_player].actions[action_index];
 
-    // Perform the action.
-    const enemy_hit = Math.random() < action.enemy_hit_chance;
-    const self_hit = Math.random() < action.self_hit_chance;
-    const enemy_damage = enemy_hit
-      ? randomBetween(action.enemy_min_damage, action.enemy_max_damage)
-      : 0;
-    const self_damage = self_hit
-      ? randomBetween(action.self_min_damage, action.self_max_damage)
-      : 0;
+      // Perform the action.
+      const enemy_hit = Math.random() < action.enemy_hit_chance;
+      const self_hit = Math.random() < action.self_hit_chance;
+      const enemy_damage = enemy_hit
+        ? randomBetween(action.enemy_min_damage, action.enemy_max_damage)
+        : 0;
+      const self_damage = self_hit
+        ? randomBetween(action.self_min_damage, action.self_max_damage)
+        : 0;
 
-    // Update the health.
-    fight_data[fight_enemy].health -= enemy_damage;
-    fight_data[fight_player].health -= self_damage;
+      // Update the health.
+      fight_data[fight_enemy].health -= enemy_damage;
+      fight_data[fight_player].health -= self_damage;
 
-    const new_player1_hp =
-      fight_data.userIsPlayer === 1
-        ? fight_data.player.health
-        : fight_data.enemy.health;
-    const new_player2_hp =
-      fight_data.userIsPlayer === 2
-        ? fight_data.player.health
-        : fight_data.enemy.health;
+      const new_player1_hp =
+        fight_data.userIsPlayer === 1
+          ? fight_data.player.health
+          : fight_data.enemy.health;
+      const new_player2_hp =
+        fight_data.userIsPlayer === 2
+          ? fight_data.player.health
+          : fight_data.enemy.health;
 
-    // Switch turns.
-    fight_data.turn = fight_data.turn === 1 ? 2 : 1;
+      // Switch turns.
+      fight_data.turn = fight_data.turn === 1 ? 2 : 1;
 
-    const updated_fight_data = {
-      player1_hp: new_player1_hp,
-      player2_hp: new_player2_hp,
-      turn: fight_data.turn,
+      const updated_fight_data = {
+        player1_hp: new_player1_hp,
+        player2_hp: new_player2_hp,
+        turn: fight_data.turn,
+        action_index: null,
+      };
+
+      await supabase
+        .from("games")
+        .update(updated_fight_data)
+        .match({ id: game_data.id });
     };
 
-    await supabase
-      .from("games")
-      .update(updated_fight_data)
-      .match({ id: game_data.id });
+    await playTurn(body.action_index);
+
+    // When it's a bot, play with random action.
+    if (!enemy_received_data.id) {
+      // Wait 1s until bot interaction.
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      const action_index = Math.floor(Math.random() * 4);
+      await supabase
+        .from("games")
+        .update({ action_index })
+        .match({ id: game_data.id });
+
+      await playTurn(action_index);
+    }
 
     return new Response(
       JSON.stringify({
         success: true,
-        data: { old: fight_data, new: updated_fight_data },
       }),
       {
         headers: {

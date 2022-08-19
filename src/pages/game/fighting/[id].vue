@@ -182,7 +182,6 @@ import {
 } from "@/utils/supabase";
 
 import { store } from "@/utils/store";
-import { wait, randomBetween } from "@/utils/globals";
 
 const router = useRouter();
 const props = defineProps({
@@ -199,6 +198,7 @@ const state = reactive<
 
       turn: number;
       winner: null;
+      game_id: number;
       /** `null` when no selected. Goes from `1` to `4` (in DB: `action_{index}`). */
       current_attack_index: number | null;
 
@@ -266,10 +266,12 @@ onMounted(async () => {
   const player_received_data = {
     id: userIsPlayer === 1 ? game_data.player1 : game_data.player2,
     card: userIsPlayer === 1 ? game_data.player1_card : game_data.player2_card,
+    health: userIsPlayer === 1 ? game_data.player1_hp : game_data.player2_hp,
   };
   const enemy_received_data = {
     id: userIsPlayer === 1 ? game_data.player2 : game_data.player1,
     card: userIsPlayer === 1 ? game_data.player2_card : game_data.player1_card,
+    health: userIsPlayer === 1 ? game_data.player2_hp : game_data.player1_hp,
   };
 
   if (!player_received_data || !enemy_received_data) {
@@ -291,7 +293,7 @@ onMounted(async () => {
   const player: Character = {
     name: player_card.base_character.name,
 
-    health: player_card.health,
+    health: player_received_data.health,
     maxHealth: player_card.health,
 
     actions: [
@@ -319,7 +321,7 @@ onMounted(async () => {
     // Build the enemy's fight data.
     enemy = {
       name: enemy_card.name,
-      health: enemy_card.base_health,
+      health: enemy_received_data.health,
       maxHealth: enemy_card.base_health,
       actions: [
         enemy_card.action_1,
@@ -344,7 +346,7 @@ onMounted(async () => {
     enemy = {
       name: enemy_card.base_character.name,
 
-      health: enemy_card.health,
+      health: enemy_received_data.health,
       maxHealth: enemy_card.health,
 
       actions: [
@@ -360,13 +362,19 @@ onMounted(async () => {
     loaded: true,
     turn: game_data.turn,
     winner: null,
-    current_attack_index: null,
+    game_id,
+    current_attack_index:
+      typeof game_data.attack_index === "undefined"
+        ? null
+        : game_data.attack_index,
     player,
     enemy,
 
     userIsPlayer: game_data.player1 === user_session.id ? 1 : 2,
     enemyIsBot: !enemy_received_data.id,
   });
+
+  console.log(state);
 
   // Listen to table changes.
   supabase
@@ -380,8 +388,24 @@ onMounted(async () => {
         filter: `id=eq.${game_id}`,
       },
       (data: { new: GamesTable }) => {
+        if (!state.loaded || state.winner) return;
+
         const table_new_data = data.new;
-        console.info(table_new_data);
+        Object.assign(state, {
+          turn: table_new_data.turn,
+          winner: table_new_data.winner,
+          current_attack_index: table_new_data.attack_index,
+          player: {
+            ...state.player,
+            health:
+              table_new_data[userIsPlayer === 1 ? "player1_hp" : "player2_hp"],
+          },
+          enemy: {
+            ...state.enemy,
+            health:
+              table_new_data[userIsPlayer === 2 ? "player1_hp" : "player2_hp"],
+          },
+        });
       }
     )
     .subscribe();
@@ -394,44 +418,17 @@ onMounted(async () => {
  * If we don't choose an action, it will select one for us.
  * @action - The action to perform (can choose between 4 actions, `0` to `3`).
  */
-const playTurn = async (action_index?: number) => {
+const playTurn = async (action_index: number) => {
   if (!state.loaded || state.winner) return;
 
-  if (typeof action_index === "undefined") {
-    action_index = Math.floor(Math.random() * 4);
-  }
+  await supabase.functions.invoke("submit-game-turn", {
+    body: {
+      game_id: state.game_id,
+      action_index,
+    },
+  });
 
-  // Store the action index to say which action we will perform.
-  state.current_attack_index = action_index;
-
-  const player = state.turn === state.userIsPlayer ? "player" : "enemy";
-  const enemy = player === "player" ? "enemy" : "player";
-
-  const action = state[player].actions[action_index];
-
-  // Perform the action.
-  const enemy_hit = Math.random() < action.enemy_hit_chance;
-  const self_hit = Math.random() < action.self_hit_chance;
-  const enemy_damage = enemy_hit
-    ? randomBetween(action.enemy_min_damage, action.enemy_max_damage)
-    : 0;
-  const self_damage = self_hit
-    ? randomBetween(action.self_min_damage, action.self_max_damage)
-    : 0;
-
-  // Update the health.
-  state[enemy].health -= enemy_damage;
-  state[player].health -= self_damage;
-
-  // Wait 2s before next turn (assume it's an animation or idk).
-  await wait(2000);
-
-  // Switch turns.
-  state.turn = state.turn === 1 ? 2 : 1;
-  state.current_attack_index = null;
-
-  // Process next turn.
-  processNextTurn();
+  return;
 };
 
 /**
@@ -461,12 +458,6 @@ const processNextTurn = async () => {
 
     alert("You won!");
     return;
-  }
-
-  // If the enemy is a bot, play the turn.
-  if (state.turn !== state.userIsPlayer && state.enemyIsBot) {
-    await wait(750);
-    playTurn();
   }
 };
 </script>
