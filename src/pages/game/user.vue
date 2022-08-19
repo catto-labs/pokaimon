@@ -14,7 +14,7 @@
       </span>
     </router-link>
     <div
-      v-if="!state.loading"
+      v-if="state.loaded"
       class="mb-4 flex w-full max-w-4xl justify-between rounded-xl bg-black p-8"
     >
       <div class="mx-8 flex flex-col space-y-8">
@@ -115,16 +115,22 @@
 </route>
 
 <script setup lang="ts">
+import type {
+  CharacterInventoryTable,
+  CharacterInfoTable,
+} from "@/types/Database";
+
 import IconArrowLeft from "virtual:icons/mdi/arrow-left";
 import IconConstruction from "virtual:icons/mdi/construction";
 import IconGestureTap from "virtual:icons/mdi/gesture-tap";
 import IconChartBar from "virtual:icons/mdi/chart-bar";
 import IconBrush from "virtual:icons/mdi/brush";
 
-import { reactive, onBeforeMount } from "vue";
+import { reactive, onMounted } from "vue";
 import { RouterLink, useRouter } from "vue-router";
 
-import { supabase } from "@/utils/supabase";
+import { getFullUser } from "@/utils/supabase";
+
 import { store } from "@/utils/store";
 import { capitalizeFirstLetter } from "@/utils/globals";
 
@@ -135,58 +141,41 @@ const joinTime = new Date();
 
 const state = reactive<
   | {
-      loading: false;
+      loaded: true;
       traveller: "lumine" | "aether" | null;
       username: string | null;
-      xp: number | null;
-      primos: number | null;
-      selected_character: unknown | null;
+      xp: number;
+      primos: number;
+      selected_character: Omit<CharacterInventoryTable, "base_character"> & {
+        base_character: CharacterInfoTable;
+      };
       is_developer: boolean;
       is_ui_designer: boolean;
       is_character_designer: boolean;
       is_artwork_designer: boolean;
     }
-  | { loading: true }
+  | { loaded: false }
 >({
-  loading: true,
+  loaded: false,
 });
 
-onBeforeMount(async () => {
-  const { data, error } = await supabase
-    .from("users")
-    .select(
-      `
-      username,
-      starter_traveller,
-      primos,
-      xp,
-      selected_character(
-        id,
-        xp,
-        health,
-        base_character(
-          name,
-          region,
-          element
-        )
-      ),
-      is_developer,
-      is_ui_designer,
-      is_character_designer,
-      is_artwork_designer
-    `
-    )
-    .match({ id: store.authSession?.user?.id })
-    .single();
+onMounted(async () => {
+  const user_id = store.authSession?.user?.id;
+  if (!user_id) {
+    router.push("/game");
+    return;
+  }
+
+  const { data, error } = await getFullUser(user_id);
 
   if (error || !data) {
-    console.log(error);
-    alert("Something went wrong getting your user info, redirecting...");
-    return router.push("/game");
+    alert("Something went wrong getting your user info, going back to map...");
+    router.push("/game");
+    return;
   }
 
   Object.assign(state, {
-    loading: false,
+    loaded: true,
     traveller: data.starter_traveller,
     username: data.username,
     xp: data.xp,

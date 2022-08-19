@@ -3,6 +3,7 @@ import type {
   CharacterActionsTable,
   CharacterInfoTable,
   GamesTable,
+  UsersTable,
 } from "@/types/Database";
 
 import { createClient } from "@supabase/supabase-js";
@@ -107,6 +108,53 @@ export const getGame = async (id: number) => {
 
   type Response = Awaited<ReturnType<typeof getData>>;
   type ResponseSuccess = GamesTable;
+
+  const response = (await getData()) as {
+    error: Response["error"];
+    data: ResponseSuccess;
+  };
+
+  return response;
+};
+
+export const getFullUser = async (id: string) => {
+  const getData = () =>
+    supabase
+      .from("users")
+      .select(
+        `
+      username,
+      starter_traveller,
+      primos,
+      xp,
+      id,
+      selected_character(
+        id, xp, health, created_at, owner,
+        base_character(
+          name,
+          region,
+          element
+        )
+      ),
+      is_developer,
+      is_ui_designer,
+      is_character_designer,
+      is_artwork_designer
+    `
+      )
+      .match({ id })
+      .single();
+
+  type Response = Awaited<ReturnType<typeof getData>>;
+  type ResponseSuccess = Omit<UsersTable, "selected_character"> & {
+    selected_character: Omit<CharacterInventoryTable, "base_character"> & {
+      base_character: {
+        name: CharacterInfoTable["name"];
+        region: CharacterInfoTable["region"];
+        element: CharacterInfoTable["element"];
+      };
+    };
+  };
 
   const response = (await getData()) as {
     error: Response["error"];
