@@ -62,7 +62,7 @@ const state = reactive({
 const region = (route.params.region as string) || "mondstadt";
 const isOfflineRaw = (route.params.offline as "yes" | "no") || "yes";
 const isOffline = isOfflineRaw === "yes";
-const isHiddenRaw = (route.params.hidden as "yes" | "no") || "yes";
+const isHiddenRaw = (route.params.hidden as "yes" | "no") || "no";
 const isHidden = isHiddenRaw === "yes";
 
 const getJoinFightUrl = () =>
