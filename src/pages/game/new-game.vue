@@ -3,58 +3,79 @@
     class="bg-gray-900 flex h-screen w-screen flex-col items-center justify-center px-2"
   >
     <div class="text-center">
-      <h1 class="mb-2 text-4xl font-bold text-head">
+      <h1 v-if="!state.gameCreated" class="mb-2 text-4xl font-bold text-head">
         Creating game in {{ capitalizeFirstLetter(region) }}...
       </h1>
-      <h2 class="mb-2 text-xl text-note">
+      <h1 v-else class="mb-2 text-4xl font-bold text-head">
+        Game created in {{ capitalizeFirstLetter(region) }}!
+      </h1>
+      <h2 v-if="isOffline" class="mb-2 text-xl text-note">
         Hang on for a few seconds, you'll be redirected soon!
+      </h2>
+      <h2 v-else class="mb-2 text-xl text-note">
+        Waiting for an opponent online...
       </h2>
       <div class="mt-6 flex items-center justify-center gap-4">
         <PrimoIcon class="dot-flashing h-8" />
         <PrimoIcon class="dot-flashing h-8" />
         <PrimoIcon class="dot-flashing h-8" />
       </div>
+
+      <button
+        v-if="!isOffline"
+        class="mt-8 rounded-xl bg-brand-main py-1 px-4"
+        @click="router.push(`/game/fighting/${state.gameId}`)"
+      >
+        Play against a bot
+      </button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onMounted, reactive } from "vue";
 import { useRouter, useRoute } from "vue-router";
 
 import { capitalizeFirstLetter } from "@/utils/globals";
 import { supabase } from "@/utils/supabase";
-import { store } from "@/utils/store";
 
 import PrimoIcon from "@/components/game/PrimoIcon.vue";
 
 const router = useRouter();
 const route = useRoute();
 
+const state = reactive({
+  gameCreated: false,
+  gameId: -1,
+});
+
 const region = (route.params.region as string) || "mondstadt";
+const isOfflineRaw = (route.params.offline as "yes" | "no") || "yes";
+const isOffline = isOfflineRaw === "yes";
 
 onMounted(async () => {
-  const user_id = store.authSession?.user?.id;
-  if (!user_id) return router.push("/game");
-
   const { data: response, error } = await supabase.functions.invoke(
     "create-game",
     {
       body: {
         region,
-        player1: user_id,
       },
     }
   );
 
   if (error || response.error || !response.success) {
-    alert("An error occurred when creating the game. Redirecitng to map...");
+    alert("An error occurred when creating the game. Redirecting to map...");
     router.push("/game");
     return;
   }
 
   const game = response.data[0];
-  router.push(`/game/fighting/${game.id}`);
+  state.gameCreated = true;
+  state.gameId = game.id;
+
+  if (isOffline) {
+    router.push(`/game/fighting/${game.id}`);
+  }
 });
 </script>
 

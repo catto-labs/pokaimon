@@ -11,8 +11,6 @@ import {
 } from "../_shared/supabase.ts";
 import cors from "../_shared/cors.ts";
 
-console.log("STARTING");
-
 const randomBetween = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1) + min);
 
@@ -266,27 +264,19 @@ serve(async (req: Request) => {
 
       // Switch turns.
       fight_data.turn = fight_data.turn === 1 ? 2 : 1;
-      console.log("switching turns", winner);
 
       if (new_player1_hp <= 0 && new_player2_hp > 0) {
-        console.log("Player 2 won!");
         winner = 2;
       } else if (new_player1_hp > 0 && new_player2_hp <= 0) {
-        console.log("Player 1 won!");
         winner = 1;
       } else if (new_player1_hp <= 0 && new_player2_hp <= 0) {
-        console.log("Tie!");
         winner = 3;
       }
-
-      console.log("winner", winner);
 
       if (
         (winner === 1 && game.data.player1) ||
         (winner === 2 && game.data.player2)
       ) {
-        console.log("winner check is valid.");
-
         // If the winner is not a bot, proceed to give rewards.
         const rewards = game.data.rewards as {
           primos: number;
@@ -375,18 +365,15 @@ serve(async (req: Request) => {
     };
 
     await playTurn(body.action_index);
-    console.log("usr index:", body.action_index);
 
     // When it's a bot, play with random action.
     if (!enemy_received_data.id && winner === null) {
       // Wait 2s until to simulate bot's choice.
       await new Promise((resolve) => setTimeout(resolve, 2000));
       const action_index = Math.floor(Math.random() * 4);
-      console.log("bot index:", action_index);
 
       // Simulate the bot's network server latence.
       await playTurn(action_index);
-      console.log("SHOULD BE END");
     }
 
     return sendSuccessResponse(null);

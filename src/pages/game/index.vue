@@ -145,17 +145,17 @@
                   <div class="flex flex-row justify-end gap-2">
                     <button
                       class="w-full rounded-md bg-brand-second px-6 py-1 transition-colors hover:bg-opacity-80 sm:w-auto"
-                      onclick="
-                        window.alert(
-                          '1v1 is currently not done... Come back later traveller !'
-                        )
+                      @click="
+                        createFightIn(state.openedDialogData!.region, 'no')
                       "
                     >
                       Matchmaking
                     </button>
                     <button
                       class="w-full rounded-md bg-brand-main px-6 py-1 transition-colors hover:bg-opacity-80 sm:w-auto"
-                      @click="createFightIn(state.openedDialogData!.region)"
+                      @click="
+                        createFightIn(state.openedDialogData!.region, 'yes')
+                      "
                     >
                       Play against a bot
                     </button>
@@ -250,9 +250,12 @@ const closeDialog = () => (state.dialogOpen = false);
  * Creates a new game with a bot.
  * @param region The bot will use this info to build his deck. Defaults to `mondstadt`.
  */
-const createFightIn = (region: FightMarkerOptions["region"] = "mondstadt") => {
+const createFightIn = (
+  region: FightMarkerOptions["region"] = "mondstadt",
+  offline: "yes" | "no"
+) => {
   console.info("Starting a new game in region", region, "...");
-  router.push({ name: "new-game", params: { region } });
+  router.push({ name: "new-game", params: { region, offline } });
 };
 
 const MONDSTADT_LOCATION = new LatLng(-19.15562605857849, 41.16369414329529);
@@ -395,8 +398,6 @@ onMounted(async () => {
 
   // Add the default markers to the map.
   DEFAULT_MARKERS.forEach(createMarker);
-
-  map.on("click", console.log);
 });
 
 onBeforeUnmount(() => {
