@@ -10,7 +10,7 @@
         <div class="flex flex-row items-end md:ml-8">
           <img
             :src="`https://flkaastenubusimwykpj.supabase.co/storage/v1/object/public/character-images/bodies/${state.player.name.toLowerCase()}.png`"
-            class="aspect-auto md:h-56"
+            class="aspect-auto scale-x-[-1] md:h-56"
           />
         </div>
         <div class="md:mr-8">
