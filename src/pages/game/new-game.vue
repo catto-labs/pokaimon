@@ -12,8 +12,18 @@
       <h2 v-if="isOffline" class="mb-2 text-xl text-note">
         Hang on for a few seconds, you'll be redirected soon!
       </h2>
-      <h2 v-else class="mb-2 text-xl text-note">
+      <h2
+        v-else-if="!isOffline && !isHidden && state.gameCreated"
+        class="mb-2 text-xl text-note"
+      >
         Waiting for an opponent online...
+      </h2>
+      <h2
+        v-else-if="!isOffline && isHidden && state.gameCreated"
+        class="mb-2 text-xl text-note"
+      >
+        Send this URL to your opponent !
+        <button>{{ getJoinFightUrl() }}</button>
       </h2>
       <div class="mt-6 flex items-center justify-center gap-4">
         <PrimoIcon class="dot-flashing h-8" />
@@ -52,6 +62,11 @@ const state = reactive({
 const region = (route.params.region as string) || "mondstadt";
 const isOfflineRaw = (route.params.offline as "yes" | "no") || "yes";
 const isOffline = isOfflineRaw === "yes";
+const isHiddenRaw = (route.params.hidden as "yes" | "no") || "yes";
+const isHidden = isHiddenRaw === "yes";
+
+const getJoinFightUrl = () =>
+  window.location.origin + "/game/fighting/" + state.gameId;
 
 onMounted(async () => {
   const { data: response, error } = await supabase.functions.invoke(
@@ -59,6 +74,8 @@ onMounted(async () => {
     {
       body: {
         region,
+        offline: isOffline,
+        hidden: isHidden,
       },
     }
   );
@@ -70,8 +87,8 @@ onMounted(async () => {
   }
 
   const game = response.data[0];
-  state.gameCreated = true;
   state.gameId = game.id;
+  state.gameCreated = true;
 
   if (isOffline) {
     router.push(`/game/fighting/${game.id}`);

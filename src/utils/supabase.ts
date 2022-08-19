@@ -117,30 +117,73 @@ export const getGame = async (id: number) => {
   return response;
 };
 
+// export const getAvailableGames = async () => {
+//   const getData = () =>
+//     supabase
+//       .from("games")
+//       .select()
+//       .match({ available: true, hidden: false })
+//       .select(
+//         `
+//           id,
+//           region,
+//           player1(
+//             username,
+//             selected_character(
+//               health,
+//               base_character(
+//                 name,
+//                 element
+//               )
+//             )
+//           )
+//         `
+//       );
+
+//   type Response = Awaited<ReturnType<typeof getData>>;
+//   type ResponseSuccess = (Omit<GamesTable, "player1"> & {
+//     player1: Omit<UsersTable, "selected_character"> & {
+//       selected_character: Omit<CharacterInventoryTable, "base_character"> & {
+//         base_character: {
+//           name: string;
+//           element: string;
+//         };
+//       };
+//     };
+//   })[];
+
+//   const response = (await getData()) as {
+//     error: Response["error"];
+//     data: ResponseSuccess;
+//   };
+
+//   return response;
+// };
+
 export const getFullUser = async (id: string) => {
   const getData = () =>
     supabase
       .from("users")
       .select(
         `
-      username,
-      starter_traveller,
-      primos,
-      xp,
-      id,
-      selected_character(
-        id, xp, health, created_at, owner,
-        base_character(
-          name,
-          region,
-          element
-        )
-      ),
-      is_developer,
-      is_ui_designer,
-      is_character_designer,
-      is_artwork_designer
-    `
+          username,
+          starter_traveller,
+          primos,
+          xp,
+          id,
+          selected_character(
+            id, xp, health, created_at, owner,
+            base_character(
+              name,
+              region,
+              element
+            )
+          ),
+          is_developer,
+          is_ui_designer,
+          is_character_designer,
+          is_artwork_designer
+        `
       )
       .match({ id })
       .single();

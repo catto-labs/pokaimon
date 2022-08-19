@@ -69,6 +69,9 @@ export interface GamesTable {
   action_index: number | null;
   created_at: string;
 
+  available: boolean;
+  private: boolean;
+
   rewards: {
     primos: number;
     card_xp: number;

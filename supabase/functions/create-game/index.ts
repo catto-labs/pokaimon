@@ -16,7 +16,7 @@ serve(async (req: Request) => {
   }
 
   try {
-    const { region } = await req.json();
+    const { region, offline, hidden } = await req.json();
     const selected_region = region || "mondstadt";
 
     const authorization = req.headers.get("authorization") as
@@ -112,6 +112,8 @@ serve(async (req: Request) => {
           player2_card,
           player2_hp,
           rewards,
+          available: offline ? false : true,
+          hidden: hidden ? true : false,
         },
       ])
       .select();
