@@ -22,7 +22,7 @@
       <div class="flex gap-6 rounded-xl pl-4 md:bg-grey-700 md:bg-opacity-40">
         <nav class="hidden flex-row items-center space-x-2 md:flex">
           <NavbarItem to="/cards" text="Cards" />
-          <NavbarItem to="/sets" text="Card Sets" />
+          <!-- <NavbarItem to="/sets" text="Card Sets" /> -->
           <NavbarItem to="/community" text="Community" />
           <NavbarItem to="/news" text="News" />
         </nav>
@@ -45,7 +45,7 @@
       class="absolute top-4 left-0 right-0 mx-8 mt-14 hidden items-center rounded-xl border border-grey-700 bg-grey-800 bg-opacity-60 p-4 filter backdrop-blur-md md:top-auto md:left-auto md:right-4 md:mt-0 md:hidden md:space-y-0 md:space-x-8 md:border-none md:px-0 md:py-0 md:pl-4"
     >
       <NavbarItem to="/cards" text="Cards" />
-      <NavbarItem to="/sets" text="Card Sets" />
+      <!-- <NavbarItem to="/sets" text="Card Sets" /> -->
       <NavbarItem to="/community" text="Community" />
       <NavbarItem to="/news" text="News" />
 

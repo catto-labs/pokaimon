@@ -1,8 +1,51 @@
 <template>
-  <div class="relative z-10 p-4">
-    <div class="flex justify-between">
+  <div class="absolute flex h-screen w-screen flex-col justify-end p-4">
+    <div class="flex flex-row justify-end">
+      <div class="flex flex-col gap-4">
+        <TransitionRoot
+          :show="copyToast"
+          as="template"
+          leave="transform duration-200 transition ease-in-out"
+          leave-from="opacity-100 rotate-0 scale-100 "
+          leave-to="opacity-0 scale-95 "
+        >
+          <div
+            class="z-10 w-96 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 p-2 backdrop-blur-md"
+          >
+            <div class="flex gap-2">
+              <IconContentCopy />
+              <h1 class="font-bold">Copied to Clipboard</h1>
+            </div>
+            <span class="text-body"
+              >Your username was copied to the clipboard!</span
+            >
+          </div>
+        </TransitionRoot>
+        <TransitionRoot
+          :show="loginToast"
+          as="template"
+          leave="transform duration-200 transition ease-in-out"
+          leave-from="opacity-100 rotate-0 scale-100 "
+          leave-to="opacity-0 scale-95 "
+        >
+          <div
+            class="z-10 w-96 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 p-2 backdrop-blur-md"
+          >
+            <div class="flex gap-2">
+              <IconHandWave />
+              <h1 class="font-bold">Welcome back!</h1>
+            </div>
+            <span class="text-body">Logged in as {{ state.username }}. </span>
+          </div>
+        </TransitionRoot>
+      </div>
+    </div>
+  </div>
+
+  <div class="relative z-20 p-4">
+    <div class="flex flex-col justify-between gap-2 md:flex-row">
       <div
-        class="my-auto flex cursor-default items-center gap-8 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md"
+        class="md:justfiy-start my-auto flex cursor-default items-center justify-center gap-8 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md"
       >
         <IconPerson
           @click="router.push('/game/user')"
@@ -17,7 +60,15 @@
           class="my-auto cursor-pointer text-2xl hover:text-brand-main"
         />
       </div>
-      <div class="flex items-center gap-4">
+      <div class="flex items-center justify-between gap-4 md:justify-end">
+        <div
+          class="my-auto flex cursor-default space-x-2 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md"
+        >
+          <img src="@/assets/game/primogem.svg" class="my-auto h-4" />
+          <span class="my-auto text-white">{{
+            state.primos.toLocaleString("en-GB")
+          }}</span>
+        </div>
         <Menu as="div">
           <div>
             <MenuButton
@@ -43,7 +94,10 @@
               <div class="px-2 py-2">
                 <MenuItem v-slot="{ active }">
                   <button
-                    @click="copyToClipboard(state.username)"
+                    @click="
+                      copyToClipboard(state.username);
+                      resetCopyToast();
+                    "
                     :class="[
                       active
                         ? 'bg-brand-main bg-opacity-60 text-white'
@@ -52,7 +106,7 @@
                     ]"
                   >
                     <IconContentCopy />
-                    <span>Copy to clipboard</span>
+                    <span class="text-left text-white">Copy to clipboard</span>
                   </button>
                 </MenuItem>
                 <MenuItem v-slot="{ active }">
@@ -66,21 +120,13 @@
                     ]"
                   >
                     <IconLogout />
-                    <span>Logout of Pokaimon</span>
+                    <span class="text-left text-white">Logout of Pokaimon</span>
                   </button>
                 </MenuItem>
               </div>
             </MenuItems>
           </transition>
         </Menu>
-        <div
-          class="my-auto flex cursor-default space-x-2 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md"
-        >
-          <img src="@/assets/game/primogem.svg" class="my-auto h-4" />
-          <span class="my-auto text-white">{{
-            state.primos.toLocaleString("en-GB")
-          }}</span>
-        </div>
       </div>
     </div>
   </div>
@@ -122,27 +168,32 @@
               class="w-full max-w-xl transform overflow-hidden rounded-2xl border border-grey-700 bg-grey-800 p-6 text-left align-middle shadow-xl transition-all"
             >
               <div v-if="state.openedDialogData !== null">
-                <DialogTitle
-                  as="h3"
-                  class="text-gray-900 text-lg font-bold leading-6"
-                >
-                  {{ state.openedDialogData.title }}
-                </DialogTitle>
-                <DialogDescription
-                  v-if="state.openedDialogData.description"
-                  class="text-gray-500 mt-2 text-sm"
-                >
-                  {{ state.openedDialogData.description }}
-                </DialogDescription>
+                <div class="flex justify-between">
+                  <div class="space-y-2">
+                    <DialogTitle
+                      as="h3"
+                      class="text-gray-900 text-lg font-bold leading-6"
+                    >
+                      {{ state.openedDialogData.title }}
+                    </DialogTitle>
+                    <DialogDescription
+                      v-if="state.openedDialogData.description"
+                      class="text-gray-500 mt-2 text-sm"
+                    >
+                      {{ state.openedDialogData.description }}
+                    </DialogDescription>
+                  </div>
 
-                <div class="mt-12 flex flex-col justify-end gap-6 sm:flex-row">
                   <button
-                    class="rounded-md bg-grey bg-opacity-20 px-6 py-1 transition-colors hover:bg-opacity-40"
+                    class="mb-auto h-fit rounded-md bg-grey bg-opacity-20 p-2 transition-colors hover:bg-opacity-40"
                     @click="closeDialog()"
                   >
-                    Close
+                    <IconClose />
                   </button>
-                  <div class="flex flex-row justify-end gap-2">
+                </div>
+
+                <div class="mt-12 flex flex-col justify-end gap-6 sm:flex-row">
+                  <div class="flex flex-col justify-end gap-2 md:flex-row">
                     <button
                       class="w-full rounded-md bg-brand-second px-6 py-1 transition-colors hover:bg-opacity-80 sm:w-auto"
                       @click="
@@ -188,6 +239,8 @@ import IconBackpack from "virtual:icons/mdi/backpack";
 import IconPerson from "virtual:icons/mdi/person";
 import IconLogout from "virtual:icons/mdi/logout";
 import IconUser from "virtual:icons/mdi/user";
+import IconClose from "virtual:icons/mdi/close";
+import IconHandWave from "virtual:icons/mdi/hand-wave";
 
 import RawIconSwordCross from "@/assets/icons/sword-cross.png";
 import RawIconInformation from "@/assets/icons/information.png";
@@ -376,6 +429,25 @@ const createMarker = (options: MarkerOptions) => {
   marker.addTo(map);
 };
 
+const copyToast = ref(false);
+const loginToast = ref(false);
+
+const resetCopyToast = () => {
+  copyToast.value = true;
+
+  setTimeout(() => {
+    copyToast.value = false;
+  }, 3000);
+};
+
+const resetLoginToast = () => {
+  loginToast.value = true;
+
+  setTimeout(() => {
+    loginToast.value = false;
+  }, 3000);
+};
+
 onMounted(async () => {
   const { data, error } = await supabase
     .from("users")
@@ -469,6 +541,8 @@ onMounted(async () => {
   //       });
   //     }
   //   });
+
+  resetLoginToast();
 });
 
 onBeforeUnmount(() => {
