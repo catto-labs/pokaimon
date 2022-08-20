@@ -113,14 +113,14 @@
                   </button>
                 </div>
 
-                <div class="grid gap-2 md:grid-cols-2">
+                <div class="grid gap-4 md:grid-cols-2">
                   <div
-                    class="flex flex-col justify-between rounded-lg border border-grey-700 p-3"
+                    class="flex h-40 flex-col justify-between rounded-lg border border-grey-700 p-3"
                     :key="action.id"
                     v-for="action in getActionsOf(state.selected_card)"
                   >
                     <div class="mb-4">
-                      <h4 class="text-lg">{{ action.name }}</h4>
+                      <h4 class="text-lg font-bold">{{ action.name }}</h4>
                       <p class="text-sm">{{ action.description }}</p>
                     </div>
 
