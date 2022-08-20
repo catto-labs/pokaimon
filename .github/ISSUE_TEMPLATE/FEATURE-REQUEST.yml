@@ -11,7 +11,7 @@ body:
     attributes:
       value: |
         Thanks for taking the time to help improve Pokaimon!
-  - type: textarea
+  - type: input
     id: mechanics
     attributes:
       label: What mechanics does this feature affect?
