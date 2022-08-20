@@ -281,7 +281,7 @@ import {
   TransitionChild,
 } from "@headlessui/vue";
 
-import ShoppingDialog from "@/components/game/ShoppingDialog.vue";
+import ShoppingDialog from "@/components/game/dialogs/Shopping.vue";
 import UserDialog from "@/components/game/dialogs/User.vue";
 
 import { supabase, storedMapsUrl } from "@/utils/supabase";
