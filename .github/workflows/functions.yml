@@ -22,4 +22,5 @@ jobs:
         run: |
           supabase functions deploy join-game --project-ref $SUPABASE_PROJECT_REF
           supabase functions deploy create-game --project-ref $SUPABASE_PROJECT_REF
+          supabase functions deploy buy-character --project-ref $SUPABASE_PROJECT_REF
           supabase functions deploy submit-game-turn --project-ref $SUPABASE_PROJECT_REF

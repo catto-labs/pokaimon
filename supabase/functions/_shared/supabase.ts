@@ -2,6 +2,7 @@ import type {
   CharacterInfoTable,
   CharacterActionsTable,
   CharacterInventoryTable,
+  UsersTable,
 } from "../../../src/types/Database.ts";
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.0.0-rc.3";
@@ -21,17 +22,15 @@ export const getFromInventoryCharacter = async (id: number) => {
       .from("character_inventory")
       .select(
         `
-      id, xp, health, created_at, owner,
-      base_character(
-        id, region, description,
-        name, element,
-        base_health,
-        action_1(*),
-        action_2(*),
-        action_3(*),
-        action_4(*)
-      )
-    `
+          *,
+          base_character(
+            *,
+            action_1(*),
+            action_2(*),
+            action_3(*),
+            action_4(*)
+          )
+        `
       )
       .match({ id })
       .single();
@@ -63,13 +62,12 @@ export const getCharacterInfo = async (id: number) => {
       .from("character_info")
       .select(
         `
-    id, region, description, name,
-    element, base_health,
-    action_1(*),
-    action_2(*),
-    action_3(*),
-    action_4(*)
-  `
+          *,
+          action_1(*),
+          action_2(*),
+          action_3(*),
+          action_4(*)
+        `
       )
       .match({ id })
       .single();
@@ -84,6 +82,39 @@ export const getCharacterInfo = async (id: number) => {
     action_3: CharacterActionsTable;
     action_4: CharacterActionsTable;
   };
+
+  const response = (await getData()) as unknown as {
+    error: Response["error"];
+    data: ResponseSuccess;
+  };
+
+  return response;
+};
+
+export const getUserData = async (id: string) => {
+  const getData = () => supabase.from("users").select().match({ id }).single();
+
+  type Response = Awaited<ReturnType<typeof getData>>;
+  type ResponseSuccess = UsersTable;
+
+  const response = (await getData()) as {
+    error: Response["error"];
+    data: ResponseSuccess;
+  };
+
+  return response;
+};
+
+export const getOwnedCharacters = async (user_id: string) => {
+  const getData = () =>
+    supabase
+      .from("character_inventory")
+      .select()
+      .match({ owner: user_id })
+      .select();
+
+  type Response = Awaited<ReturnType<typeof getData>>;
+  type ResponseSuccess = CharacterInventoryTable[];
 
   const response = (await getData()) as {
     error: Response["error"];

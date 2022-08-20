@@ -7,9 +7,6 @@ import cors from "../_shared/cors.ts";
 
 import { sendErrorResponse, sendSuccessResponse } from "../_shared/globals.ts";
 
-const randomBetween = (min: number, max: number) =>
-  Math.floor(Math.random() * (max - min + 1) + min);
-
 serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", {
