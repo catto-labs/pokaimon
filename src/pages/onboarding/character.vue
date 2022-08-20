@@ -76,7 +76,7 @@ const handleSubmit = async (e: Event) => {
     .from("character_inventory")
     .insert({
       base_character: state.traveller === "aether" ? 1 : 2,
-      health: 1000,
+      health: 1300,
       xp: 0,
       owner: store.authSession?.user?.id,
     })
