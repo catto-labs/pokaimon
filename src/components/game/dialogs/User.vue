@@ -144,7 +144,7 @@
               </div>
               <button
                 class="mb-auto h-fit rounded-md bg-grey bg-opacity-20 p-2 transition-colors hover:bg-opacity-40"
-                @click="props.closeShopDialog"
+                @click="props.close"
               >
                 <IconClose />
               </button>
