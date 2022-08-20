@@ -19,7 +19,7 @@
         :key="index"
         :character_id="character.id"
         :index="1"
-        :bound_character_id="state.user?.selected_character?.id"
+        :bound_character_id="state.user.selected_character?.id"
         :character_name="character.base_character.name"
         @equip-character="equipCharacter"
       />
@@ -47,8 +47,6 @@ import CharacterInventoryCard from "@/components/game/CharacterInventoryCard.vue
 import { store } from "@/utils/store";
 import { supabase, getFullUser } from "@/utils/supabase";
 
-import { UsersTable } from "@/types/Database";
-
 const router = useRouter();
 
 interface BaseCharacter {
@@ -64,8 +62,8 @@ interface Character {
 const state = reactive<
   | {
       loaded: true;
-      user: UsersTable | null;
-      characters: Character[] | null;
+      user: Awaited<ReturnType<typeof getFullUser>>["data"];
+      characters: Character[];
     }
   | { loaded: false }
 >({
@@ -73,31 +71,36 @@ const state = reactive<
 });
 
 const equipCharacter = async (character_id: number) => {
-  const equipData = await supabase
-    .from("users")
-    .update({ selected_character: character_id })
-    .match({ id: store.authSession?.user?.id });
+  if (!state.loaded) return;
 
-  if (equipData.error) {
-    return alert(equipData.error.message);
-  }
-
-  // Refresh user
   const user_id = store.authSession?.user?.id;
   if (!user_id) {
     router.push("/game");
     return;
   }
-  const { data, error } = await getFullUser(user_id);
+
+  const { data, error } = await supabase
+    .from("users")
+    .update({ selected_character: character_id })
+    .match({ id: store.authSession?.user?.id });
 
   if (error || !data) {
-    alert("Something went wrong getting your user info, going back to map...");
+    alert("Something went wrong, going back to map...");
     router.push("/game");
     return;
   }
 
-  if (!state.loaded) return;
-  state.user = data;
+  const { data: user_data, error: user_error } = await getFullUser(user_id);
+
+  if (user_error || !user_data) {
+    alert(
+      "Something went wrong getting your new user info, going back to map..."
+    );
+    router.push("/game");
+    return;
+  }
+
+  state.user = user_data;
 };
 
 onBeforeMount(async () => {
@@ -107,15 +110,15 @@ onBeforeMount(async () => {
     return;
   }
 
-  const { data, error } = await getFullUser(user_id);
+  const { data: user_data, error: user_error } = await getFullUser(user_id);
 
-  if (error || !data) {
+  if (user_error || !user_data) {
     alert("Something went wrong getting your user info, going back to map...");
     router.push("/game");
     return;
   }
 
-  const charactersData = await supabase
+  const { data: characters_data, error: characters_error } = await supabase
     .from("character_inventory")
     .select(
       `
@@ -128,7 +131,7 @@ onBeforeMount(async () => {
     )
     .match({ owner: user_id });
 
-  if (charactersData.error || !charactersData.data) {
+  if (characters_error || !characters_data) {
     alert("Something went wrong getting your characters, going back to map...");
     router.push("/game");
     return;
@@ -136,8 +139,8 @@ onBeforeMount(async () => {
 
   Object.assign(state, {
     loaded: true,
-    user: data,
-    characters: charactersData.data,
+    user: user_data,
+    characters: characters_data,
   });
 });
 </script>

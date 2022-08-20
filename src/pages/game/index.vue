@@ -25,8 +25,8 @@
           :show="loginToast"
           as="template"
           leave="transform duration-200 transition ease-in-out"
-          leave-from="opacity-100 rotate-0 scale-100 "
-          leave-to="opacity-0 scale-95 "
+          leave-from="opacity-100 rotate-0 scale-100"
+          leave-to="opacity-0 scale-95"
         >
           <div
             class="z-10 w-96 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 p-2 backdrop-blur-md"
@@ -58,8 +58,13 @@
           class="my-auto cursor-pointer text-2xl hover:text-brand-main"
         />
         <IconSwordCross
-          v-tippy="{ content: 'Random Game (vs Bot)' }"
+          v-tippy="{ content: 'Game against bot' }"
           @click="router.push('/game/new-game')"
+          class="my-auto cursor-pointer text-2xl hover:text-brand-main"
+        />
+        <IconStore
+          v-tippy="{ content: 'Shop' }"
+          @click="state.shoppingDialogOpen = true"
           class="my-auto cursor-pointer text-2xl hover:text-brand-main"
         />
       </div>
@@ -83,7 +88,7 @@
             </MenuButton>
           </div>
 
-          <transition
+          <Transition
             enter-active-class="transition duration-100 ease-out"
             enter-from-class="transform scale-95 opacity-0"
             enter-to-class="transform scale-100 opacity-100"
@@ -128,7 +133,7 @@
                 </MenuItem>
               </div>
             </MenuItems>
-          </transition>
+          </Transition>
         </Menu>
       </div>
     </div>
@@ -222,6 +227,11 @@
       </div>
     </Dialog>
   </TransitionRoot>
+
+  <ShoppingDialog
+    :open="state.shoppingDialogOpen"
+    :closeShopDialog="closeShoppingDialog"
+  />
 </template>
 
 <route>
@@ -244,6 +254,7 @@ import IconBackpack from "virtual:icons/mdi/backpack";
 import IconPerson from "virtual:icons/mdi/person";
 import IconLogout from "virtual:icons/mdi/logout";
 import IconClose from "virtual:icons/mdi/close";
+import IconStore from "virtual:icons/mdi/store";
 import IconUser from "virtual:icons/mdi/user";
 
 import RawIconSwordCross from "@/assets/icons/sword-cross.png";
@@ -268,6 +279,8 @@ import {
   TransitionRoot,
   TransitionChild,
 } from "@headlessui/vue";
+
+import ShoppingDialog from "@/components/game/ShoppingDialog.vue";
 
 import { supabase, storedMapsUrl } from "@/utils/supabase";
 import { copyToClipboard } from "@/utils/globals";
@@ -310,6 +323,8 @@ const state = reactive<{
 
   dialogOpen: boolean;
   openedDialogData: MarkerOptions | null;
+
+  shoppingDialogOpen: boolean;
 }>({
   username: "Loading...",
   primos: 0,
@@ -319,6 +334,8 @@ const state = reactive<{
 
   dialogOpen: false,
   openedDialogData: null,
+
+  shoppingDialogOpen: false,
 });
 
 const sendMouseBroadcast = throttle(({ lat, lng }) => {
@@ -334,6 +351,8 @@ const sendMouseBroadcast = throttle(({ lat, lng }) => {
 
 /** Short-hand to close the dialog. */
 const closeDialog = () => (state.dialogOpen = false);
+
+const closeShoppingDialog = () => (state.shoppingDialogOpen = false);
 
 /**
  * Creates a new game with a bot.
