@@ -94,7 +94,7 @@
             leave-to="opacity-0 scale-95"
           >
             <DialogPanel
-              class="w-full max-w-xl transform overflow-hidden rounded-2xl border border-grey-700 bg-grey-800 p-6 text-left align-middle shadow-xl transition-all"
+              class="w-full max-w-4xl transform overflow-hidden rounded-2xl border border-grey-700 bg-grey-800 p-6 text-left align-middle shadow-xl transition-all"
             >
               <div v-if="state.cards && state.selected_card !== null">
                 <div class="mb-4 flex justify-between">
@@ -115,9 +115,9 @@
                   </button>
                 </div>
 
-                <div class="flex flex-col gap-2">
+                <div class="grid gap-2 md:grid-cols-2">
                   <div
-                    class="rounded-lg border border-grey-700 p-3"
+                    class="flex flex-col justify-between rounded-lg border border-grey-700 p-3"
                     :key="action.id"
                     v-for="action in getActionsOf(state.selected_card)"
                   >
@@ -126,49 +126,53 @@
                       <p class="text-sm">{{ action.description }}</p>
                     </div>
 
-                    <span
-                      class="block"
-                      v-if="
-                        action.enemy_min_damage > 0 ||
-                        action.enemy_max_damage > 0
-                      "
-                      >Up
-                      {{
-                        action.enemy_min_damage === action.enemy_max_damage
-                          ? `to ${action.enemy_max_damage}`
-                          : `from ${action.enemy_min_damage} to ${action.enemy_max_damage}`
-                      }}
-                      HP damage ({{ action.enemy_hit_chance * 100 }}% of hit
-                      chance)</span
-                    >
-                    <span
-                      class="block"
-                      v-if="
-                        action.self_min_damage < 0 || action.self_max_damage < 0
-                      "
-                      >Heal
-                      {{
-                        action.self_min_damage === action.self_max_damage
-                          ? `to ${Math.abs(action.self_min_damage)}`
-                          : `from ${Math.abs(
-                              action.self_max_damage
-                            )} to ${Math.abs(action.self_min_damage)}`
-                      }}
-                      HP ({{ action.self_hit_chance * 100 }}% of chance)</span
-                    >
-                    <span
-                      class="block"
-                      v-else-if="
-                        action.self_min_damage > 0 || action.self_max_damage > 0
-                      "
-                      >Self damage
-                      {{
-                        action.self_min_damage === action.self_max_damage
-                          ? `to ${action.self_max_damage}`
-                          : `from ${action.self_min_damage} to ${action.self_max_damage}`
-                      }}
-                      HP ({{ action.self_hit_chance * 100 }}% of chance)</span
-                    >
+                    <div class="block">
+                      <span
+                        class="block"
+                        v-if="
+                          action.enemy_min_damage > 0 ||
+                          action.enemy_max_damage > 0
+                        "
+                        >Up
+                        {{
+                          action.enemy_min_damage === action.enemy_max_damage
+                            ? `to ${action.enemy_max_damage}`
+                            : `from ${action.enemy_min_damage} to ${action.enemy_max_damage}`
+                        }}
+                        HP damage ({{ action.enemy_hit_chance * 100 }}% of hit
+                        chance)</span
+                      >
+                      <span
+                        class="block"
+                        v-if="
+                          action.self_min_damage < 0 ||
+                          action.self_max_damage < 0
+                        "
+                        >Heal
+                        {{
+                          action.self_min_damage === action.self_max_damage
+                            ? `to ${Math.abs(action.self_min_damage)}`
+                            : `from ${Math.abs(
+                                action.self_max_damage
+                              )} to ${Math.abs(action.self_min_damage)}`
+                        }}
+                        HP ({{ action.self_hit_chance * 100 }}% of chance)</span
+                      >
+                      <span
+                        class="block"
+                        v-else-if="
+                          action.self_min_damage > 0 ||
+                          action.self_max_damage > 0
+                        "
+                        >Self damage
+                        {{
+                          action.self_min_damage === action.self_max_damage
+                            ? `to ${action.self_max_damage}`
+                            : `from ${action.self_min_damage} to ${action.self_max_damage}`
+                        }}
+                        HP ({{ action.self_hit_chance * 100 }}% of chance)</span
+                      >
+                    </div>
                   </div>
                 </div>
               </div>
