@@ -1,0 +1,59 @@
+name: Bug Report
+description: File a bug report
+title: "[Bug]: "
+labels: ["bug"]
+assignees:
+  - pnxl
+  - trobonox
+  - vexcited
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: input
+    id: contact
+    attributes:
+      label: Contact Details
+      description: How can we get in touch with you if we need more info?
+    validations:
+      required: false
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear and concise description on the error.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What is the expected behaviour?
+      description: What did you expect your action to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: If the current behaviour is a bug, please provide the exact steps to reproduce.
+      description: How do we reproduce this bug?
+    validations:
+      required: false
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: What browsers are you seeing the problem on?
+      multiple: true
+      options:
+        - Firefox
+        - Chrome (or other Chromium-based browsers)
+        - Safari
+        - Microsoft Edge
+        - Other (please put in how to reproduce)
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Any other context you'd like to add -- e.g. your browser, etc.
+    validations:
+      required: false

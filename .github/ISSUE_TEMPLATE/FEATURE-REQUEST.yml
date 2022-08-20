@@ -1,0 +1,38 @@
+name: Feature Request
+description: Suggest an idea
+title: "[Enhancement]: "
+labels: ["enhancement"]
+assignees:
+  - pnxl
+  - trobonox
+  - vexcited
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to help improve Pokaimon!
+  - type: textarea
+    id: mechanics
+    attributes:
+      label: What mechanics does this feature affect?
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Is your request related to a problem?
+      description: Please describe with a clear and concise response.
+  - type: textarea
+    id: request
+    attributes:
+      label: What is the feature you are requesting?
+      description: A clear and concise description on what you are expecting.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Any other context you'd like to add -- e.g. your browser, etc.
+    validations:
+      required: false
