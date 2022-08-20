@@ -77,8 +77,8 @@ const state = reactive({
 const handleSubmit = async (e: Event) => {
   e.preventDefault();
 
-  if (state.username === "") return alert("Please enter a username");
-  if (state.username === "") return alert("Please enter a tag");
+  if (state.username.trim() === "") return alert("Please enter a username");
+  if (state.tag.trim() === "") return alert("Please enter a tag");
 
   const { data, error: err1 } = await supabase
     .from("users")
