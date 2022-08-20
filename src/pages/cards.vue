@@ -10,11 +10,11 @@
     <div class="flex flex-wrap justify-center gap-4" v-else>
       <div
         :key="character.id"
-        class="flex w-full flex-col justify-between gap-4 rounded-xl border border-grey-700 bg-grey-800 p-4 sm:w-96"
+        class="flex h-56 w-full flex-col justify-between gap-4 rounded-xl border border-grey-700 bg-grey-800 p-4 sm:w-96"
         v-for="character in cards"
       >
         <div class="flex gap-4">
-          <div>
+          <div class="space-y-2">
             <h3 class="text-lg font-bold text-head">{{ character.name }}</h3>
             <p>{{ character.description }}</p>
           </div>
@@ -24,14 +24,37 @@
               class="aspect-square h-16 w-16 rounded-full border-2 border-grey-700"
               :alt="`A picture of ${character.name}`"
             />
+            <div
+              class="absolute z-10 -my-6 ml-10 rounded-full bg-grey-700 p-1"
+              v-tippy="{ content: character.element }"
+            >
+              <img
+                :src="`https://flkaastenubusimwykpj.supabase.co/storage/v1/object/public/misc-artwork/elements/${character.element.toLowerCase()}.svg`"
+                :alt="`${character.element} element icon`"
+                class="h-5"
+              />
+            </div>
           </div>
         </div>
 
-        <span class="block text-note"
-          >{{ character.element }} /
-          {{ capitalizeFirstLetter(character.region) }} / Min.
-          {{ character.base_health }}HP</span
-        >
+        <div class="flex gap-4">
+          <div class="flex gap-1">
+            <IconAtom class="my-auto text-note" />
+            <span class="my-auto text-note">{{ character.element }}</span>
+          </div>
+          <div class="flex gap-1">
+            <IconMapMarkerRadius class="my-auto text-note" />
+            <span class="my-auto text-note">{{
+              capitalizeFirstLetter(character.region)
+            }}</span>
+          </div>
+          <div class="flex gap-1">
+            <IconHeartHalfFull class="my-auto text-note" />
+            <span class="my-auto text-note"
+              >Min. {{ character.base_health }}HP</span
+            >
+          </div>
+        </div>
       </div>
     </div>
   </main>
@@ -39,7 +62,9 @@
 </template>
 
 <script setup lang="ts">
-import IconWindy from "virtual:icons/mdi/weather-windy";
+import IconAtom from "virtual:icons/mdi/atom";
+import IconMapMarkerRadius from "virtual:icons/mdi/map-marker-radius";
+import IconHeartHalfFull from "virtual:icons/mdi/heart-half-full";
 
 import type { CharacterInfoTable } from "@/types/Database";
 
