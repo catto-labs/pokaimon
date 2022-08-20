@@ -7,6 +7,7 @@
       :value="modelValue"
       :pattern="pattern"
       :maxlength="maxlength"
+      :minlength="minlength"
       @input="updateValue"
       class="w-full rounded-2xl border-2 border-grey-700 bg-grey-900 py-2 px-4 text-body outline-none transition placeholder:text-grey-600 hover:bg-opacity-80 focus:border-grey-500 focus:bg-opacity-80"
     />
@@ -21,6 +22,7 @@ const props = defineProps<{
   placeholder?: string;
   pattern?: string;
   maxlength?: string;
+  minlength?: string;
 }>();
 
 const emit = defineEmits(["update:modelValue"]);
