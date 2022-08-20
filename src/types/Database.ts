@@ -14,6 +14,9 @@ export interface CharacterInfoTable {
   action_2: number;
   action_3: number;
   action_4: number;
+
+  buyable: boolean;
+  price: number;
 }
 
 export interface CharacterInventoryTable {
