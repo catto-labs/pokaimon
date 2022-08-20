@@ -29,17 +29,47 @@
             <DialogPanel
               class="w-full max-w-xl transform overflow-hidden rounded-2xl border border-grey-700 bg-grey-800 p-6 text-left align-middle shadow-xl transition-all"
             >
-              <DialogTitle>Shop</DialogTitle>
-              <DialogDescription>
-                Here, you'll be able to buy characters with your primogens!
-              </DialogDescription>
+              <div class="flex justify-between">
+                <div class="space-y-2">
+                  <DialogTitle
+                    as="h3"
+                    class="text-gray-900 text-lg font-bold leading-6"
+                    >Shop</DialogTitle
+                  >
+                  <DialogDescription class="text-gray-500 mt-2 text-sm">
+                    Here, you'll be able to buy characters with your primogens!
+                  </DialogDescription>
+                </div>
 
-              <p>
-                <!-- Are you sure you want to deactivate your account? All of your data will
-                be permanently removed. This action cannot be undone. -->
-              </p>
+                <button
+                  class="mb-auto h-fit rounded-md bg-grey bg-opacity-20 p-2 transition-colors hover:bg-opacity-40"
+                  @click="props.closeShopDialog"
+                >
+                  <IconClose />
+                </button>
+              </div>
 
-              <button @click="props.closeShopDialog">Close</button>
+              <div class="mt-6 flex justify-between gap-2" v-if="state.loaded">
+                <div
+                  @click="processPayment(character.id)"
+                  class="cursor-pointer rounded-lg border border-grey-600 bg-grey-700 p-3"
+                  :key="character.id"
+                  v-for="character in state.characters"
+                >
+                  <h4 class="text-lg font-bold">{{ character.name }}</h4>
+
+                  <span>{{ character.price }} primogems</span>
+                </div>
+              </div>
+
+              <button
+                v-if="state.loaded"
+                class="mt-4 rounded-lg bg-brand-main py-1 px-3"
+                @click="refreshShopCharacters"
+              >
+                Refresh
+              </button>
+              <p v-else>Loading characters...</p>
             </DialogPanel>
           </TransitionChild>
         </div>
@@ -49,6 +79,10 @@
 </template>
 
 <script setup lang="ts">
+import type { CharacterInfoTable } from "@/types/Database";
+
+import IconClose from "virtual:icons/mdi/close";
+
 import {
   Dialog,
   DialogPanel,
@@ -58,8 +92,58 @@ import {
   TransitionChild,
 } from "@headlessui/vue";
 
+import { supabase } from "@/utils/supabase";
+import { capitalizeFirstLetter } from "@/utils/globals";
+
+import { reactive, onBeforeMount } from "vue";
+
+const state = reactive<{
+  loaded: boolean;
+  characters: CharacterInfoTable[];
+}>({
+  loaded: false,
+  characters: [],
+});
+
 const props = defineProps<{
   open: boolean;
   closeShopDialog: () => unknown;
 }>();
+
+const refreshShopCharacters = async () => {
+  state.loaded = false;
+
+  const { data, error } = await supabase
+    .from("character_info")
+    .select()
+    .match({ buyable: true })
+    .select();
+
+  if (!data || error) {
+    state.characters = [];
+  } else {
+    state.characters = data;
+  }
+
+  state.loaded = true;
+};
+
+onBeforeMount(() => refreshShopCharacters());
+
+/** Invoke the `buy-character` edge function to buy a character. */
+const processPayment = (id: number) => {
+  const { data: response, error } = await supabase.functions.invoke(
+    "buy-character",
+    {
+      body: {
+        id,
+      },
+    }
+  );
+
+  if (error || response.error || !response.success) {
+    alert("An error occurred when processing the payment.");
+    return;
+  }
+};
 </script>
