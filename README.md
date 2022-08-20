@@ -1,3 +1,10 @@
+# ⚠ DISCLAIMER
+
+As of right now, the game is very unbalanced and should not be played.
+We only made this repository public as we need access to certain repository features unavailable in the free tier of GitHub.
+
+---
+
 <img height="125" align="left" style="float: left; margin: 0 10px 0 0;" alt="Pokaimon" src="https://cdn.discordapp.com/attachments/1007204906152767508/1007671728316633249/unknown.png">
 
 # Pokaimon
