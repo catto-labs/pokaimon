@@ -1,5 +1,32 @@
 <template>
-  <div class="relative z-10 p-4">
+  <div class="absolute flex h-screen w-screen flex-col justify-end p-4">
+    <div class="flex flex-row justify-end">
+      <TransitionRoot
+        :show="copyToast"
+        as="template"
+        enter="transform transition duration-[400ms]"
+        enter-from="opacity-0 scale-50"
+        enter-to="opacity-100 scale-100"
+        leave="transform duration-200 transition ease-in-out"
+        leave-from="opacity-100 rotate-0 scale-100 "
+        leave-to="opacity-0 scale-95 "
+      >
+        <div
+          class="z-10 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 p-2 backdrop-blur-md"
+        >
+          <div class="flex gap-2">
+            <IconContentCopy />
+            <h1 class="font-bold">Copied to Clipboard</h1>
+          </div>
+          <span class="text-body"
+            >Your username was copied to the clipboard!</span
+          >
+        </div>
+      </TransitionRoot>
+    </div>
+  </div>
+
+  <div class="relative z-20 p-4">
     <div class="flex flex-col justify-between gap-2 md:flex-row">
       <div
         class="md:justfiy-start my-auto flex cursor-default items-center justify-center gap-8 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md"
@@ -51,7 +78,10 @@
               <div class="px-2 py-2">
                 <MenuItem v-slot="{ active }">
                   <button
-                    @click="copyToClipboard(state.username)"
+                    @click="
+                      copyToClipboard(state.username);
+                      resetCopyToast();
+                    "
                     :class="[
                       active
                         ? 'bg-brand-main bg-opacity-60 text-white'
@@ -380,6 +410,16 @@ const createMarker = (options: MarkerOptions) => {
   });
 
   marker.addTo(map);
+};
+
+const copyToast = ref(false);
+
+const resetCopyToast = () => {
+  copyToast.value = true;
+
+  setTimeout(() => {
+    copyToast.value = false;
+  }, 3000);
 };
 
 onMounted(async () => {
