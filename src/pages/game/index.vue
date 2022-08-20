@@ -147,7 +147,7 @@
                 </div>
 
                 <div class="mt-12 flex flex-col justify-end gap-6 sm:flex-row">
-                  <div class="flex flex-row justify-end gap-2">
+                  <div class="flex flex-col justify-end gap-2 md:flex-row">
                     <button
                       class="w-full rounded-md bg-brand-second px-6 py-1 transition-colors hover:bg-opacity-80 sm:w-auto"
                       @click="
