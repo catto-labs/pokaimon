@@ -13,3 +13,6 @@ export const copyToClipboard = (text: string) =>
 /** Capitalize the first letter of `str`. */
 export const capitalizeFirstLetter = (str: string) =>
   str.charAt(0).toUpperCase() + str.slice(1);
+
+/** Show + sign when formatting numbers to string. */
+export const showPlusSign = (n: number) => (n > 0 ? "+" : "") + n;

@@ -1,22 +1,47 @@
 <template>
   <div
     v-if="state.loaded && !state.winner"
-    class="flex h-screen w-screen flex-col items-center justify-center bg-black md:bg-grey-900"
+    class="flex min-h-screen flex-col items-center justify-center bg-black md:h-screen md:w-screen md:bg-grey-900 md:px-4"
   >
-    <div class="mb-4 w-full rounded-xl bg-black p-8 md:h-fit md:max-w-6xl">
+    <div class="mb-4 w-full rounded-xl bg-black p-8 md:max-w-6xl">
       <div
-        class="flex items-end justify-between rounded-lg bg-grey-700 pt-8 pb-0 md:px-4"
+        class="flex items-end justify-between rounded-lg bg-grey-700 md:px-4"
       >
-        <div class="flex flex-row items-end md:ml-8">
+        <div class="relative flex flex-col justify-between gap-2 md:ml-8">
+          <div class="mx-auto w-fit text-center">
+            <span
+              :class="{
+                'opacity-0': healthTracker.player === state.player.health,
+                fadeOutDamageTaken:
+                  healthTracker.player !== state.player.health,
+              }"
+              class="mt-2 block rounded-lg bg-brand-main py-1 px-4 text-head"
+              >{{
+                showPlusSign(-(healthTracker.player - state.player.health))
+              }}HP</span
+            >
+          </div>
           <img
             :src="`https://flkaastenubusimwykpj.supabase.co/storage/v1/object/public/character-images/bodies/${state.player.name.toLowerCase()}.png`"
-            class="aspect-auto scale-x-[-1] md:h-56"
+            class="aspect-auto scale-x-[-1] object-cover md:h-56"
           />
         </div>
-        <div class="md:mr-8">
+        <div class="relative flex flex-col justify-between gap-2 md:mr-8">
+          <div class="mx-auto w-fit text-center">
+            <span
+              :class="{
+                'opacity-0': healthTracker.enemy === state.enemy.health,
+                fadeOutDamageTaken: healthTracker.enemy !== state.enemy.health,
+              }"
+              class="mt-2 block rounded-lg bg-brand-second py-1 px-4 text-head"
+              >{{
+                showPlusSign(-(healthTracker.enemy - state.enemy.health))
+              }}HP</span
+            >
+          </div>
           <img
             :src="`https://flkaastenubusimwykpj.supabase.co/storage/v1/object/public/character-images/bodies/${state.enemy.name.toLowerCase()}.png`"
-            class="aspect-auto md:h-56"
+            class="aspect-auto object-cover md:h-56"
           />
         </div>
       </div>
@@ -24,27 +49,57 @@
       <hr class="my-4 text-grey-700" />
       <div class="grid gap-8 md:grid-cols-2">
         <div
+          class="flex flex-col justify-between"
           v-if="
             state.turn === state.userIsPlayer &&
             state.current_attack_index === null
           "
         >
-          <h2 class="mb-4 text-xl font-bold">
-            What will
-            {{ state.player.name }}
-            do?
-          </h2>
-          <div class="grid grid-cols-2 grid-rows-2 gap-4">
-            <button
-              :key="action_index"
-              v-for="(action, action_index) in state.player.actions"
-              @click="playTurn(action_index)"
-              class="rounded-lg bg-grey-700 py-2 transition duration-300 hover:-translate-y-0.5 hover:bg-grey-600"
-              :disabled="state.sendingToServer"
-            >
-              {{ action.name }}
-            </button>
+          <div>
+            <h2 class="mb-4 text-xl font-bold">
+              What will
+              {{ state.player.name }}
+              do?
+            </h2>
+            <div class="grid grid-cols-2 grid-rows-2 gap-4">
+              <button
+                :key="action_index"
+                v-for="(action, action_index) in state.player.actions"
+                class="flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 bg-grey-700 p-3 transition duration-300 hover:-translate-y-0.5 hover:bg-grey-600"
+                :class="{
+                  'border-grey-800':
+                    state.selected_attack_index !== action_index,
+                  'border-brand-main':
+                    state.selected_attack_index === action_index,
+                }"
+                @click="
+                  Object.assign(state, { selected_attack_index: action_index })
+                "
+              >
+                {{ action.name }}
+              </button>
+            </div>
           </div>
+
+          <button
+            @click="
+              state.loaded &&
+                state.selected_attack_index !== null &&
+                playTurn(state.selected_attack_index)
+            "
+            class="mt-4 h-full w-full rounded-lg p-3 font-bold"
+            :disabled="
+              state.sendingToServer || state.selected_attack_index === null
+            "
+            :class="{
+              'bg-grey-700 text-grey-500':
+                state.sendingToServer || state.selected_attack_index === null,
+              'bg-brand-main text-grey-700':
+                !state.sendingToServer && state.selected_attack_index !== null,
+            }"
+          >
+            Select this action!
+          </button>
         </div>
 
         <div
@@ -71,58 +126,174 @@
           </h2>
         </div>
 
-        <div class="gap-8 md:flex">
-          <div
-            class="mb-8 flex w-full flex-col space-y-2 rounded-lg bg-grey-700 p-4 md:h-full md:w-64"
-          >
-            <div class="flex flex-row justify-between space-x-16">
-              <strong>{{ state.player.name }}</strong>
-              <!-- <p>Lv. {{ state.player.level }}</p> -->
+        <div class="flex flex-col-reverse gap-8 md:flex-col">
+          <div class="flex flex-col md:flex-row md:gap-6">
+            <div
+              class="mb-8 flex w-full flex-col space-y-2 rounded-lg bg-grey-700 p-4 md:h-full md:w-64"
+            >
+              <div class="flex flex-row justify-between space-x-16">
+                <strong>{{ state.player.name }}</strong> (You)
+                <!-- <p>Lv. {{ state.player.level }}</p> -->
+              </div>
+              <div class="rounded-full bg-grey-600">
+                <div
+                  class="rounded-full bg-brand-main p-2"
+                  :style="{
+                    width:
+                      (
+                        (state.player.health / state.player.maxHealth) *
+                        100
+                      ).toString() + '%',
+                  }"
+                ></div>
+              </div>
+              <span class="text-right">
+                {{ state.player.health > 0 ? state.player.health : 0 }}/{{
+                  state.player.maxHealth
+                }}
+                HP
+              </span>
             </div>
-            <div class="rounded-full bg-grey-600">
-              <div
-                class="rounded-full bg-brand-main p-2"
-                :style="{
-                  width:
-                    (
-                      (state.player.health / state.player.maxHealth) *
-                      100
-                    ).toString() + '%',
-                }"
-              ></div>
+            <div
+              class="mb-8 flex w-full flex-col space-y-2 rounded-lg bg-grey-700 p-4 md:h-full md:w-64"
+            >
+              <div class="flex flex-row justify-between space-x-16">
+                <strong>{{ state.enemy.name }}</strong> (Enemy)
+                <!-- <p>Lv. {{ state.enemy.level }}</p> -->
+              </div>
+              <div class="rounded-full bg-grey-600">
+                <div
+                  class="rounded-full bg-brand-second p-2"
+                  :style="{
+                    width:
+                      (
+                        (state.enemy.health / state.enemy.maxHealth) *
+                        100
+                      ).toString() + '%',
+                  }"
+                ></div>
+              </div>
+              <span class="text-right">
+                {{ state.enemy.health > 0 ? state.enemy.health : 0 }}/{{
+                  state.enemy.maxHealth
+                }}
+                HP
+              </span>
             </div>
-            <span class="text-right">
-              {{ state.player.health > 0 ? state.player.health : 0 }}/{{
-                state.player.maxHealth
-              }}
-              HP
-            </span>
           </div>
+
           <div
-            class="mb-8 flex w-full flex-col space-y-2 rounded-lg bg-grey-700 p-4 md:h-full md:w-64"
+            v-if="
+              state.turn === state.userIsPlayer &&
+              state.selected_attack_index !== null &&
+              state.current_attack_index === null
+            "
+            class="flex flex-col justify-center gap-4 md:flex-col md:gap-2"
           >
-            <div class="flex flex-row justify-between space-x-16">
-              <strong>{{ state.enemy.name }}</strong>
-              <!-- <p>Lv. {{ state.enemy.level }}</p> -->
-            </div>
-            <div class="rounded-full bg-grey-600">
-              <div
-                class="rounded-full bg-brand-second p-2"
-                :style="{
-                  width:
-                    (
-                      (state.enemy.health / state.enemy.maxHealth) *
-                      100
-                    ).toString() + '%',
-                }"
-              ></div>
-            </div>
-            <span class="text-right">
-              {{ state.enemy.health > 0 ? state.enemy.health : 0 }}/{{
-                state.enemy.maxHealth
+            <span
+              class="flex w-full items-center justify-center gap-2 md:justify-start md:text-lg"
+              v-if="
+                state.player.actions[state.selected_attack_index]
+                  .enemy_min_damage > 0 ||
+                state.player.actions[state.selected_attack_index]
+                  .enemy_max_damage > 0
+              "
+              ><IconSword class="text-lg" />
+              {{
+                state.player.actions[state.selected_attack_index]
+                  .enemy_min_damage ===
+                state.player.actions[state.selected_attack_index]
+                  .enemy_max_damage
+                  ? state.player.actions[state.selected_attack_index]
+                      .enemy_max_damage + "HP of damage."
+                  : `Arround ${
+                      state.player.actions[state.selected_attack_index]
+                        .enemy_min_damage
+                    } and ${
+                      state.player.actions[state.selected_attack_index]
+                        .enemy_max_damage
+                    } of damage.`
               }}
-              HP
+              {{
+                state.player.actions[state.selected_attack_index]
+                  .enemy_hit_chance !== 1
+                  ? `(${
+                      state.player.actions[state.selected_attack_index]
+                        .enemy_hit_chance * 100
+                    }% of chance)`
+                  : ""
+              }}
             </span>
+            <span
+              class="flex w-full items-center justify-center gap-2 md:justify-start md:text-lg"
+              v-if="
+                state.player.actions[state.selected_attack_index]
+                  .self_min_damage < 0 ||
+                state.player.actions[state.selected_attack_index]
+                  .self_max_damage < 0
+              "
+              ><IconHeartPlus class="text-lg" />
+              {{
+                state.player.actions[state.selected_attack_index]
+                  .self_min_damage ===
+                state.player.actions[state.selected_attack_index]
+                  .self_max_damage
+                  ? Math.abs(
+                      state.player.actions[state.selected_attack_index]
+                        .self_min_damage
+                    ) + "HP of heal."
+                  : `Arround ${Math.abs(
+                      state.player.actions[state.selected_attack_index]
+                        .self_max_damage
+                    )} and ${Math.abs(
+                      state.player.actions[state.selected_attack_index]
+                        .self_min_damage
+                    )} of heal.`
+              }}
+              {{
+                state.player.actions[state.selected_attack_index]
+                  .self_hit_chance !== 1
+                  ? `(${
+                      state.player.actions[state.selected_attack_index]
+                        .self_hit_chance * 100
+                    }% of chance)`
+                  : ""
+              }}
+            </span>
+            <span
+              class="flex w-full items-center justify-center gap-2 md:justify-start md:text-lg"
+              v-else-if="
+                state.player.actions[state.selected_attack_index]
+                  .self_min_damage > 0 ||
+                state.player.actions[state.selected_attack_index]
+                  .self_max_damage > 0
+              "
+              ><IconHeartMinus class="text-lg" />
+              {{
+                state.player.actions[state.selected_attack_index]
+                  .self_min_damage ===
+                state.player.actions[state.selected_attack_index]
+                  .self_max_damage
+                  ? state.player.actions[state.selected_attack_index]
+                      .self_max_damage + "HP of self-damage."
+                  : `Arround ${
+                      state.player.actions[state.selected_attack_index]
+                        .self_min_damage
+                    } and ${
+                      state.player.actions[state.selected_attack_index]
+                        .self_max_damage
+                    } of self-damage.`
+              }}
+              {{
+                state.player.actions[state.selected_attack_index]
+                  .self_hit_chance !== 1
+                  ? `(${
+                      state.player.actions[state.selected_attack_index]
+                        .self_hit_chance * 100
+                    }% of chance)`
+                  : ""
+              }}</span
+            >
           </div>
         </div>
       </div>
@@ -144,7 +315,7 @@
         </p>
         <p>Gained +{{ state.rewards.primos }} primogens !</p>
         <p v-if="state.rewards.character_name">
-          Gained {{ state.rewards.character_name }} ! Go check your inventory.
+          Gained {{ state.rewards.character_name }}! Go check your inventory.
         </p>
       </div>
     </div>
@@ -182,7 +353,11 @@
 import type { GamesTable } from "@/types/Database";
 import type { Character } from "@/types/Character";
 
-import { reactive, onMounted } from "vue";
+import IconSword from "virtual:icons/mdi/sword";
+import IconHeartPlus from "virtual:icons/mdi/heart-plus";
+import IconHeartMinus from "virtual:icons/mdi/heart-minus";
+
+import { reactive, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 
 import {
@@ -193,10 +368,17 @@ import {
 } from "@/utils/supabase";
 
 import { store } from "@/utils/store";
+import { showPlusSign } from "@/utils/globals";
 
 const router = useRouter();
 const props = defineProps({
   id: String,
+});
+
+// Used to determine how well an action affected HPs.
+const healthTracker = ref({
+  enemy: 0,
+  player: 0,
 });
 
 const state = reactive<
@@ -211,6 +393,10 @@ const state = reactive<
       turn: GamesTable["turn"];
       winner: GamesTable["winner"];
       game_id: GamesTable["id"];
+
+      /** Local version of `current_attack_index`. */
+      selected_attack_index: GamesTable["action_index"];
+
       /** `null` when no selected. Goes from `1` to `4` (in DB: `action_{index}`). */
       current_attack_index: GamesTable["action_index"];
 
@@ -358,6 +544,7 @@ onMounted(async () => {
     sendingToServer: false,
     winner: game_data.winner || null,
     game_id,
+    selected_attack_index: null,
     current_attack_index:
       typeof game_data.action_index === "undefined"
         ? null
@@ -384,6 +571,15 @@ onMounted(async () => {
       (data: { new: GamesTable }) => {
         if (!state.loaded || state.winner) return;
         const table_new_data = data.new;
+
+        if (table_new_data.action_index !== null) {
+          healthTracker.value = {
+            player:
+              table_new_data[userIsPlayer === 1 ? "player1_hp" : "player2_hp"],
+            enemy:
+              table_new_data[userIsPlayer === 2 ? "player1_hp" : "player2_hp"],
+          };
+        }
 
         Object.assign(state, {
           turn: table_new_data.turn,
@@ -425,3 +621,21 @@ const playTurn = async (action_index: number) => {
   state.sendingToServer = false;
 };
 </script>
+
+<style>
+.fadeOutDamageTaken {
+  animation: fadeOut 2s ease-in-out forwards;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  65% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+</style>
