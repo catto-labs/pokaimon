@@ -131,7 +131,7 @@ const refreshShopCharacters = async () => {
 onBeforeMount(() => refreshShopCharacters());
 
 /** Invoke the `buy-character` edge function to buy a character. */
-const processPayment = (id: number) => {
+const processPayment = async (id: number) => {
   const { data: response, error } = await supabase.functions.invoke(
     "buy-character",
     {
