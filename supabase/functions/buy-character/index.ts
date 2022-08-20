@@ -111,9 +111,12 @@ serve(async (req: Request) => {
       });
     }
 
-    const { error: user_error } = await supabase.from("users").update({
-      primos: user_data.primos - character_data.price,
-    });
+    const { error: user_error } = await supabase
+      .from("users")
+      .update({
+        primos: user_data.primos - character_data.price,
+      })
+      .match({ id: user_id });
 
     if (user_error) {
       return sendErrorResponse({
