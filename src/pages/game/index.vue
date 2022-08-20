@@ -75,11 +75,11 @@
         <Menu as="div">
           <div>
             <MenuButton
-              v-tippy="{ content: 'Click to see more options!' }"
-              class="my-auto flex gap-2 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md transition duration-300 hover:bg-grey-700"
+              class="my-auto flex items-center gap-2 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md transition duration-300 hover:bg-grey-700"
             >
               <IconUser class="my-auto" />
               <span class="my-auto text-white">{{ state.username }}</span>
+              <IconMenuDown />
             </MenuButton>
           </div>
 
@@ -238,12 +238,13 @@ import "leaflet/dist/leaflet.css";
 
 import IconContentCopy from "virtual:icons/mdi/content-copy";
 import IconSwordCross from "virtual:icons/mdi/sword-cross";
+import IconMenuDown from "virtual:icons/mdi/menu-down";
+import IconHandWave from "virtual:icons/mdi/hand-wave";
 import IconBackpack from "virtual:icons/mdi/backpack";
 import IconPerson from "virtual:icons/mdi/person";
 import IconLogout from "virtual:icons/mdi/logout";
-import IconUser from "virtual:icons/mdi/user";
 import IconClose from "virtual:icons/mdi/close";
-import IconHandWave from "virtual:icons/mdi/hand-wave";
+import IconUser from "virtual:icons/mdi/user";
 
 import RawIconSwordCross from "@/assets/icons/sword-cross.png";
 import RawIconInformation from "@/assets/icons/information.png";
