@@ -48,14 +48,17 @@
         class="md:justfiy-start my-auto flex cursor-default items-center justify-center gap-8 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md"
       >
         <IconPerson
+          v-tippy="{ content: 'Profile' }"
           @click="router.push('/game/user')"
           class="my-auto cursor-pointer text-2xl hover:text-brand-main"
         />
         <IconBackpack
+          v-tippy="{ content: 'Inventory' }"
           @click="router.push('/game/inventory')"
           class="my-auto cursor-pointer text-2xl hover:text-brand-main"
         />
         <IconSwordCross
+          v-tippy="{ content: 'Random Game (vs Bot)' }"
           @click="router.push('/game/new-game')"
           class="my-auto cursor-pointer text-2xl hover:text-brand-main"
         />
@@ -72,11 +75,11 @@
         <Menu as="div">
           <div>
             <MenuButton
-              v-tippy="{ content: 'Click to see more options!' }"
-              class="my-auto flex gap-2 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md transition duration-300 hover:bg-grey-700"
+              class="my-auto flex items-center gap-2 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md transition duration-300 hover:bg-grey-700"
             >
               <IconUser class="my-auto" />
               <span class="my-auto text-white">{{ state.username }}</span>
+              <IconMenuDown />
             </MenuButton>
           </div>
 
@@ -89,7 +92,7 @@
             leave-to-class="transform scale-95 opacity-0"
           >
             <MenuItems
-              class="absolute mt-2 mr-auto origin-top-right divide-y divide-grey-100 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 shadow-lg ring-1 ring-black ring-opacity-5 backdrop-blur-md focus:outline-none"
+              class="absolute right-0 mt-2 mr-4 origin-top-right divide-y divide-grey-100 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 shadow-lg ring-1 ring-black ring-opacity-5 backdrop-blur-md focus:outline-none"
             >
               <div class="px-2 py-2">
                 <MenuItem v-slot="{ active }">
@@ -235,12 +238,13 @@ import "leaflet/dist/leaflet.css";
 
 import IconContentCopy from "virtual:icons/mdi/content-copy";
 import IconSwordCross from "virtual:icons/mdi/sword-cross";
+import IconMenuDown from "virtual:icons/mdi/menu-down";
+import IconHandWave from "virtual:icons/mdi/hand-wave";
 import IconBackpack from "virtual:icons/mdi/backpack";
 import IconPerson from "virtual:icons/mdi/person";
 import IconLogout from "virtual:icons/mdi/logout";
-import IconUser from "virtual:icons/mdi/user";
 import IconClose from "virtual:icons/mdi/close";
-import IconHandWave from "virtual:icons/mdi/hand-wave";
+import IconUser from "virtual:icons/mdi/user";
 
 import RawIconSwordCross from "@/assets/icons/sword-cross.png";
 import RawIconInformation from "@/assets/icons/information.png";

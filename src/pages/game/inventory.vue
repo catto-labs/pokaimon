@@ -12,15 +12,16 @@
       </span>
     </router-link>
     <h1 class="text-4xl font-bold">Inventory</h1>
-    <h2>View all the characters you own.</h2>
-    <div class="mt-8 flex flex-row flex-wrap" v-if="state.loaded">
+    <h2>Here's all the characters you own.</h2>
+    <div class="mt-8 flex flex-row flex-wrap gap-4" v-if="state.loaded">
       <CharacterInventoryCard
         v-for="(character, index) in state.characters"
         :key="index"
-        :character_id="1"
+        :character_id="character.id"
         :index="1"
-        :bound_character_id="state.user.selected_character.id"
+        :bound_character_id="state.user?.selected_character?.id"
         :character_name="character.base_character.name"
+        @equip-character="equipCharacter"
       />
     </div>
   </div>
@@ -46,18 +47,58 @@ import CharacterInventoryCard from "@/components/game/CharacterInventoryCard.vue
 import { store } from "@/utils/store";
 import { supabase, getFullUser } from "@/utils/supabase";
 
+import { UsersTable } from "@/types/Database";
+
 const router = useRouter();
+
+interface BaseCharacter {
+  name: string;
+}
+
+interface Character {
+  id: number;
+  base_character: BaseCharacter;
+  owner: string;
+}
 
 const state = reactive<
   | {
       loaded: true;
-      user: unknown | null;
-      characters: unknown[] | null;
+      user: UsersTable | null;
+      characters: Character[] | null;
     }
   | { loaded: false }
 >({
   loaded: false,
 });
+
+const equipCharacter = async (character_id: number) => {
+  const equipData = await supabase
+    .from("users")
+    .update({ selected_character: character_id })
+    .match({ id: store.authSession?.user?.id });
+
+  if (equipData.error) {
+    return alert(equipData.error.message);
+  }
+
+  // Refresh user
+  const user_id = store.authSession?.user?.id;
+  if (!user_id) {
+    router.push("/game");
+    return;
+  }
+  const { data, error } = await getFullUser(user_id);
+
+  if (error || !data) {
+    alert("Something went wrong getting your user info, going back to map...");
+    router.push("/game");
+    return;
+  }
+
+  if (!state.loaded) return;
+  state.user = data;
+};
 
 onBeforeMount(async () => {
   const user_id = store.authSession?.user?.id;
@@ -98,7 +139,5 @@ onBeforeMount(async () => {
     user: data,
     characters: charactersData.data,
   });
-
-  console.log(state);
 });
 </script>
