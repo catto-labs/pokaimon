@@ -25,6 +25,7 @@
           :placeholder="'#' + Math.floor(Math.random() * 9999).toString()"
           pattern="#[A-Za-z0-9]+"
           maxlength="7"
+          minlength="3"
           @input="handleTagInput"
         />
       </div>
@@ -71,14 +72,14 @@ const router = useRouter();
 
 const state = reactive({
   username: "",
-  tag: "",
+  tag: "#",
 });
 
 const handleSubmit = async (e: Event) => {
   e.preventDefault();
 
   if (state.username.trim() === "") return alert("Please enter a username");
-  if (state.tag.trim() === "") return alert("Please enter a tag");
+  if (state.tag.trim().substring(1) === "") return alert("Please enter a tag");
 
   const { data, error: err1 } = await supabase
     .from("users")
