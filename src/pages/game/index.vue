@@ -60,7 +60,7 @@
                     ]"
                   >
                     <IconContentCopy />
-                    <span>Copy to clipboard</span>
+                    <span class="text-left text-white">Copy to clipboard</span>
                   </button>
                 </MenuItem>
                 <MenuItem v-slot="{ active }">
@@ -74,7 +74,7 @@
                     ]"
                   >
                     <IconLogout />
-                    <span>Logout of Pokaimon</span>
+                    <span class="text-left text-white">Logout of Pokaimon</span>
                   </button>
                 </MenuItem>
               </div>
