@@ -49,7 +49,7 @@
       >
         <IconPerson
           v-tippy="{ content: 'Profile' }"
-          @click="router.push('/game/user')"
+          @click="state.userDialogOpen = true"
           class="my-auto cursor-pointer text-2xl hover:text-brand-main"
         />
         <IconBackpack
@@ -232,6 +232,7 @@
     :open="state.shoppingDialogOpen"
     :closeShopDialog="closeShoppingDialog"
   />
+  <UserDialog :open="state.userDialogOpen" :close="closeUserDialog" />
 </template>
 
 <route>
@@ -281,6 +282,7 @@ import {
 } from "@headlessui/vue";
 
 import ShoppingDialog from "@/components/game/ShoppingDialog.vue";
+import UserDialog from "@/components/game/dialogs/User.vue";
 
 import { supabase, storedMapsUrl } from "@/utils/supabase";
 import { copyToClipboard } from "@/utils/globals";
@@ -325,6 +327,7 @@ const state = reactive<{
   openedDialogData: MarkerOptions | null;
 
   shoppingDialogOpen: boolean;
+  userDialogOpen: boolean;
 }>({
   username: "Loading...",
   primos: 0,
@@ -336,6 +339,7 @@ const state = reactive<{
   openedDialogData: null,
 
   shoppingDialogOpen: false,
+  userDialogOpen: false,
 });
 
 const sendMouseBroadcast = throttle(({ lat, lng }) => {
@@ -353,6 +357,7 @@ const sendMouseBroadcast = throttle(({ lat, lng }) => {
 const closeDialog = () => (state.dialogOpen = false);
 
 const closeShoppingDialog = () => (state.shoppingDialogOpen = false);
+const closeUserDialog = () => (state.userDialogOpen = false);
 
 /**
  * Creates a new game with a bot.
