@@ -1,28 +1,44 @@
 <template>
   <div class="absolute flex h-screen w-screen flex-col justify-end p-4">
     <div class="flex flex-row justify-end">
-      <TransitionRoot
-        :show="copyToast"
-        as="template"
-        enter="transform transition duration-[400ms]"
-        enter-from="opacity-0 scale-50"
-        enter-to="opacity-100 scale-100"
-        leave="transform duration-200 transition ease-in-out"
-        leave-from="opacity-100 rotate-0 scale-100 "
-        leave-to="opacity-0 scale-95 "
-      >
-        <div
-          class="z-10 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 p-2 backdrop-blur-md"
+      <div class="flex flex-col gap-4">
+        <TransitionRoot
+          :show="copyToast"
+          as="template"
+          leave="transform duration-200 transition ease-in-out"
+          leave-from="opacity-100 rotate-0 scale-100 "
+          leave-to="opacity-0 scale-95 "
         >
-          <div class="flex gap-2">
-            <IconContentCopy />
-            <h1 class="font-bold">Copied to Clipboard</h1>
-          </div>
-          <span class="text-body"
-            >Your username was copied to the clipboard!</span
+          <div
+            class="z-10 w-96 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 p-2 backdrop-blur-md"
           >
-        </div>
-      </TransitionRoot>
+            <div class="flex gap-2">
+              <IconContentCopy />
+              <h1 class="font-bold">Copied to Clipboard</h1>
+            </div>
+            <span class="text-body"
+              >Your username was copied to the clipboard!</span
+            >
+          </div>
+        </TransitionRoot>
+        <TransitionRoot
+          :show="loginToast"
+          as="template"
+          leave="transform duration-200 transition ease-in-out"
+          leave-from="opacity-100 rotate-0 scale-100 "
+          leave-to="opacity-0 scale-95 "
+        >
+          <div
+            class="z-10 w-96 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 p-2 backdrop-blur-md"
+          >
+            <div class="flex gap-2">
+              <IconHandWave />
+              <h1 class="font-bold">Welcome back!</h1>
+            </div>
+            <span class="text-body">Logged in as {{ state.username }}. </span>
+          </div>
+        </TransitionRoot>
+      </div>
     </div>
   </div>
 
@@ -224,6 +240,7 @@ import IconPerson from "virtual:icons/mdi/person";
 import IconLogout from "virtual:icons/mdi/logout";
 import IconUser from "virtual:icons/mdi/user";
 import IconClose from "virtual:icons/mdi/close";
+import IconHandWave from "virtual:icons/mdi/hand-wave";
 
 import RawIconSwordCross from "@/assets/icons/sword-cross.png";
 import RawIconInformation from "@/assets/icons/information.png";
@@ -413,12 +430,21 @@ const createMarker = (options: MarkerOptions) => {
 };
 
 const copyToast = ref(false);
+const loginToast = ref(false);
 
 const resetCopyToast = () => {
   copyToast.value = true;
 
   setTimeout(() => {
     copyToast.value = false;
+  }, 3000);
+};
+
+const resetLoginToast = () => {
+  loginToast.value = true;
+
+  setTimeout(() => {
+    loginToast.value = false;
   }, 3000);
 };
 
@@ -515,6 +541,8 @@ onMounted(async () => {
   //       });
   //     }
   //   });
+
+  resetLoginToast();
 });
 
 onBeforeUnmount(() => {
