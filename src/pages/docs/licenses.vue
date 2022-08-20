@@ -85,6 +85,11 @@
             license="???"
             copyright="HoYoverse Pte. Ltd."
           />
+          <License
+            name="Comic Sans MS"
+            license="???"
+            copyright="2018 Microsoft Corporation"
+          />
         </div>
       </div>
     </main>

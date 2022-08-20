@@ -6,6 +6,9 @@ import "@fontsource/raleway/600.css";
 // roboto mono
 import "@fontsource/roboto-mono/400.css";
 
+// comic sans
+import "@/assets/fonts/comic-sans/style.css";
+
 // styles
 import "@/assets/css/main.css";
 import "@/assets/css/text.css";
