@@ -14,51 +14,49 @@
         v-for="(character, character_index) in state.cards"
         @click="openCardInfo(character_index)"
       >
-        <div class="flex gap-4">
-          <div class="space-y-2">
-            <div class="flex justify-between gap-4">
-              <div>
-                <h3 class="text-lg font-bold text-head">
-                  {{ character.name }}
-                </h3>
-                <p>{{ character.description }}</p>
-              </div>
-              <div class="min-w-fit">
+        <div class="flex h-full flex-col justify-between gap-6">
+          <div class="flex w-full justify-between gap-4">
+            <div>
+              <h3 class="text-lg font-bold text-head">
+                {{ character.name }}
+              </h3>
+              <p>{{ character.description }}</p>
+            </div>
+            <div class="min-w-fit">
+              <img
+                :src="`https://flkaastenubusimwykpj.supabase.co/storage/v1/object/public/character-images/heads/${character.name.toLowerCase()}.png`"
+                class="aspect-square h-16 w-16 rounded-full border-2 border-grey-700"
+                :alt="`A picture of ${character.name}`"
+              />
+              <div
+                class="absolute z-10 -my-6 ml-10 rounded-full bg-grey-700 p-1"
+                v-tippy="{ content: character.element }"
+              >
                 <img
-                  :src="`https://flkaastenubusimwykpj.supabase.co/storage/v1/object/public/character-images/heads/${character.name.toLowerCase()}.png`"
-                  class="aspect-square h-16 w-16 rounded-full border-2 border-grey-700"
-                  :alt="`A picture of ${character.name}`"
+                  :src="`https://flkaastenubusimwykpj.supabase.co/storage/v1/object/public/misc-artwork/elements/${character.element.toLowerCase()}.svg`"
+                  :alt="`${character.element} element icon`"
+                  class="h-5"
                 />
-                <div
-                  class="absolute z-10 -my-6 ml-10 rounded-full bg-grey-700 p-1"
-                  v-tippy="{ content: character.element }"
-                >
-                  <img
-                    :src="`https://flkaastenubusimwykpj.supabase.co/storage/v1/object/public/misc-artwork/elements/${character.element.toLowerCase()}.svg`"
-                    :alt="`${character.element} element icon`"
-                    class="h-5"
-                  />
-                </div>
               </div>
             </div>
+          </div>
 
-            <div class="flex gap-4">
-              <div class="flex gap-1">
-                <IconAtom class="my-auto text-note" />
-                <span class="my-auto text-note">{{ character.element }}</span>
-              </div>
-              <div class="flex gap-1">
-                <IconMapMarkerRadius class="my-auto text-note" />
-                <span class="my-auto text-note">{{
-                  capitalizeFirstLetter(character.region)
-                }}</span>
-              </div>
-              <div class="flex gap-1">
-                <IconHeartHalfFull class="my-auto text-note" />
-                <span class="my-auto text-note"
-                  >Min. {{ character.base_health }}HP</span
-                >
-              </div>
+          <div class="flex gap-4">
+            <div class="flex gap-1">
+              <IconAtom class="my-auto text-note" />
+              <span class="my-auto text-note">{{ character.element }}</span>
+            </div>
+            <div class="flex gap-1">
+              <IconMapMarkerRadius class="my-auto text-note" />
+              <span class="my-auto text-note">{{
+                capitalizeFirstLetter(character.region)
+              }}</span>
+            </div>
+            <div class="flex gap-1">
+              <IconHeartHalfFull class="my-auto text-note" />
+              <span class="my-auto text-note"
+                >Min. {{ character.base_health }}HP</span
+              >
             </div>
           </div>
         </div>
@@ -67,7 +65,7 @@
   </main>
 
   <TransitionRoot appear :show="state.card_info_opened" as="template">
-    <Dialog as="div" @close="closeCardInfo" class="relative z-10">
+    <Dialog as="div" @close="closeCardInfo" class="relative">
       <TransitionChild
         as="template"
         enter="duration-300 ease-out"
@@ -77,10 +75,10 @@
         leave-from="opacity-100"
         leave-to="opacity-0"
       >
-        <div class="fixed inset-0 bg-grey-900 bg-opacity-75" />
+        <div class="fixed inset-0 z-50 bg-grey-900 bg-opacity-75" />
       </TransitionChild>
 
-      <div class="fixed inset-0 overflow-y-auto">
+      <div class="fixed inset-0 z-[60] overflow-y-auto">
         <div
           class="flex min-h-full items-center justify-center p-4 text-center"
         >
