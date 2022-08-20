@@ -12,7 +12,7 @@
         <div class="mt-4 flex flex-row gap-4">
           <router-link
             to="/game"
-            class="transform rounded-2xl bg-brand-main px-8 py-2 text-center font-bold text-white duration-300 ease-in-out hover:-translate-y-0.5 hover:text-white sm:text-xl"
+            class="transform rounded-2xl bg-brand-main px-8 py-2 text-center font-bold text-white duration-300 ease-in-out hover:-translate-y-0.5 hover:text-white hover:no-underline sm:text-xl"
           >
             Play Now
           </router-link>
@@ -34,7 +34,7 @@
           </h2>
           <router-link
             to="/cards"
-            class="w-fit transform rounded-2xl bg-brand-main px-8 py-2 text-right text-xl font-bold text-white duration-300 ease-in-out hover:-translate-y-0.5"
+            class="w-fit transform rounded-2xl bg-brand-main px-8 py-2 text-right text-xl font-bold text-white duration-300 ease-in-out hover:-translate-y-0.5 hover:text-white hover:no-underline"
           >
             View All Cards
           </router-link>
