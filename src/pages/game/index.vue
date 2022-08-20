@@ -48,14 +48,17 @@
         class="md:justfiy-start my-auto flex cursor-default items-center justify-center gap-8 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md"
       >
         <IconPerson
+          v-tippy="{ content: 'Profile' }"
           @click="router.push('/game/user')"
           class="my-auto cursor-pointer text-2xl hover:text-brand-main"
         />
         <IconBackpack
+          v-tippy="{ content: 'Inventory' }"
           @click="router.push('/game/inventory')"
           class="my-auto cursor-pointer text-2xl hover:text-brand-main"
         />
         <IconSwordCross
+          v-tippy="{ content: 'Random Game (vs Bot)' }"
           @click="router.push('/game/new-game')"
           class="my-auto cursor-pointer text-2xl hover:text-brand-main"
         />
