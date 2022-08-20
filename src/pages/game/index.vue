@@ -122,26 +122,31 @@
               class="w-full max-w-xl transform overflow-hidden rounded-2xl border border-grey-700 bg-grey-800 p-6 text-left align-middle shadow-xl transition-all"
             >
               <div v-if="state.openedDialogData !== null">
-                <DialogTitle
-                  as="h3"
-                  class="text-gray-900 text-lg font-bold leading-6"
-                >
-                  {{ state.openedDialogData.title }}
-                </DialogTitle>
-                <DialogDescription
-                  v-if="state.openedDialogData.description"
-                  class="text-gray-500 mt-2 text-sm"
-                >
-                  {{ state.openedDialogData.description }}
-                </DialogDescription>
+                <div class="flex justify-between">
+                  <div class="space-y-2">
+                    <DialogTitle
+                      as="h3"
+                      class="text-gray-900 text-lg font-bold leading-6"
+                    >
+                      {{ state.openedDialogData.title }}
+                    </DialogTitle>
+                    <DialogDescription
+                      v-if="state.openedDialogData.description"
+                      class="text-gray-500 mt-2 text-sm"
+                    >
+                      {{ state.openedDialogData.description }}
+                    </DialogDescription>
+                  </div>
 
-                <div class="mt-12 flex flex-col justify-end gap-6 sm:flex-row">
                   <button
-                    class="rounded-md bg-grey bg-opacity-20 px-6 py-1 transition-colors hover:bg-opacity-40"
+                    class="mb-auto h-fit rounded-md bg-grey bg-opacity-20 p-2 transition-colors hover:bg-opacity-40"
                     @click="closeDialog()"
                   >
-                    Close
+                    <IconClose />
                   </button>
+                </div>
+
+                <div class="mt-12 flex flex-col justify-end gap-6 sm:flex-row">
                   <div class="flex flex-row justify-end gap-2">
                     <button
                       class="w-full rounded-md bg-brand-second px-6 py-1 transition-colors hover:bg-opacity-80 sm:w-auto"
@@ -188,6 +193,7 @@ import IconBackpack from "virtual:icons/mdi/backpack";
 import IconPerson from "virtual:icons/mdi/person";
 import IconLogout from "virtual:icons/mdi/logout";
 import IconUser from "virtual:icons/mdi/user";
+import IconClose from "virtual:icons/mdi/close";
 
 import RawIconSwordCross from "@/assets/icons/sword-cross.png";
 import RawIconInformation from "@/assets/icons/information.png";
