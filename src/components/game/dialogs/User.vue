@@ -27,20 +27,25 @@
             leave-to="opacity-0 scale-95"
           >
             <DialogPanel
-              class="w-full max-w-4xl transform overflow-hidden rounded-2xl border border-grey-700 bg-grey-800 p-8 text-left align-middle shadow-xl transition-all"
+              class="flex w-full max-w-4xl transform justify-between overflow-hidden rounded-2xl border border-grey-700 bg-grey-800 p-8 text-left align-middle shadow-xl transition-all"
             >
-              <div v-if="state.loaded" class="flex rounded-xl bg-black">
-                <div class="flex flex-col space-y-8">
-                  <div class="flex flex-col">
+              <div>
+                <div
+                  v-if="state.loaded"
+                  class="flex space-x-8 rounded-xl bg-black"
+                >
+                  <div
+                    class="flex flex-col items-center justify-center space-y-4 rounded-xl border border-grey-700 bg-black p-4 text-center"
+                  >
                     <img
                       v-if="state.traveller === 'aether'"
                       src="@/assets/game/traveller/aether.png"
-                      class="aspect-square h-auto w-40 rounded-full border-2 border-grey-700 bg-grey-800 outline-none transition hover:bg-opacity-80 focus:border-grey-500"
+                      class="aspect-square h-auto w-40 rounded-full border-2 border-grey-600 bg-grey-800 outline-none transition hover:bg-opacity-80 focus:border-grey-500"
                     />
                     <img
                       v-if="state.traveller === 'lumine'"
                       src="@/assets/game/traveller/lumine.png"
-                      class="aspect-square h-auto w-40 rounded-full border-2 border-grey-700 bg-grey-800 outline-none transition hover:bg-opacity-80 focus:border-grey-500"
+                      class="aspect-square h-auto w-40 rounded-full border-2 border-grey-600 bg-grey-800 outline-none transition hover:bg-opacity-80 focus:border-grey-500"
                     />
                     <div class="my-4">
                       <h2 class="text-2xl font-bold">{{ state.username }}</h2>
@@ -51,89 +56,98 @@
                     <div class="mt-auto mb-4 flex space-x-4">
                       <IconConstruction
                         v-if="state.is_developer"
-                        class="mt-auto text-2xl"
+                        class="mt-auto text-xl"
                         v-tippy="{ content: 'Pokaimon Developer' }"
                       />
                       <IconGestureTap
                         v-if="state.is_ui_designer"
-                        class="mt-auto mb-[0.1rem] text-2xl"
+                        class="mt-auto mb-[0.1rem] text-xl"
                         v-tippy="{ content: 'Pokaimon User Interface' }"
                       />
                       <IconChartBar
                         v-if="state.is_character_designer"
-                        class="mt-auto text-2xl"
+                        class="mt-auto text-xl"
                         v-tippy="{ content: 'Pokaimon Characters' }"
                       />
                       <IconBrush
                         v-if="state.is_artwork_designer"
-                        class="mt-auto text-2xl"
+                        class="mt-auto text-xl"
                         v-tippy="{ content: 'Pokaimon Artwork' }"
                       />
                     </div>
                   </div>
-                </div>
-                <div class="mx-auto rounded-full bg-grey-700 p-1"></div>
-                <div class="flex w-1/2 flex-col justify-between">
-                  <div>
-                    <h2 class="text-2xl font-bold">Profile Statistics</h2>
-                    <div class="mb-4">
-                      <p>
-                        Experience:
-                        {{ state.xp.toLocaleString("en-GB") }}
-                      </p>
-                      <p>
-                        Primogems: {{ state.primos.toLocaleString("en-GB") }}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div class="mt-auto">
-                    <h2 class="mb-4 text-2xl font-bold">Equipped Card</h2>
-                    <div class="mb-4 flex gap-4">
-                      <div
-                        class="flex w-32 flex-col justify-end rounded-md bg-grey-700"
-                      >
-                        <img
-                          :src="`https://flkaastenubusimwykpj.supabase.co/storage/v1/object/public/character-images/heads/${state.selected_character.base_character.name.toLowerCase()}.png`"
-                          class="h-fit"
-                        />
-                      </div>
-                      <div class="flex flex-col gap-1">
-                        <h3 class="text-xl font-semibold">
-                          {{ state.selected_character.base_character.name }}
-                        </h3>
+                  <div class="flex flex-col justify-between">
+                    <div>
+                      <h2 class="text-2xl font-bold">Profile Statistics</h2>
+                      <div class="mb-4">
                         <p>
                           Experience:
-                          {{
-                            state.selected_character.xp.toLocaleString("en-GB")
-                          }}
+                          {{ state.xp.toLocaleString("en-GB") }}
                         </p>
                         <p>
-                          Health:
-                          {{
-                            state.selected_character.health.toLocaleString(
-                              "en-GB"
-                            )
-                          }}
+                          Primogems: {{ state.primos.toLocaleString("en-GB") }}
                         </p>
-                        <p>
-                          Element:
-                          {{ state.selected_character.base_character.element }}
-                        </p>
-                        <p>
-                          Region:
-                          {{
-                            capitalizeFirstLetter(
-                              state.selected_character.base_character.region
-                            )
-                          }}
-                        </p>
+                      </div>
+                    </div>
+
+                    <div class="mt-auto">
+                      <h2 class="mb-4 text-2xl font-bold">Equipped Card</h2>
+                      <div class="flex gap-4">
+                        <div
+                          class="flex w-32 flex-col justify-end rounded-md bg-grey-700"
+                        >
+                          <img
+                            :src="`https://flkaastenubusimwykpj.supabase.co/storage/v1/object/public/character-images/heads/${state.selected_character.base_character.name.toLowerCase()}.png`"
+                            class="h-fit"
+                          />
+                        </div>
+                        <div class="flex flex-col gap-1">
+                          <h3 class="text-xl font-semibold">
+                            {{ state.selected_character.base_character.name }}
+                          </h3>
+                          <p>
+                            Experience:
+                            {{
+                              state.selected_character.xp.toLocaleString(
+                                "en-GB"
+                              )
+                            }}
+                          </p>
+                          <p>
+                            Health:
+                            {{
+                              state.selected_character.health.toLocaleString(
+                                "en-GB"
+                              )
+                            }}
+                          </p>
+                          <p>
+                            Element:
+                            {{
+                              state.selected_character.base_character.element
+                            }}
+                          </p>
+                          <p>
+                            Region:
+                            {{
+                              capitalizeFirstLetter(
+                                state.selected_character.base_character.region
+                              )
+                            }}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
+                <div v-else>Loading...</div>
               </div>
-              <div v-else>Loading...</div>
+              <button
+                class="mb-auto h-fit rounded-md bg-grey bg-opacity-20 p-2 transition-colors hover:bg-opacity-40"
+                @click="props.closeShopDialog"
+              >
+                <IconClose />
+              </button>
             </DialogPanel>
           </TransitionChild>
         </div>
@@ -159,6 +173,7 @@ import IconConstruction from "virtual:icons/mdi/construction";
 import IconGestureTap from "virtual:icons/mdi/gesture-tap";
 import IconChartBar from "virtual:icons/mdi/chart-bar";
 import IconBrush from "virtual:icons/mdi/brush";
+import IconClose from "virtual:icons/mdi/close";
 
 import { reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
