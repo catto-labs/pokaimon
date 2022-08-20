@@ -1,8 +1,8 @@
 <template>
   <div class="relative z-10 p-4">
-    <div class="flex justify-between">
+    <div class="flex flex-col justify-between gap-2 md:flex-row">
       <div
-        class="my-auto flex cursor-default items-center gap-8 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md"
+        class="md:justfiy-start my-auto flex cursor-default items-center justify-center gap-8 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md"
       >
         <IconPerson
           @click="router.push('/game/user')"
@@ -17,7 +17,15 @@
           class="my-auto cursor-pointer text-2xl hover:text-brand-main"
         />
       </div>
-      <div class="flex items-center gap-4">
+      <div class="flex items-center justify-between gap-4 md:justify-end">
+        <div
+          class="my-auto flex cursor-default space-x-2 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md"
+        >
+          <img src="@/assets/game/primogem.svg" class="my-auto h-4" />
+          <span class="my-auto text-white">{{
+            state.primos.toLocaleString("en-GB")
+          }}</span>
+        </div>
         <Menu as="div">
           <div>
             <MenuButton
@@ -73,14 +81,6 @@
             </MenuItems>
           </transition>
         </Menu>
-        <div
-          class="my-auto flex cursor-default space-x-2 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md"
-        >
-          <img src="@/assets/game/primogem.svg" class="my-auto h-4" />
-          <span class="my-auto text-white">{{
-            state.primos.toLocaleString("en-GB")
-          }}</span>
-        </div>
       </div>
     </div>
   </div>
