@@ -45,7 +45,7 @@
   <div class="relative z-20 p-4">
     <div class="flex flex-col justify-between gap-2 md:flex-row">
       <div
-        class="md:justfiy-start my-auto flex cursor-default items-center justify-center gap-8 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md"
+        class="my-auto flex cursor-default items-center justify-center gap-8 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md md:justify-start"
       >
         <IconPerson
           v-tippy="{ content: 'Profile' }"
@@ -117,7 +117,7 @@
                         state.xp === 42069
                       "
                       src="@/assets/misc/nice.svg"
-                      class="mt-auto mb-1 h-2 text-right font-comic text-grey-400 brightness-75"
+                      class="font-comic mt-auto mb-1 h-2 text-right text-grey-400 brightness-75"
                     />
                   </div>
                 </MenuItem>
