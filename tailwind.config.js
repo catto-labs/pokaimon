@@ -46,6 +46,8 @@ module.exports = {
       fuchsia: "#E879F9",
       pink: "#F472B6",
       rose: "#FB7185",
+
+      transparent: "transparent",
     },
     fontFamily: {
       sans: ["Raleway", "sans-serif"],
