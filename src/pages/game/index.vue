@@ -124,16 +124,16 @@
                       <span
                         class="mx-2 cursor-default text-left text-sm text-grey-300"
                         >You currently have
-                        {{ state.xp.toLocaleString("en-GB") }}
+                        {{ store.user_data.xp.toLocaleString("en-GB") }}
                         experience!</span
                       >
                       <img
                         v-if="
-                          state.xp === 69 ||
-                          state.xp === 420 ||
-                          state.xp === 727 ||
-                          state.xp === 69420 ||
-                          state.xp === 42069
+                          store.user_data.xp === 69 ||
+                          store.user_data.xp === 420 ||
+                          store.user_data.xp === 727 ||
+                          store.user_data.xp === 69420 ||
+                          store.user_data.xp === 42069
                         "
                         src="@/assets/misc/nice.svg"
                         class="mt-auto mb-1 hidden h-2 text-right text-grey-400 brightness-75 md:inline-block"
@@ -143,7 +143,7 @@
                   <MenuItem v-slot="{ active }">
                     <button
                       @click="
-                        copyToClipboard(state.username);
+                        copyToClipboard(store.user_data?.username as string);
                         resetCopyToast();
                       "
                       :class="[
@@ -190,7 +190,7 @@
         >
           <img src="@/assets/game/primogem.svg" class="my-auto h-4" />
           <span class="my-auto text-white">{{
-            state.primos.toLocaleString("en-GB")
+            store.user_data.primos.toLocaleString("en-GB")
           }}</span>
         </div>
         <Menu as="div">
@@ -199,7 +199,9 @@
               class="my-auto flex items-center gap-2 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md transition duration-300 hover:bg-grey-700"
             >
               <IconUser class="my-auto" />
-              <span class="my-auto text-white">{{ state.username }}</span>
+              <span class="my-auto text-white">{{
+                store.user_data.username
+              }}</span>
               <IconMenuDown />
             </MenuButton>
           </div>
@@ -216,21 +218,21 @@
               class="absolute right-0 mt-2 mr-4 origin-top-right divide-y divide-grey-100 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 shadow-lg ring-1 ring-black ring-opacity-5 backdrop-blur-md focus:outline-none"
             >
               <div class="px-2 py-2">
-                <MenuItem class="">
+                <MenuItem>
                   <div class="flex border-b border-b-grey-400 pb-2">
                     <span
                       class="mx-2 cursor-default text-left text-sm text-grey-300"
                       >You currently have
-                      {{ state.xp.toLocaleString("en-GB") }}
+                      {{ store.user_data.xp.toLocaleString("en-GB") }}
                       experience!</span
                     >
                     <img
                       v-if="
-                        state.xp === 69 ||
-                        state.xp === 420 ||
-                        state.xp === 727 ||
-                        state.xp === 69420 ||
-                        state.xp === 42069
+                        store.user_data.xp === 69 ||
+                        store.user_data.xp === 420 ||
+                        store.user_data.xp === 727 ||
+                        store.user_data.xp === 69420 ||
+                        store.user_data.xp === 42069
                       "
                       src="@/assets/misc/nice.svg"
                       class="mt-auto mb-1 hidden h-2 text-right text-grey-400 brightness-75 md:inline-block"
@@ -240,7 +242,7 @@
                 <MenuItem v-slot="{ active }">
                   <button
                     @click="
-                      copyToClipboard(state.username);
+                      copyToClipboard(store.user_data?.username as string);
                       resetCopyToast();
                     "
                     :class="[
@@ -469,10 +471,6 @@ const map_ref = ref<Map | null>(null);
 const router = useRouter();
 
 const state = reactive<{
-  username: string;
-  primos: number;
-  xp: number;
-
   connected_users_channel: RealtimeChannel | null;
   connected_users: {
     [username: string]: Marker | undefined;
@@ -487,10 +485,6 @@ const state = reactive<{
   commandPaletteOpen: boolean;
   inventoryDialogOpen: boolean;
 }>({
-  username: "Loading...",
-  primos: 0,
-  xp: 0,
-
   connected_users_channel: null,
   connected_users: {},
 
@@ -505,13 +499,12 @@ const state = reactive<{
 });
 
 const sendMouseBroadcast = throttle(({ lat, lng }) => {
-  if (!state.connected_users_channel) return;
-  if (state.username === "Loading...") return;
+  if (!state.connected_users_channel || !store.user_data) return;
 
   state.connected_users_channel.send({
     type: "broadcast",
     event: "location",
-    payload: { username: state.username, lat, lng },
+    payload: { username: store.user_data.username, lat, lng },
   });
 }, 1000 / 10);
 
