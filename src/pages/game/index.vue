@@ -49,7 +49,12 @@
       >
         <IconPerson
           v-tippy="{ content: 'Profile' }"
-          @click="state.userDialogOpen = true"
+          @click="
+            () => {
+              state.userDialogOpen = true;
+              state.userDialogUsername = null;
+            }
+          "
           class="my-auto cursor-pointer text-2xl hover:text-brand-main"
         />
         <IconBackpack
@@ -280,7 +285,11 @@
     :open="state.shoppingDialogOpen"
     :closeShopDialog="closeShoppingDialog"
   />
-  <UserDialog :open="state.userDialogOpen" :close="closeUserDialog" />
+  <UserDialog
+    :username="state.userDialogUsername"
+    :open="state.userDialogOpen"
+    :close="closeUserDialog"
+  />
 </template>
 
 <route>
@@ -344,6 +353,7 @@ import {
   LatLng,
   CRS,
   Icon,
+  DivIcon,
 } from "leaflet";
 
 interface MousePositionPayload {
@@ -377,6 +387,7 @@ const state = reactive<{
 
   shoppingDialogOpen: boolean;
   userDialogOpen: boolean;
+  userDialogUsername: string | null;
 }>({
   username: "Loading...",
   primos: 0,
@@ -390,6 +401,7 @@ const state = reactive<{
 
   shoppingDialogOpen: false,
   userDialogOpen: false,
+  userDialogUsername: null,
 });
 
 const sendMouseBroadcast = throttle(({ lat, lng }) => {
@@ -407,7 +419,10 @@ const sendMouseBroadcast = throttle(({ lat, lng }) => {
 const closeDialog = () => (state.dialogOpen = false);
 
 const closeShoppingDialog = () => (state.shoppingDialogOpen = false);
-const closeUserDialog = () => (state.userDialogOpen = false);
+const closeUserDialog = () => {
+  state.userDialogUsername = null;
+  state.userDialogOpen = false;
+};
 
 /**
  * Creates a new game with a bot.
@@ -507,6 +522,29 @@ const createMarker = (options: MarkerOptions) => {
   marker.addTo(map);
 };
 
+const createUserMarker = (username: string, latlng: LatLng) => {
+  if (!map_ref.value) return;
+  const map = map_ref.value as Map;
+
+  const icon = new DivIcon({
+    className: "h-24 w-24 rounded-full bg-grey-600 border-2 border-grey-500",
+    iconSize: 20,
+  });
+
+  const marker = new Marker(latlng, {
+    icon,
+    title: username,
+  });
+
+  marker.on("click", () => {
+    state.userDialogUsername = username;
+    state.userDialogOpen = true;
+  });
+
+  marker.addTo(map);
+  return marker;
+};
+
 const copyToast = ref(false);
 const loginToast = ref(false);
 
@@ -591,35 +629,36 @@ onMounted(async () => {
     },
   });
 
-  // state.connected_users_channel
-  //   .on(
-  //     "broadcast",
-  //     { event: "location" },
-  //     (event_data: MousePositionPayload) => {
-  //       if (!state.connected_users[event_data.payload.username]) {
-  //         state.connected_users[event_data.payload.username] = new Marker(
-  //           new LatLng(event_data.payload.lat, event_data.payload.lng)
-  //         );
+  state.connected_users_channel
+    .on(
+      "broadcast",
+      { event: "location" },
+      (event_data: MousePositionPayload) => {
+        if (!state.connected_users[event_data.payload.username]) {
+          state.connected_users[event_data.payload.username] = createUserMarker(
+            event_data.payload.username,
+            new LatLng(event_data.payload.lat, event_data.payload.lng)
+          );
+        }
 
-  //         state.connected_users[event_data.payload.username].addTo(map);
-  //       }
+        state.connected_users[event_data.payload.username].setLatLng(
+          new LatLng(event_data.payload.lat, event_data.payload.lng)
+        );
+      }
+    )
+    .subscribe(async (status: string) => {
+      if (status === "SUBSCRIBED") {
+        map.on("mousemove", ({ latlng }) => {
+          if (!latlng.lat || !latlng.lng) return;
 
-  //       state.connected_users[event_data.payload.username].setLatLng(
-  //         new LatLng(event_data.payload.lat, event_data.payload.lng)
-  //       );
-  //     }
-  //   )
-  //   .subscribe(async (status: string) => {
-  //     if (status === "SUBSCRIBED") {
-  //       map.on("mousemove", ({ latlng }) => {
-  //         sendMouseBroadcast({
-  //           username: state.username,
-  //           lat: latlng.lat,
-  //           lng: latlng.lng,
-  //         });
-  //       });
-  //     }
-  //   });
+          sendMouseBroadcast({
+            username: state.username,
+            lat: latlng.lat,
+            lng: latlng.lng,
+          });
+        });
+      }
+    });
 
   resetLoginToast();
 });

@@ -160,7 +160,7 @@ export const getGame = async (id: number) => {
 //   return response;
 // };
 
-export const getFullUser = async (id: string) => {
+export const getFullUser = async (uid: string, matchWithUsername = false) => {
   const getData = () =>
     supabase
       .from("users")
@@ -185,7 +185,7 @@ export const getFullUser = async (id: string) => {
           is_artwork_designer
         `
       )
-      .match({ id })
+      .match(matchWithUsername ? { username: uid } : { id: uid })
       .single();
 
   type Response = Awaited<ReturnType<typeof getData>>;

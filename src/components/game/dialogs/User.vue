@@ -217,7 +217,7 @@ import IconChartBar from "virtual:icons/mdi/chart-bar";
 import IconBrush from "virtual:icons/mdi/brush";
 import IconClose from "virtual:icons/mdi/close";
 
-import { reactive, onMounted } from "vue";
+import { reactive, onMounted, onUpdated } from "vue";
 import { useRouter } from "vue-router";
 
 import { supabase, getFullUser } from "@/utils/supabase";
@@ -228,11 +228,12 @@ import { capitalizeFirstLetter } from "@/utils/globals";
 const props = defineProps<{
   open: boolean;
   close: () => unknown;
+
+  username: string | null;
 }>();
 
 const router = useRouter();
 
-// this isnt supposed to be permanent if it wasnt obvious
 const joinTime = new Date();
 
 const state = reactive<
@@ -258,17 +259,21 @@ const state = reactive<
   loaded: false,
 });
 
-onMounted(async () => {
+const getData = async () => {
+  state.loaded = false;
   const user_id = store.authSession?.user?.id;
   if (!user_id) {
     router.push("/game");
     return;
   }
 
-  const { data: user_data, error: user_error } = await getFullUser(user_id);
+  const { data: user_data, error: user_error } = await getFullUser(
+    props.username || user_id,
+    props.username !== null
+  );
 
   if (user_error || !user_data) {
-    alert("Something went wrong getting your user info, refreshing...");
+    alert("Something went wrong getting the user info, refreshing...");
     window.location.reload();
     return;
   }
@@ -300,5 +305,8 @@ onMounted(async () => {
 
     games_played: games_data,
   });
-});
+};
+
+onMounted(() => getData());
+onUpdated(() => getData());
 </script>
