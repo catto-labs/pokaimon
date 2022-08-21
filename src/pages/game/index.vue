@@ -1,4 +1,9 @@
 <template>
+  <CommandPalette
+    :open="state.commandPaletteOpen"
+    :close="closeCommandPalette"
+  />
+
   <div class="absolute flex h-screen w-screen flex-col justify-end p-4">
     <div class="flex flex-row justify-end">
       <div class="flex flex-col gap-4">
@@ -70,6 +75,11 @@
         <IconStore
           v-tippy="{ content: 'Shop' }"
           @click="state.shoppingDialogOpen = true"
+          class="my-auto cursor-pointer text-2xl hover:text-brand-main"
+        />
+        <IconSearch
+          v-tippy="{ content: 'Command Palette' }"
+          @click="state.commandPaletteOpen = true"
           class="my-auto cursor-pointer text-2xl hover:text-brand-main"
         />
       </div>
@@ -314,6 +324,7 @@ import IconLogout from "virtual:icons/mdi/logout";
 import IconClose from "virtual:icons/mdi/close";
 import IconStore from "virtual:icons/mdi/store";
 import IconUser from "virtual:icons/mdi/user";
+import IconSearch from "virtual:icons/mdi/search";
 
 import RawIconSwordCross from "@/assets/icons/sword-cross.png";
 import RawIconInformation from "@/assets/icons/information.png";
@@ -338,6 +349,7 @@ import {
   TransitionChild,
 } from "@headlessui/vue";
 
+import CommandPalette from "@/components/game/CommandPalette.vue";
 import ShoppingDialog from "@/components/game/dialogs/Shopping.vue";
 import UserDialog from "@/components/game/dialogs/User.vue";
 
@@ -388,6 +400,7 @@ const state = reactive<{
   shoppingDialogOpen: boolean;
   userDialogOpen: boolean;
   userDialogUsername: string | null;
+  commandPaletteOpen: boolean;
 }>({
   username: "Loading...",
   primos: 0,
@@ -402,6 +415,7 @@ const state = reactive<{
   shoppingDialogOpen: false,
   userDialogOpen: false,
   userDialogUsername: null,
+  commandPaletteOpen: false,
 });
 
 const sendMouseBroadcast = throttle(({ lat, lng }) => {
@@ -419,6 +433,7 @@ const sendMouseBroadcast = throttle(({ lat, lng }) => {
 const closeDialog = () => (state.dialogOpen = false);
 
 const closeShoppingDialog = () => (state.shoppingDialogOpen = false);
+const closeCommandPalette = () => (state.commandPaletteOpen = false);
 const closeUserDialog = () => {
   state.userDialogUsername = null;
   state.userDialogOpen = false;
