@@ -64,7 +64,7 @@
         />
         <IconBackpack
           v-tippy="{ content: 'Inventory' }"
-          @click="router.push('/game/inventory')"
+          @click="state.inventoryDialogOpen = true"
           class="my-auto cursor-pointer text-2xl hover:text-brand-main"
         />
         <IconSwordCross
@@ -186,7 +186,7 @@
       />
       <IconBackpack
         v-tippy="{ content: 'Inventory' }"
-        @click="router.push('/game/inventory')"
+        @click="state.inventoryDialogOpen = true"
         class="my-auto cursor-pointer text-2xl hover:text-brand-main"
       />
       <IconSwordCross
@@ -300,6 +300,10 @@
     :open="state.userDialogOpen"
     :close="closeUserDialog"
   />
+  <InventoryDialog
+    :open="state.inventoryDialogOpen"
+    :close="closeInventoryDialog"
+  />
 </template>
 
 <route>
@@ -352,6 +356,7 @@ import {
 import CommandPalette from "@/components/game/CommandPalette.vue";
 import ShoppingDialog from "@/components/game/dialogs/Shopping.vue";
 import UserDialog from "@/components/game/dialogs/User.vue";
+import InventoryDialog from "@/components/game/dialogs/Inventory.vue";
 
 import { supabase, storedMapsUrl } from "@/utils/supabase";
 import { copyToClipboard } from "@/utils/globals";
@@ -367,6 +372,7 @@ import {
   Icon,
   DivIcon,
 } from "leaflet";
+import Inventory from "../../components/game/dialogs/Inventory.vue";
 
 interface MousePositionPayload {
   type: string;
@@ -401,6 +407,7 @@ const state = reactive<{
   userDialogOpen: boolean;
   userDialogUsername: string | null;
   commandPaletteOpen: boolean;
+  inventoryDialogOpen: boolean;
 }>({
   username: "Loading...",
   primos: 0,
@@ -416,6 +423,7 @@ const state = reactive<{
   userDialogOpen: false,
   userDialogUsername: null,
   commandPaletteOpen: false,
+  inventoryDialogOpen: false,
 });
 
 const sendMouseBroadcast = throttle(({ lat, lng }) => {
@@ -434,6 +442,7 @@ const closeDialog = () => (state.dialogOpen = false);
 
 const closeShoppingDialog = () => (state.shoppingDialogOpen = false);
 const closeCommandPalette = () => (state.commandPaletteOpen = false);
+const closeInventoryDialog = () => (state.inventoryDialogOpen = false);
 const closeUserDialog = () => {
   state.userDialogUsername = null;
   state.userDialogOpen = false;
@@ -678,26 +687,26 @@ onMounted(async () => {
   resetLoginToast();
 
   document.addEventListener("keydown", (e) => {
-    const requiredKey = "1";
-
     switch (e.key) {
       case "1":
         state.userDialogOpen = true;
         state.shoppingDialogOpen = false;
         state.commandPaletteOpen = false;
         state.dialogOpen = false;
+        state.inventoryDialogOpen = false;
         break;
       case "2":
         state.shoppingDialogOpen = false;
         state.userDialogOpen = false;
         state.commandPaletteOpen = false;
         state.dialogOpen = false;
-        router.push("/game/inventory");
+        state.inventoryDialogOpen = true;
         break;
       case "3":
         state.shoppingDialogOpen = false;
         state.userDialogOpen = false;
         state.commandPaletteOpen = false;
+        state.inventoryDialogOpen = false;
         state.dialogOpen = false;
         router.push("/game/new-game");
         break;
@@ -705,6 +714,7 @@ onMounted(async () => {
         state.shoppingDialogOpen = true;
         state.userDialogOpen = false;
         state.commandPaletteOpen = false;
+        state.inventoryDialogOpen = false;
         state.dialogOpen = false;
         break;
     }
@@ -717,6 +727,7 @@ onMounted(async () => {
     ) {
       e.preventDefault();
       state.shoppingDialogOpen = false;
+      state.inventoryDialogOpen = false;
       state.userDialogOpen = false;
       state.commandPaletteOpen = true;
       state.dialogOpen = false;
