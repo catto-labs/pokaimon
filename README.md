@@ -3,7 +3,7 @@
 # Pokaimon
 Pokaimon is a Genshin Impact themed collectible game with mechanics similar to Pokémon, made for the Supabase Launch Week 5 Hackathon.
 
-Play the game here: https://pokaimon.vercel.app
+Play the game here: https://www.pokaimon.moe
 
 ## Idea
 After swiftly forming a team for the hackathon, we wanted to do a project that's fun to use but also fun to make for us (by building something based on a common interest). As we all play the game "Genshin Impact", an open-world action RPG, I (trobonox) came up with the idea of using the game's story and characters as a base and mixing it up with another game. The choice for the other game was Pokémon, as it is a truly classic game with simple core concepts but is very fun and a part of many people’s childhood.
@@ -27,10 +27,10 @@ This usage is covering all major feature areas of Supabase, and many of these fe
 - [@Vexcited](https://github.com/vexcited): full stack developer (insanely productive, carried the project 😂♥)
 - [@pnxl](https://github.com/pnxl): front-end developer, ui/ux designer
 
-Other miscellaneous contributors [can be found on the website](https://pokaimon.vercel.app/docs/contributors), but they are not part of the main development team.
+Other miscellaneous contributors [can be found on the website](https://www.pokaimon.moe/docs/contributors), but they are not part of the main development team.
 
 ## Project setup
-If you just want to play the game, you can access the live website at [pokaimon.vercel.app](https://pokaimon.vercel.app). 
+If you just want to play the game, you can access the live website at [pokaimon.moe](https://www.pokaimon.moe). 
 Only proceed with the steps below if you want to edit the code of the project (and possibly contribute).
 
 ### Recommended IDE Setup:
