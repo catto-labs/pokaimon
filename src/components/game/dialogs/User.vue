@@ -155,7 +155,7 @@
                         Lost the fight
                       </template>
                       <template v-else-if="game.winner === 3"> Tie! </template>
-                      <template v-else-if="!game.winner"> In a fight </template>
+                      <template v-else> Entered a fight </template>
                     </h4>
 
                     <span>against a bot.</span>
@@ -176,6 +176,7 @@
                         Lost the fight
                       </template>
                       <template v-else-if="game.winner === 3"> Tie! </template>
+                      <template v-else> Entered a fight </template>
                     </h4>
 
                     <span
