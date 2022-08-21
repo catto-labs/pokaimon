@@ -685,23 +685,27 @@ onMounted(async () => {
         state.userDialogOpen = true;
         state.shoppingDialogOpen = false;
         state.commandPaletteOpen = false;
+        state.dialogOpen = false;
         break;
       case "2":
         state.shoppingDialogOpen = false;
         state.userDialogOpen = false;
         state.commandPaletteOpen = false;
+        state.dialogOpen = false;
         router.push("/game/inventory");
         break;
       case "3":
         state.shoppingDialogOpen = false;
         state.userDialogOpen = false;
         state.commandPaletteOpen = false;
+        state.dialogOpen = false;
         router.push("/game/new-game");
         break;
       case "4":
         state.shoppingDialogOpen = true;
         state.userDialogOpen = false;
         state.commandPaletteOpen = false;
+        state.dialogOpen = false;
         break;
     }
 
@@ -715,6 +719,7 @@ onMounted(async () => {
       state.shoppingDialogOpen = false;
       state.userDialogOpen = false;
       state.commandPaletteOpen = true;
+      state.dialogOpen = false;
     }
   });
 });
