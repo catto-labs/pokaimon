@@ -26,7 +26,7 @@
             leave-from="opacity-100 scale-100"
             leave-to="opacity-0 scale-95"
           >
-            <DialogPanel class="max-w-3xl">
+            <DialogPanel class="max-w-5xl">
               <div
                 class="w-full transform overflow-hidden rounded-2xl border border-grey-700 bg-grey-800 p-6 text-left align-middle shadow-xl transition-all"
               >
@@ -56,7 +56,7 @@
                 v-if="state.loaded && store.user_data"
               >
                 <div
-                  class="group flex max-w-md flex-col justify-end rounded-lg border border-grey-600 bg-grey-700 transition duration-300 ease-in-out hover:-translate-y-0.5 md:max-w-none"
+                  class="group flex flex-col justify-end rounded-lg border border-grey-600 bg-grey-700 transition duration-300 ease-in-out hover:-translate-y-0.5 md:w-1/3 md:max-w-none"
                   :key="character.id"
                   v-for="character in state.characters"
                 >
