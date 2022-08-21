@@ -142,10 +142,7 @@
                   </MenuItem>
                   <MenuItem v-slot="{ active }">
                     <button
-                      @click="
-                        copyToClipboard(store.user_data?.username as string);
-                        resetCopyToast();
-                      "
+                      @click="copyToClipboard(store.user_data?.username)"
                       :class="[
                         active
                           ? 'bg-brand-main bg-opacity-60 text-white'
@@ -241,10 +238,7 @@
                 </MenuItem>
                 <MenuItem v-slot="{ active }">
                   <button
-                    @click="
-                      copyToClipboard(store.user_data?.username as string);
-                      resetCopyToast();
-                    "
+                    @click="copyToClipboard(store.user_data?.username)"
                     :class="[
                       active
                         ? 'bg-brand-main bg-opacity-60 text-white'
@@ -440,7 +434,7 @@ import ShoppingDialog from "@/components/game/dialogs/Shopping.vue";
 import InventoryDialog from "@/components/game/dialogs/Inventory.vue";
 
 import { supabase, storedMapsUrl } from "@/utils/supabase";
-import { copyToClipboard } from "@/utils/globals";
+import { copyToClipboard as clipboard_copy } from "@/utils/globals";
 import { store } from "@/utils/store";
 
 import {
@@ -497,6 +491,13 @@ const state = reactive<{
   commandPaletteOpen: false,
   inventoryDialogOpen: false,
 });
+
+const copyToClipboard = (text?: string | null) => {
+  if (!text) return;
+
+  clipboard_copy(text);
+  resetCopyToast();
+};
 
 const sendMouseBroadcast = throttle(({ lat, lng }) => {
   if (!state.connected_users_channel || !store.user_data) return;
