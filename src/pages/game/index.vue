@@ -683,6 +683,8 @@ onMounted(async () => {
     switch (e.key) {
       case "1":
         state.userDialogOpen = true;
+        state.shoppingDialogOpen = false;
+        state.commandPaletteOpen = false;
         break;
       case "2":
         router.push("/game/inventory");
@@ -692,6 +694,8 @@ onMounted(async () => {
         break;
       case "4":
         state.shoppingDialogOpen = true;
+        state.userDialogOpen = false;
+        state.commandPaletteOpen = false;
         break;
     }
 
@@ -702,6 +706,8 @@ onMounted(async () => {
       (platform.match(/mac/i) ? e.metaKey : e.ctrlKey)
     ) {
       e.preventDefault();
+      state.shoppingDialogOpen = false;
+      state.userDialogOpen = false;
       state.commandPaletteOpen = true;
     }
   });
