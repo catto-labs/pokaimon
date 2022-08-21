@@ -183,7 +183,7 @@
                       {{
                         game.player1.id === state.id
                           ? game.player2.username
-                          : game.player1.usename
+                          : game.player1.username
                       }}</span
                     >
                   </template>
