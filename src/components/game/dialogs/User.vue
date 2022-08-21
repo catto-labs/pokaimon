@@ -158,7 +158,7 @@
                       <template v-else> Entered a fight </template>
                     </h4>
 
-                    <span>against a bot.</span>
+                    <span>against a bot</span>
                   </template>
 
                   <template v-else-if="game.player2 && game.player1">
@@ -185,7 +185,7 @@
                         game.player1.id === state.id
                           ? game.player2.username
                           : game.player1.usename
-                      }}.</span
+                      }}</span
                     >
                   </template>
                 </div>
