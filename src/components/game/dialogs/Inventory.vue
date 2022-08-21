@@ -72,7 +72,7 @@
                         >Equiped Card</DialogTitle
                       >
                       <DialogDescription class="text-gray-500 mt-2 text-sm">
-                        This is the card you currently have equiped.
+                        This is the card you currently have equipped.
                       </DialogDescription>
                     </div>
 
