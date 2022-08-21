@@ -137,7 +137,7 @@
 
               <div
                 v-if="state.loaded"
-                class="flex h-full w-full flex-grow flex-col gap-2 overflow-y-auto rounded-2xl border border-grey-700 bg-grey-800 p-8"
+                class="flex max-h-screen w-full flex-col gap-2 overflow-y-auto rounded-2xl border border-grey-700 bg-grey-800 p-8"
               >
                 <h2 class="mb-4 text-2xl font-bold">Fight History</h2>
                 <div
@@ -192,6 +192,11 @@
                       }}</span
                     >
                   </template>
+                </div>
+                <div v-if="state.games_played.length <= 0">
+                  <p>
+                    So empty here! Try coming back after you played some fights!
+                  </p>
                 </div>
               </div>
             </DialogPanel>
