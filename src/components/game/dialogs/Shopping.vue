@@ -37,7 +37,7 @@
                     >Shop</DialogTitle
                   >
                   <DialogDescription class="text-gray-500 mt-2 text-sm">
-                    Here, you'll be able to buy characters with your primogems!
+                    Buy some characters with your primos!
                   </DialogDescription>
                 </div>
 

@@ -198,7 +198,7 @@
           class="my-auto cursor-pointer text-2xl hover:text-brand-main"
         />
         <IconSwordCross
-          v-tippy="{ content: 'Game against bot' }"
+          v-tippy="{ content: 'Game against a bot' }"
           @click="router.push('/game/new-game')"
           class="my-auto cursor-pointer text-2xl hover:text-brand-main"
         />
@@ -207,6 +207,95 @@
           @click="state.shoppingDialogOpen = true"
           class="my-auto cursor-pointer text-2xl hover:text-brand-main"
         />
+      </div>
+      <div class="flex items-center justify-between gap-4 md:justify-end">
+        <div
+          class="my-auto flex cursor-default space-x-2 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md"
+        >
+          <img src="@/assets/game/primogem.svg" class="my-auto h-4" />
+          <span class="my-auto text-white">{{
+            state.primos.toLocaleString("en-GB")
+          }}</span>
+        </div>
+        <Menu as="div">
+          <div>
+            <MenuButton
+              class="my-auto flex items-center gap-2 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md transition duration-300 hover:bg-grey-700"
+            >
+              <IconUser class="my-auto" />
+              <span class="my-auto text-white">{{ state.username }}</span>
+              <IconMenuDown />
+            </MenuButton>
+          </div>
+
+          <Transition
+            enter-active-class="transition duration-100 ease-out"
+            enter-from-class="transform scale-95 opacity-0"
+            enter-to-class="transform scale-100 opacity-100"
+            leave-active-class="transition duration-75 ease-in"
+            leave-from-class="transform scale-100 opacity-100"
+            leave-to-class="transform scale-95 opacity-0"
+          >
+            <MenuItems
+              class="absolute right-0 mt-2 mr-4 origin-top-right divide-y divide-grey-100 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 shadow-lg ring-1 ring-black ring-opacity-5 backdrop-blur-md focus:outline-none"
+            >
+              <div class="px-2 py-2">
+                <MenuItem class="">
+                  <div class="flex border-b border-b-grey-400 pb-2">
+                    <span
+                      class="mx-2 cursor-default text-left text-sm text-grey-300"
+                      >You currently have
+                      {{ state.xp.toLocaleString("en-GB") }}
+                      experience!</span
+                    >
+                    <img
+                      v-if="
+                        state.xp === 69 ||
+                        state.xp === 420 ||
+                        state.xp === 727 ||
+                        state.xp === 69420 ||
+                        state.xp === 42069
+                      "
+                      src="@/assets/misc/nice.svg"
+                      class="mt-auto mb-1 hidden h-2 text-right text-grey-400 brightness-75 md:inline-block"
+                    />
+                  </div>
+                </MenuItem>
+                <MenuItem v-slot="{ active }">
+                  <button
+                    @click="
+                      copyToClipboard(state.username);
+                      resetCopyToast();
+                    "
+                    :class="[
+                      active
+                        ? 'bg-brand-main bg-opacity-60 text-white'
+                        : 'text-white',
+                      'group mt-2 flex w-full flex-row items-center gap-2 rounded-md px-2 py-2 text-sm',
+                    ]"
+                  >
+                    <IconContentCopy />
+                    <span class="text-left text-white">Copy to clipboard</span>
+                  </button>
+                </MenuItem>
+                <MenuItem v-slot="{ active }">
+                  <button
+                    @click="$router.push('/logout')"
+                    :class="[
+                      active
+                        ? 'bg-brand-main bg-opacity-60 text-white'
+                        : 'text-white',
+                      'group flex w-full flex-row items-center gap-2 rounded-md px-2 py-2 text-sm',
+                    ]"
+                  >
+                    <IconLogout />
+                    <span class="text-left text-white">Logout of Pokaimon</span>
+                  </button>
+                </MenuItem>
+              </div>
+            </MenuItems>
+          </Transition>
+        </Menu>
       </div>
     </div>
 
@@ -687,6 +776,7 @@ onMounted(() => {
 
   resetLoginToast();
 
+  /** TODO: reenable this when the palette is working
   document.addEventListener("keydown", (e) => {
     switch (e.key) {
       case "1":
@@ -734,6 +824,7 @@ onMounted(() => {
       state.dialogOpen = false;
     }
   });
+  */
 });
 
 onBeforeUnmount(() => {
