@@ -694,7 +694,13 @@ onMounted(async () => {
         state.shoppingDialogOpen = true;
         break;
     }
-    if (e.key.toLowerCase() === "k" && e.ctrlKey) {
+
+    const platform = navigator.userAgentData?.platform || navigator.platform;
+
+    if (
+      e.key.toLowerCase() === "k" &&
+      (platform.match(/mac/i) ? e.metaKey : e.ctrlKey)
+    ) {
       e.preventDefault();
       state.commandPaletteOpen = true;
     }

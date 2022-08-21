@@ -153,9 +153,10 @@ const filtered = computed(() =>
 );
 
 const modifier = (str: string) => {
-  const platform = navigator?.userAgentData?.platform || "unknown";
+  const platform =
+    navigator?.userAgentData?.platform || navigator.platform || "unknown";
 
-  if (platform == "macOS" || platform == "Mac OS X") {
+  if (platform.match(/mac/i)) {
     return str.replace("ctrl", "cmd").replace("alt", "opt");
   }
 
