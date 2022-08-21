@@ -676,6 +676,29 @@ onMounted(async () => {
     });
 
   resetLoginToast();
+
+  document.addEventListener("keydown", (e) => {
+    const requiredKey = "1";
+
+    switch (e.key) {
+      case "1":
+        state.userDialogOpen = true;
+        break;
+      case "2":
+        router.push("/game/inventory");
+        break;
+      case "3":
+        router.push("/game/new-game");
+        break;
+      case "4":
+        state.shoppingDialogOpen = true;
+        break;
+    }
+    if (e.key.toLowerCase() === "k" && e.ctrlKey) {
+      e.preventDefault();
+      state.commandPaletteOpen = true;
+    }
+  });
 });
 
 onBeforeUnmount(() => {
