@@ -104,8 +104,8 @@
                           checkCharacterInInventory(character.id)
                             ? "You already own this character"
                             : store.user_data.primos < character.price
-                            ? "Don't have enough primos..."
-                            : "Buy !"
+                            ? "You do not own enough Primogems!"
+                            : "Purchase!"
                         }}
                       </button>
                     </div>
