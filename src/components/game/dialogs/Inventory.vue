@@ -31,6 +31,13 @@
                 <div
                   class="flex w-full max-w-xl transform flex-col overflow-hidden rounded-2xl border border-grey-700 bg-grey-800 p-6 text-left align-middle shadow-xl transition-all"
                 >
+                  <button
+                    class="absolute top-4 right-4 rounded-lg bg-grey bg-opacity-20 p-2 transition-colors hover:bg-opacity-40 md:hidden"
+                    @click="props.close"
+                  >
+                    <IconClose />
+                  </button>
+
                   <div class="space-y-2">
                     <DialogTitle
                       as="h3"
@@ -70,7 +77,7 @@
                     </div>
 
                     <button
-                      class="mb-auto h-fit rounded-md bg-grey bg-opacity-20 p-2 transition-colors hover:bg-opacity-40"
+                      class="absolute top-4 right-4 hidden rounded-lg bg-grey bg-opacity-20 p-2 transition-colors hover:bg-opacity-40 md:block"
                       @click="props.close"
                     >
                       <IconClose />
