@@ -69,11 +69,14 @@ const randomisedUsername =
   randomAni.slice(1);
 
 const router = useRouter();
-
 const state = reactive({
   username: "",
   tag: "#",
 });
+
+if (store.user_data && store.user_data.username) {
+  router.push("/game");
+}
 
 const handleSubmit = async (e: Event) => {
   e.preventDefault();
@@ -81,22 +84,35 @@ const handleSubmit = async (e: Event) => {
   if (state.username.trim() === "") return alert("Please enter a username");
   if (state.tag.trim().substring(1) === "") return alert("Please enter a tag");
 
-  const { data, error: err1 } = await supabase
+  if (!store.user_data) {
+    return alert("User data not found, please try to refresh the page.");
+  }
+
+  const { data: username_check, error: username_check_error } = await supabase
     .from("users")
     .select()
     .match({ username: `${state.username}${state.tag}` });
 
-  if (err1) return alert(err1.message);
-  if (data.length !== 0) {
+  if (username_check_error) {
+    return alert(
+      "An error happened when checking if the username already exists. Please retry or use another one."
+    );
+  }
+
+  if (username_check.length !== 0) {
     return alert("That username already exists, please use another one!");
   }
 
-  const { error: err2 } = await supabase
+  const { error } = await supabase
     .from("users")
     .update({ username: `${state.username}${state.tag}` })
-    .match({ id: store.authSession?.user?.id });
+    .match({ id: store.user_data.id });
 
-  if (err2) return alert(err2.message);
+  if (error) {
+    return alert(
+      "An error happened when updating your username. Please retry."
+    );
+  }
 
   router.push("/onboarding/character");
 };

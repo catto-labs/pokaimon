@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
 
 import { supabase } from "@/utils/supabase";
@@ -22,19 +22,17 @@ import { wait } from "@/utils/globals";
 
 const router = useRouter();
 
-onMounted(async () => {
+onBeforeMount(async () => {
   supabase.auth.onAuthStateChange(async (event, session) => {
-    console.log(event, session);
     if (event === "SIGNED_IN" && session !== null) {
-      await wait(100); // Small timeout to wait for everything to be loaded.
+      // Small timeout to wait for everything to be loaded.
+      await wait(100);
+
       router.push("/game");
     }
   });
 
   const { data } = await supabase.auth.getSession();
-  if (data.session) {
-    router.push("/game");
-    return;
-  }
+  if (data.session) router.push("/game");
 });
 </script>

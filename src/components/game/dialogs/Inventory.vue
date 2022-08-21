@@ -199,7 +199,7 @@ const state = reactive<
 const equipCharacter = async (character_id: number) => {
   if (!state.loaded) return;
 
-  const user_id = store.authSession?.user?.id;
+  const user_id = store.user_data?.id;
   if (!user_id) {
     router.push("/game");
     return;
@@ -208,7 +208,7 @@ const equipCharacter = async (character_id: number) => {
   const { data, error } = await supabase
     .from("users")
     .update({ selected_character: character_id })
-    .match({ id: store.authSession?.user?.id });
+    .match({ id: user_id });
 
   if (error || !data) {
     alert("Something went wrong, going back to map...");
@@ -230,7 +230,7 @@ const equipCharacter = async (character_id: number) => {
 };
 
 onBeforeMount(async () => {
-  const user_id = store.authSession?.user?.id;
+  const user_id = store.user_data?.id;
   if (!user_id) {
     router.push("/game");
     return;

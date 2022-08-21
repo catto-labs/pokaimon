@@ -115,7 +115,7 @@
 
                 <div class="grid gap-4 md:grid-cols-2">
                   <div
-                    class="flex h-40 flex-col justify-between rounded-lg border border-grey-700 p-3"
+                    class="flex flex-col justify-between rounded-lg border border-grey-700 p-3"
                     :key="action.id"
                     v-for="action in getActionsOf(state.selected_card)"
                   >

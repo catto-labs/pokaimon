@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import { onBeforeMount } from "vue";
 
-onBeforeMount(async () => {
+onBeforeMount(() => {
   const uri = window.location.href.split("?")[1];
 
   setTimeout(() => {
