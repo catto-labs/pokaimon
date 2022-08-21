@@ -101,14 +101,14 @@
             >
               <div class="px-2 py-2">
                 <MenuItem class="">
-                  <div class="border-b border-b-grey-400 pb-2">
+                  <div class="flex border-b border-b-grey-400 pb-2">
                     <span
                       class="mx-2 cursor-default text-left text-sm text-grey-300"
                       >You currently have
                       {{ state.xp.toLocaleString("en-GB") }}
                       experience!</span
                     >
-                    <span
+                    <img
                       v-if="
                         state.xp === 69 ||
                         state.xp === 420 ||
@@ -116,9 +116,9 @@
                         state.xp === 69420 ||
                         state.xp === 42069
                       "
-                      class="text-right font-comic text-xs text-grey-400"
-                      >...nice</span
-                    >
+                      src="@/assets/misc/nice.svg"
+                      class="mt-auto mb-1 h-2 text-right font-comic text-grey-400 brightness-75"
+                    />
                   </div>
                 </MenuItem>
                 <MenuItem v-slot="{ active }">
