@@ -1,5 +1,9 @@
 <template>
-  <div class="flex cursor-pointer flex-col" :tabindex="character_id">
+  <div
+    class="flex cursor-pointer flex-col"
+    :tabindex="character_id"
+    @click="emitCharacterEquip()"
+  >
     <div
       class="flex w-32 flex-col items-center justify-end rounded-md bg-grey-700"
       :class="{
@@ -9,7 +13,6 @@
       <img
         :src="`https://flkaastenubusimwykpj.supabase.co/storage/v1/object/public/character-images/heads/${props.character_name.toLowerCase()}.png`"
         class="h-fit rounded-t-md bg-grey-600"
-        @click="emitCharacterEquip()"
       />
       <span class="my-2 font-bold text-white">{{ props.character_name }}</span>
     </div>
