@@ -24,6 +24,25 @@ You can *request* a new feature by [submitting an issue](#submit-issue) to our [
 * For a **Major Feature**, first open an issue and outline your proposal so that it can be discussed. This will also allow us to better coordinate our efforts, prevent duplication of work, and help you to craft the change so that it is successfully accepted into the project.
 * **Small Features** can be crafted and directly [submitted as a Pull Request](#submit-pr).
 
+## Setup for Pokaimon development
+
+### Recommended IDE Setup:
+[Visual Studio Code](https://code.visualstudio.com/), with:
+- [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+- [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
+- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+
+### Development setup:
+Prerequisites: 
+
+- Populate the .env file with the secrets from Supabase Studio (see .env.example for the file format)
+- Install needed dependencies using `yarn install`
+- Optional: fix code style issues using `yarn lint`
+
+For development with a local preview and hot reloading, running a dev server is done using the `yarn dev` command.
+To build for production, use the `yarn build` command.
+
 ## Submission Guidelines
 
 ### Submitting an Issue
