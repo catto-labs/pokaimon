@@ -83,7 +83,7 @@ serve(async (req: Request) => {
 
     if (character_data.price > user_data.primos) {
       return sendErrorResponse({
-        message: "You don't have enough primogens.",
+        message: "You don't have enough primogems.",
         status: 403,
       });
     }

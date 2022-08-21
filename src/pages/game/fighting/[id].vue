@@ -313,7 +313,7 @@
             state.rewards.card_xp
           }}XP for {{ state.player.name }} !
         </p>
-        <p>Gained +{{ state.rewards.primos }} primogens !</p>
+        <p>Gained +{{ state.rewards.primos }} primogems !</p>
         <p v-if="state.rewards.character_name">
           Gained {{ state.rewards.character_name }}! Go check your inventory.
         </p>
