@@ -69,7 +69,7 @@
                       <DialogTitle
                         as="h3"
                         class="text-gray-900 text-lg font-bold leading-6"
-                        >Equiped Card</DialogTitle
+                        >Equipped Card</DialogTitle
                       >
                       <DialogDescription class="text-gray-500 mt-2 text-sm">
                         This is the card you currently have equipped.
