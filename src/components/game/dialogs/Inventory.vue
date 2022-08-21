@@ -26,10 +26,10 @@
             leave-from="opacity-100 scale-100"
             leave-to="opacity-0 scale-95"
           >
-            <DialogPanel
-              class="w-full max-w-xl transform overflow-hidden rounded-2xl border border-grey-700 bg-grey-800 p-6 text-left align-middle shadow-xl transition-all"
-            >
-              <div class="flex justify-between">
+            <DialogPanel class="flex gap-8">
+              <div
+                class="flex w-full max-w-xl transform flex-col overflow-hidden rounded-2xl border border-grey-700 bg-grey-800 p-6 text-left align-middle shadow-xl transition-all"
+              >
                 <div class="space-y-2">
                   <DialogTitle
                     as="h3"
@@ -41,24 +41,95 @@
                   </DialogDescription>
                 </div>
 
-                <button
-                  class="mb-auto h-fit rounded-md bg-grey bg-opacity-20 p-2 transition-colors hover:bg-opacity-40"
-                  @click="props.close"
+                <div
+                  class="flex-rows mt-6 flex justify-between gap-2"
+                  v-if="state.loaded"
                 >
-                  <IconClose />
-                </button>
+                  <CharacterInventoryCard
+                    v-for="(character, index) in state.characters"
+                    :key="index"
+                    :character_id="character.id"
+                    :index="1"
+                    :bound_character_id="state.user.selected_character?.id"
+                    :character_name="character.base_character.name"
+                    @equip-character="equipCharacter"
+                  />
+                </div>
               </div>
+              <div
+                class="flex w-full max-w-xl transform flex-col overflow-hidden rounded-2xl border border-grey-700 bg-grey-800 p-6 text-left align-middle shadow-xl transition-all"
+              >
+                <div class="flex w-full flex-row justify-between">
+                  <div class="space-y-2">
+                    <DialogTitle
+                      as="h3"
+                      class="text-gray-900 text-lg font-bold leading-6"
+                      >Equiped Card</DialogTitle
+                    >
+                    <DialogDescription class="text-gray-500 mt-2 text-sm">
+                      This is the card you currently have equiped.
+                    </DialogDescription>
+                  </div>
 
-              <div class="mt-6 flex justify-between gap-2" v-if="state.loaded">
-                <CharacterInventoryCard
-                  v-for="(character, index) in state.characters"
-                  :key="index"
-                  :character_id="character.id"
-                  :index="1"
-                  :bound_character_id="state.user.selected_character?.id"
-                  :character_name="character.base_character.name"
-                  @equip-character="equipCharacter"
-                />
+                  <button
+                    class="mb-auto h-fit rounded-md bg-grey bg-opacity-20 p-2 transition-colors hover:bg-opacity-40"
+                    @click="props.close"
+                  >
+                    <IconClose />
+                  </button>
+                </div>
+
+                <div
+                  class="mt-8 flex flex-row justify-between gap-2"
+                  v-if="state.loaded"
+                >
+                  <div class="space-y-2">
+                    <h2 class="my-2 text-lg font-bold text-head">Kazuha</h2>
+                    <p class="my-2">
+                      A wandering samurai, shunned and outlawed from his
+                      homeland by the corrupt government. He carries many
+                      burdens from the past.
+                    </p>
+                  </div>
+                  <img
+                    src="https://flkaastenubusimwykpj.supabase.co/storage/v1/object/public/character-images/heads/kazuha.png"
+                    class="h-20 rounded-full border-2 border-grey-700"
+                    alt="A picture of Kazuha"
+                  />
+                </div>
+                <hr class="my-8 text-grey-700" />
+                <div class="flex flex-row gap-16">
+                  <div class="space-y-1">
+                    <h2 class="font-bold">Your Character</h2>
+                    <div class="flex gap-1">
+                      <IconAccountArrowUp class="my-auto text-body" />
+                      <span class="my-auto text-body">35,145 experience</span>
+                    </div>
+                    <div class="flex gap-1">
+                      <IconAccountPlus class="my-auto text-body" />
+                      <span class="my-auto text-body">Lvl. 46</span>
+                    </div>
+                    <div class="flex gap-1">
+                      <IconAccountHeart class="my-auto text-body" />
+                      <span class="my-auto text-body">Max. 4400HP</span>
+                    </div>
+                  </div>
+                  <div class="space-y-1">
+                    <h2 class="font-bold">Character Statistics</h2>
+                    <div class="flex gap-1">
+                      <IconAtom class="my-auto text-body" />
+                      <span class="my-auto text-body">Anemo</span>
+                    </div>
+                    <div class="flex gap-1">
+                      <IconMapMarkerRadius class="my-auto text-body" />
+                      <span class="my-auto text-body">Inazuma</span>
+                    </div>
+                    <div class="flex gap-1">
+                      <IconHeartHalfFull class="my-auto text-body" />
+                      <span class="my-auto text-body">Min. 2800HP</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </DialogPanel>
           </TransitionChild>
@@ -70,6 +141,12 @@
 
 <script setup lang="ts">
 import IconClose from "virtual:icons/mdi/close";
+import IconAtom from "virtual:icons/mdi/atom";
+import IconMapMarkerRadius from "virtual:icons/mdi/map-marker-radius";
+import IconHeartHalfFull from "virtual:icons/mdi/heart-half-full";
+import IconAccountArrowUp from "virtual:icons/mdi/account-arrow-up";
+import IconAccountPlus from "virtual:icons/mdi/account-plus";
+import IconAccountHeart from "virtual:icons/mdi/account-heart";
 
 import {
   Dialog,
