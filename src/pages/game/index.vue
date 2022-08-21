@@ -1,8 +1,4 @@
 <template>
-  <CommandPalette
-    :open="state.commandPaletteOpen"
-    :close="closeCommandPalette"
-  />
   <template v-if="store.user_data">
     <div class="absolute flex h-screen w-screen flex-col justify-end p-4">
       <div class="flex flex-row justify-end">
@@ -78,11 +74,6 @@
             v-tippy="{ content: 'Shop' }"
             @click="state.shoppingDialogOpen = true"
             class="my-auto cursor-pointer text-2xl hover:text-brand-main"
-          />
-          <IconSearch
-            v-tippy="{ content: 'Command Palette' }"
-            @click="state.commandPaletteOpen = true"
-            class="my-auto hidden cursor-pointer text-2xl hover:text-brand-main md:block"
           />
         </div>
         <div class="flex items-center justify-between gap-4 md:justify-end">
