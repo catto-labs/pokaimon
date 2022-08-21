@@ -27,7 +27,7 @@
             leave-to="opacity-0 scale-95"
           >
             <DialogPanel
-              class="flex w-full flex-col gap-6 md:max-w-3xl md:flex-row"
+              class="flex w-full flex-col gap-8 md:max-w-3xl md:flex-row"
             >
               <div class="flex w-full flex-col gap-4" v-if="state.loaded">
                 <div
