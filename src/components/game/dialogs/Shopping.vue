@@ -52,11 +52,11 @@
               </div>
 
               <div
-                class="mt-6 flex flex-col justify-between gap-2 md:flex-row"
+                class="mt-8 flex flex-col justify-between gap-4 md:flex-row"
                 v-if="state.loaded && store.user_data"
               >
                 <div
-                  class="group flex flex-col justify-end rounded-lg border border-grey-600 bg-grey-700 transition duration-300 ease-in-out hover:-translate-y-0.5 md:w-1/3 md:max-w-none"
+                  class="group flex flex-col justify-end rounded-lg border border-grey-600 bg-grey-700 transition duration-300 ease-in-out hover:-translate-y-0.5 md:w-1/3"
                   :key="character.id"
                   v-for="character in state.characters"
                 >
