@@ -31,24 +31,8 @@ Other miscellaneous contributors [can be found on the website](https://www.pokai
 
 ## Project setup
 If you just want to play the game, you can access the live website at [pokaimon.moe](https://www.pokaimon.moe). 
-Only proceed with the steps below if you want to edit the code of the project (and possibly contribute).
 
-### Recommended IDE Setup:
-[Visual Studio Code](https://code.visualstudio.com/), with:
-- [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
-- [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
-- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-
-### Development setup:
-Prerequisites: 
-
-- Populate the .env file with the secrets from Supabase Studio (see .env.example for the file format)
-- Install needed dependencies using `yarn install`
-- Optional: fix code style issues using `yarn lint`
-
-For development with a local preview and hot reloading, running a dev server is done using the `yarn dev` command.
-To build for production, use the `yarn build` command.
+If you want to contribute, you can [read the contribution guidelines here.](https://github.com/trobonox/pokaimon/blob/main/CONTRIBUTING.md)
 
 ---
 © 2022 undefined labs
