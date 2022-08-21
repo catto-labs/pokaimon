@@ -68,7 +68,7 @@
           class="my-auto cursor-pointer text-2xl hover:text-brand-main"
         />
         <IconSwordCross
-          v-tippy="{ content: 'Game against bot' }"
+          v-tippy="{ content: 'Game against a bot' }"
           @click="router.push('/game/new-game')"
           class="my-auto cursor-pointer text-2xl hover:text-brand-main"
         />
