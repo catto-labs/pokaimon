@@ -51,11 +51,7 @@ module.exports = {
       sans: ["Raleway", "sans-serif"],
       mono: ["Roboto Mono", "monospace"],
     },
-    extend: {
-      fontFamily: {
-        comic: ["Comic Sans MS", "handwriting"],
-      },
-    },
+    extend: {},
   },
   plugins: [],
 };
