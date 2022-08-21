@@ -67,7 +67,7 @@ router.beforeEach(async (to) => {
         .from("character_inventory")
         .select()
         .match({ owner: data.session.user.id })
-        .select();
+        .select(`*, base_character(*)`);
 
     if (user_characters_error) {
       alert("An error occurred when fetching user's characters.");

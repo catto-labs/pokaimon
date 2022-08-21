@@ -85,7 +85,7 @@ export interface GamesTable {
 }
 
 export interface UsersTable {
-  selected_character: number | null;
+  selected_character?: number;
   primos: number;
   xp: number;
   id: string;
