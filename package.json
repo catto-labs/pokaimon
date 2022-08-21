@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "lint": "eslint . --fix",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx,.vue --fix",
     "build": "eslint . && vue-tsc --noEmit && vite build"
   },
   "dependencies": {

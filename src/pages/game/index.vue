@@ -540,35 +540,36 @@ onMounted(async () => {
     },
   });
 
-  // state.connected_users_channel
-  //   .on(
-  //     "broadcast",
-  //     { event: "location" },
-  //     (event_data: MousePositionPayload) => {
-  //       if (!state.connected_users[event_data.payload.username]) {
-  //         state.connected_users[event_data.payload.username] = new Marker(
-  //           new LatLng(event_data.payload.lat, event_data.payload.lng)
-  //         );
+  state.connected_users_channel
+    .on(
+      "broadcast",
+      { event: "location" },
+      (event_data: MousePositionPayload) => {
+        if (!state.connected_users[event_data.payload.username]) {
+          state.connected_users[event_data.payload.username] = new Marker(
+            new LatLng(event_data.payload.lat, event_data.payload.lng)
+          );
 
-  //         state.connected_users[event_data.payload.username].addTo(map);
-  //       }
+          state.connected_users[event_data.payload.username].addTo(map);
+        }
 
-  //       state.connected_users[event_data.payload.username].setLatLng(
-  //         new LatLng(event_data.payload.lat, event_data.payload.lng)
-  //       );
-  //     }
-  //   )
-  //   .subscribe(async (status: string) => {
-  //     if (status === "SUBSCRIBED") {
-  //       map.on("mousemove", ({ latlng }) => {
-  //         sendMouseBroadcast({
-  //           username: state.username,
-  //           lat: latlng.lat,
-  //           lng: latlng.lng,
-  //         });
-  //       });
-  //     }
-  //   });
+        state.connected_users[event_data.payload.username].setLatLng(
+          new LatLng(event_data.payload.lat, event_data.payload.lng)
+        );
+      }
+    )
+    .subscribe(async (status: string) => {
+      console.log(status);
+      if (status === "SUBSCRIBED") {
+        map.on("mousemove", ({ latlng }) => {
+          sendMouseBroadcast({
+            username: state.username,
+            lat: latlng.lat,
+            lng: latlng.lng,
+          });
+        });
+      }
+    });
 
   resetLoginToast();
 });

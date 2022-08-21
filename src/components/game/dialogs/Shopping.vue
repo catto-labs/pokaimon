@@ -93,7 +93,7 @@ import {
 } from "@headlessui/vue";
 
 import { supabase } from "@/utils/supabase";
-import { capitalizeFirstLetter } from "@/utils/globals";
+// import { capitalizeFirstLetter } from "@/utils/globals";
 
 import { reactive, onBeforeMount } from "vue";
 
