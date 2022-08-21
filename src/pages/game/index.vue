@@ -687,9 +687,15 @@ onMounted(async () => {
         state.commandPaletteOpen = false;
         break;
       case "2":
+        state.shoppingDialogOpen = false;
+        state.userDialogOpen = false;
+        state.commandPaletteOpen = false;
         router.push("/game/inventory");
         break;
       case "3":
+        state.shoppingDialogOpen = false;
+        state.userDialogOpen = false;
+        state.commandPaletteOpen = false;
         router.push("/game/new-game");
         break;
       case "4":
