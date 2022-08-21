@@ -102,9 +102,9 @@
                       >
                         {{
                           checkCharacterInInventory(character.id)
-                            ? "You already own this character"
+                            ? "You already own this character!"
                             : store.user_data.primos < character.price
-                            ? "You do not own enough Primogems!"
+                            ? "Not enough Primogems!"
                             : "Purchase!"
                         }}
                       </button>
