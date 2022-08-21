@@ -166,7 +166,7 @@ import IconAtom from "virtual:icons/mdi/atom";
 import IconMapMarkerRadius from "virtual:icons/mdi/map-marker-radius";
 import IconHeartHalfFull from "virtual:icons/mdi/heart-half-full";
 import IconAccountArrowUp from "virtual:icons/mdi/account-arrow-up";
-import IconAccountPlus from "virtual:icons/mdi/account-plus";
+// import IconAccountPlus from "virtual:icons/mdi/account-plus";
 import IconAccountHeart from "virtual:icons/mdi/account-heart";
 
 import CharacterInventoryCard from "@/components/game/CharacterInventoryCard.vue";

@@ -52,7 +52,7 @@
     <div class="relative z-20 p-4">
       <div class="flex flex-col justify-between gap-2 md:flex-row">
         <div
-          class="my-auto hidden cursor-default items-center justify-start gap-8 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md md:flex"
+          class="fixed bottom-12 right-0 left-0 mx-auto flex w-max cursor-default items-center justify-start gap-8 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md md:relative md:left-auto md:right-auto md:bottom-auto md:ml-0"
         >
           <IconPerson
             v-tippy="{ content: 'Profile' }"
@@ -82,7 +82,7 @@
           <IconSearch
             v-tippy="{ content: 'Command Palette' }"
             @click="state.commandPaletteOpen = true"
-            class="my-auto cursor-pointer text-2xl hover:text-brand-main"
+            class="my-auto hidden cursor-pointer text-2xl hover:text-brand-main md:block"
           />
         </div>
         <div class="flex items-center justify-between gap-4 md:justify-end">
@@ -184,30 +184,6 @@
     </div>
 
     <div class="absolute bottom-0 flex w-screen flex-col justify-end p-4">
-      <div
-        class="bottom-0 z-20 my-auto flex cursor-default items-center justify-center gap-8 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md md:hidden"
-      >
-        <IconPerson
-          v-tippy="{ content: 'Profile' }"
-          @click="state.userDialogOpen = true"
-          class="my-auto cursor-pointer text-2xl hover:text-brand-main"
-        />
-        <IconBackpack
-          v-tippy="{ content: 'Inventory' }"
-          @click="state.inventoryDialogOpen = true"
-          class="my-auto cursor-pointer text-2xl hover:text-brand-main"
-        />
-        <IconSwordCross
-          v-tippy="{ content: 'Game against a bot' }"
-          @click="router.push('/game/new-game')"
-          class="my-auto cursor-pointer text-2xl hover:text-brand-main"
-        />
-        <IconStore
-          v-tippy="{ content: 'Shop' }"
-          @click="state.shoppingDialogOpen = true"
-          class="my-auto cursor-pointer text-2xl hover:text-brand-main"
-        />
-      </div>
       <div class="flex items-center justify-between gap-4 md:justify-end">
         <div
           class="my-auto flex cursor-default space-x-2 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md"
