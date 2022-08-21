@@ -31,7 +31,7 @@
             >
               <div class="flex w-full flex-col gap-4" v-if="state.loaded">
                 <div
-                  class="relative flex w-full justify-center rounded-2xl border border-grey-700 bg-grey-800 p-4 shadow-xl transition-all"
+                  class="relative flex w-full justify-center rounded-2xl border border-grey-700 bg-grey-800 p-8 shadow-xl transition-all"
                 >
                   <button
                     class="absolute top-2 right-2 h-fit rounded-lg bg-grey bg-opacity-20 p-2 transition-colors hover:bg-opacity-40"
@@ -41,7 +41,7 @@
                   </button>
 
                   <div
-                    class="flex flex-col items-center justify-center gap-4 p-4 text-center"
+                    class="flex flex-col items-center justify-center gap-4 text-center"
                   >
                     <img
                       v-if="state.traveller === 'aether'"
@@ -53,14 +53,14 @@
                       src="@/assets/game/traveller/lumine.png"
                       class="aspect-square h-auto w-40 rounded-full border-2 border-grey-600 bg-grey-800 outline-none transition hover:bg-opacity-80 focus:border-grey-500"
                     />
-                    <div class="my-4">
+                    <div class="mt-4 mb-1">
                       <h2 class="text-2xl font-bold">{{ state.username }}</h2>
                       <h3 class="text-lg">
                         Joined at {{ joinTime.toLocaleDateString("en-GB") }}
                       </h3>
                       <p>{{ state.xp.toLocaleString("en-GB") }} XP</p>
                     </div>
-                    <div class="mt-auto mb-4 flex gap-4">
+                    <div class="flex gap-4">
                       <IconConstruction
                         v-if="state.is_developer"
                         class="mt-auto text-xl"
@@ -86,52 +86,50 @@
                 </div>
 
                 <div
-                  class="flex w-full flex-col justify-between rounded-2xl border border-grey-700 bg-grey-800 p-6 shadow-xl transition-all"
+                  class="flex w-full flex-col justify-between rounded-2xl border border-grey-700 bg-grey-800 p-8 shadow-xl transition-all"
                 >
-                  <div class="mt-auto">
-                    <h2 class="mb-4 text-2xl font-bold">Equipped Card</h2>
-                    <div class="flex gap-4">
-                      <div
-                        class="flex w-32 flex-col justify-end rounded-md bg-grey-700"
-                      >
-                        <img
-                          :src="`https://flkaastenubusimwykpj.supabase.co/storage/v1/object/public/character-images/heads/${state.selected_character.base_character.name.toLowerCase()}.png`"
-                          class="h-fit"
-                        />
-                      </div>
-                      <div class="flex flex-col gap-1 text-left">
-                        <h3 class="text-xl font-semibold">
-                          {{ state.selected_character.base_character.name }}
-                        </h3>
-                        <p>
-                          Experience:
-                          {{
-                            state.selected_character.xp.toLocaleString("en-GB")
-                          }}
-                          XP
-                        </p>
-                        <p>
-                          Health:
-                          {{
-                            state.selected_character.health.toLocaleString(
-                              "en-GB"
-                            )
-                          }}
-                          HP
-                        </p>
-                        <p>
-                          Element:
-                          {{ state.selected_character.base_character.element }}
-                        </p>
-                        <p>
-                          Region:
-                          {{
-                            capitalizeFirstLetter(
-                              state.selected_character.base_character.region
-                            )
-                          }}
-                        </p>
-                      </div>
+                  <h2 class="mb-4 text-2xl font-bold">Equipped Card</h2>
+                  <div class="flex gap-4">
+                    <div
+                      class="flex w-32 flex-col justify-end rounded-md bg-grey-700"
+                    >
+                      <img
+                        :src="`https://flkaastenubusimwykpj.supabase.co/storage/v1/object/public/character-images/heads/${state.selected_character.base_character.name.toLowerCase()}.png`"
+                        class="h-fit"
+                      />
+                    </div>
+                    <div class="flex flex-col gap-1 text-left">
+                      <h3 class="text-xl font-semibold">
+                        {{ state.selected_character.base_character.name }}
+                      </h3>
+                      <p>
+                        Experience:
+                        {{
+                          state.selected_character.xp.toLocaleString("en-GB")
+                        }}
+                        XP
+                      </p>
+                      <p>
+                        Health:
+                        {{
+                          state.selected_character.health.toLocaleString(
+                            "en-GB"
+                          )
+                        }}
+                        HP
+                      </p>
+                      <p>
+                        Element:
+                        {{ state.selected_character.base_character.element }}
+                      </p>
+                      <p>
+                        Region:
+                        {{
+                          capitalizeFirstLetter(
+                            state.selected_character.base_character.region
+                          )
+                        }}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -139,8 +137,9 @@
 
               <div
                 v-if="state.loaded"
-                class="flex h-full w-full flex-grow flex-col gap-2 overflow-y-auto rounded-2xl border border-grey-700 bg-grey-800 py-2"
+                class="flex h-full w-full flex-grow flex-col gap-2 overflow-y-auto rounded-2xl border border-grey-700 bg-grey-800 p-8"
               >
+                <h2 class="mb-4 text-2xl font-bold">Fight History</h2>
                 <div
                   :key="game.id"
                   v-for="game in state.games_played"
