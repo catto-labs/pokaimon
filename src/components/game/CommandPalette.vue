@@ -35,7 +35,7 @@
                     >
                       <IconSearch class="my-auto h-8 text-grey-400" />
                       <ComboboxInput
-                        class="w-full rounded-lg bg-black p-4 leading-5 text-body ring-0"
+                        class="w-full rounded-lg bg-black p-4 leading-5 text-body ring-0 focus:outline-none"
                         placeholder="Tell me what you want to do..."
                         @change="query = $event.target.value"
                       />
@@ -93,7 +93,7 @@
                                 'border-grey-700': !active,
                               }"
                             >
-                              <p class="text-xs">{{ input }}</p>
+                              <p class="text-xs">{{ modifier(input) }}</p>
                             </div>
                           </div>
                         </li>
@@ -135,7 +135,7 @@ const commands = [
   { id: 2, name: "View inventory", shortcut: ["2"] },
   { id: 3, name: "Initiate a game against a bot", shortcut: ["3"] },
   { id: 4, name: "Open shop", shortcut: ["4"] },
-  { id: 5, name: "Open command palette", shortcut: ["cmd", "k"] },
+  { id: 5, name: "Open command palette", shortcut: ["ctrl", "k"] },
 ];
 
 const selected = ref(commands[0]);
@@ -151,4 +151,14 @@ const filtered = computed(() =>
           .includes(query.value.toLowerCase().replace(/\s+/g, ""))
       )
 );
+
+const modifier = (str: string) => {
+  const platform = navigator?.userAgentData?.platform || "unknown";
+
+  if (platform == "macOS" || platform == "Mac OS X") {
+    return str.replace("ctrl", "cmd").replace("alt", "opt");
+  }
+
+  return str;
+};
 </script>
