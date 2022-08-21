@@ -45,7 +45,7 @@
   <div class="relative z-20 p-4">
     <div class="flex flex-col justify-between gap-2 md:flex-row">
       <div
-        class="md:justfiy-start my-auto flex cursor-default items-center justify-center gap-8 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md"
+        class="my-auto flex cursor-default items-center justify-center gap-8 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md md:justify-start"
       >
         <IconPerson
           v-tippy="{ content: 'Profile' }"
@@ -105,6 +105,27 @@
               class="absolute right-0 mt-2 mr-4 origin-top-right divide-y divide-grey-100 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 shadow-lg ring-1 ring-black ring-opacity-5 backdrop-blur-md focus:outline-none"
             >
               <div class="px-2 py-2">
+                <MenuItem class="">
+                  <div class="flex border-b border-b-grey-400 pb-2">
+                    <span
+                      class="mx-2 cursor-default text-left text-sm text-grey-300"
+                      >You currently have
+                      {{ state.xp.toLocaleString("en-GB") }}
+                      experience!</span
+                    >
+                    <img
+                      v-if="
+                        state.xp === 69 ||
+                        state.xp === 420 ||
+                        state.xp === 727 ||
+                        state.xp === 69420 ||
+                        state.xp === 42069
+                      "
+                      src="@/assets/misc/nice.svg"
+                      class="font-comic mt-auto mb-1 h-2 text-right text-grey-400 brightness-75"
+                    />
+                  </div>
+                </MenuItem>
                 <MenuItem v-slot="{ active }">
                   <button
                     @click="
@@ -115,7 +136,7 @@
                       active
                         ? 'bg-brand-main bg-opacity-60 text-white'
                         : 'text-white',
-                      'group flex w-full flex-row items-center gap-2 rounded-md px-2 py-2 text-sm',
+                      'group mt-2 flex w-full flex-row items-center gap-2 rounded-md px-2 py-2 text-sm',
                     ]"
                   >
                     <IconContentCopy />
@@ -327,6 +348,7 @@ const router = useRouter();
 const state = reactive<{
   username: string;
   primos: number;
+  xp: number;
 
   connected_users_channel: RealtimeChannel | null;
   connected_users: {
@@ -342,6 +364,7 @@ const state = reactive<{
 }>({
   username: "Loading...",
   primos: 0,
+  xp: 0,
 
   connected_users_channel: null,
   connected_users: {},
@@ -529,6 +552,7 @@ onMounted(async () => {
 
   state.username = data.username;
   state.primos = data.primos;
+  state.xp = data.xp;
 
   const southWest = new LatLng(-128, 0);
   const northEast = new LatLng(0, 128);
