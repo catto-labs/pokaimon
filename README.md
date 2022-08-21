@@ -3,7 +3,7 @@
 # Pokaimon
 Pokaimon is a Genshin Impact themed collectible game with mechanics similar to Pokémon, made for the Supabase Launch Week 5 Hackathon.
 
-Play the game here: https://pokaimon.vercel.app
+Play the game here: https://www.pokaimon.moe
 
 ## Idea
 After swiftly forming a team for the hackathon, we wanted to do a project that's fun to use but also fun to make for us (by building something based on a common interest). As we all play the game "Genshin Impact", an open-world action RPG, I (trobonox) came up with the idea of using the game's story and characters as a base and mixing it up with another game. The choice for the other game was Pokémon, as it is a truly classic game with simple core concepts but is very fun and a part of many people’s childhood.
@@ -27,28 +27,12 @@ This usage is covering all major feature areas of Supabase, and many of these fe
 - [@Vexcited](https://github.com/vexcited): full stack developer (insanely productive, carried the project 😂♥)
 - [@pnxl](https://github.com/pnxl): front-end developer, ui/ux designer
 
-Other miscellaneous contributors [can be found on the website](https://pokaimon.vercel.app/docs/contributors), but they are not part of the main development team.
+Other miscellaneous contributors [can be found on the website](https://www.pokaimon.moe/docs/contributors), but they are not part of the main development team.
 
 ## Project setup
-If you just want to play the game, you can access the live website at [pokaimon.vercel.app](https://pokaimon.vercel.app). 
-Only proceed with the steps below if you want to edit the code of the project (and possibly contribute).
+If you just want to play the game, you can access the live website at [pokaimon.moe](https://www.pokaimon.moe). 
 
-### Recommended IDE Setup:
-[Visual Studio Code](https://code.visualstudio.com/), with:
-- [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
-- [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
-- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-
-### Development setup:
-Prerequisites: 
-
-- Populate the .env file with the secrets from Supabase Studio (see .env.example for the file format)
-- Install needed dependencies using `yarn install`
-- Optional: fix code style issues using `yarn lint`
-
-For development with a local preview and hot reloading, running a dev server is done using the `yarn dev` command.
-To build for production, use the `yarn build` command.
+If you want to contribute, you can [read the contribution guidelines here.](https://github.com/trobonox/pokaimon/blob/main/CONTRIBUTING.md)
 
 ---
 © 2022 undefined labs
