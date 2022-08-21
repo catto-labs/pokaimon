@@ -85,7 +85,7 @@
 
                       <button
                         @click="processPayment(character.id)"
-                        class="translate-y-12 rounded-lg px-6 py-1 transition duration-300 ease-in-out group-hover:translate-y-0"
+                        class="translate-y-20 rounded-lg px-6 py-1 transition duration-300 ease-in-out group-hover:translate-y-0"
                         :class="{
                           'bg-brand-main': !checkCharacterInInventory(
                             character.id
