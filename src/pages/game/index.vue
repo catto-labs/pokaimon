@@ -45,7 +45,7 @@
   <div class="relative z-20 p-4">
     <div class="flex flex-col justify-between gap-2 md:flex-row">
       <div
-        class="my-auto flex cursor-default items-center justify-center gap-8 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md md:justify-start"
+        class="my-auto hidden cursor-default items-center justify-start gap-8 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md md:flex"
       >
         <IconPerson
           v-tippy="{ content: 'Profile' }"
@@ -117,7 +117,7 @@
                         state.xp === 42069
                       "
                       src="@/assets/misc/nice.svg"
-                      class="font-comic mt-auto mb-1 h-2 text-right text-grey-400 brightness-75"
+                      class="mt-auto mb-1 hidden h-2 text-right text-grey-400 brightness-75 md:inline-block"
                     />
                   </div>
                 </MenuItem>
@@ -157,6 +157,33 @@
           </Transition>
         </Menu>
       </div>
+    </div>
+  </div>
+
+  <div class="absolute bottom-0 flex w-screen flex-col justify-end p-4">
+    <div
+      class="bottom-0 z-20 my-auto flex cursor-default items-center justify-center gap-8 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md md:hidden"
+    >
+      <IconPerson
+        v-tippy="{ content: 'Profile' }"
+        @click="state.userDialogOpen = true"
+        class="my-auto cursor-pointer text-2xl hover:text-brand-main"
+      />
+      <IconBackpack
+        v-tippy="{ content: 'Inventory' }"
+        @click="router.push('/game/inventory')"
+        class="my-auto cursor-pointer text-2xl hover:text-brand-main"
+      />
+      <IconSwordCross
+        v-tippy="{ content: 'Game against bot' }"
+        @click="router.push('/game/new-game')"
+        class="my-auto cursor-pointer text-2xl hover:text-brand-main"
+      />
+      <IconStore
+        v-tippy="{ content: 'Shop' }"
+        @click="state.shoppingDialogOpen = true"
+        class="my-auto cursor-pointer text-2xl hover:text-brand-main"
+      />
     </div>
   </div>
 
