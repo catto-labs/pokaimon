@@ -13,7 +13,8 @@
     >
       <img
         :src="`https://flkaastenubusimwykpj.supabase.co/storage/v1/object/public/character-images/heads/${props.character_name.toLowerCase()}.png`"
-        class="h-fit"
+        class="h-fit rounded-t-md bg-grey-600"
+        @click="emitCharacterEquip()"
       />
       <span class="my-2 font-bold text-white">{{ props.character_name }}</span>
     </div>
@@ -23,13 +24,6 @@
       >
         <div class="flex flex-col gap-2">
           <button class="rounded-xl bg-brand-second p-1">Details</button>
-          <button
-            class="rounded-xl bg-brand-main p-1"
-            v-if="character_id !== bound_character_id"
-            @click="emitCharacterEquip()"
-          >
-            Equip
-          </button>
         </div>
       </div>
     </div>
