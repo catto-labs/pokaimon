@@ -77,11 +77,6 @@
           @click="state.shoppingDialogOpen = true"
           class="my-auto cursor-pointer text-2xl hover:text-brand-main"
         />
-        <IconSearch
-          v-tippy="{ content: 'Command Palette' }"
-          @click="state.commandPaletteOpen = true"
-          class="my-auto cursor-pointer text-2xl hover:text-brand-main"
-        />
       </div>
       <div class="flex items-center justify-between gap-4 md:justify-end">
         <div
@@ -372,7 +367,6 @@ import {
   Icon,
   DivIcon,
 } from "leaflet";
-import Inventory from "../../components/game/dialogs/Inventory.vue";
 
 interface MousePositionPayload {
   type: string;
@@ -686,6 +680,7 @@ onMounted(async () => {
 
   resetLoginToast();
 
+  /** TODO: reenable this when the palette is working
   document.addEventListener("keydown", (e) => {
     switch (e.key) {
       case "1":
@@ -733,6 +728,7 @@ onMounted(async () => {
       state.dialogOpen = false;
     }
   });
+  */
 });
 
 onBeforeUnmount(() => {
