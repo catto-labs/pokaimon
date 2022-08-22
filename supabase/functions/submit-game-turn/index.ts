@@ -347,7 +347,7 @@ serve(async (req: Request) => {
       }
 
       // Wait a little bit before updating the game.
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       const updated_fight_data = {
         rewards: game.data.rewards,
@@ -368,8 +368,8 @@ serve(async (req: Request) => {
 
     // When it's a bot, play with random action.
     if (!enemy_received_data.id && winner === null) {
-      // Wait 2s until to simulate bot's choice.
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // Wait 1s until to simulate bot's choice.
+      await new Promise((resolve) => setTimeout(resolve, 800));
       const action_index = Math.floor(Math.random() * 4);
 
       // Simulate the bot's network server latence.
