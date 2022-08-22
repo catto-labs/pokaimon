@@ -244,7 +244,7 @@
                 </div>
               </template>
               <template v-else>
-                <LoadingPrimogems />
+                <LoadingPrimogems class="w-full" />
               </template>
             </DialogPanel>
           </TransitionChild>
