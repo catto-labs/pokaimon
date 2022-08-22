@@ -37,9 +37,15 @@
           <img src="@/assets/branding/vector/undefined.svg" class="w-56" />
           <div>
             <p>© 2022 undefined labs</p>
-            <router-link class="text-sm text-grey-300" to="/docs/licenses"
-              >License Notice</router-link
-            >
+            <div class="flex gap-2">
+              <router-link class="text-sm text-grey-300" to="/docs/privacy"
+                >Privacy Policy</router-link
+              >
+              <span>•</span>
+              <router-link class="text-sm text-grey-300" to="/docs/licenses"
+                >License Notice</router-link
+              >
+            </div>
           </div>
         </div>
       </div>
