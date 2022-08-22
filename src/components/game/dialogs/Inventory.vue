@@ -29,7 +29,7 @@
             <DialogPanel class="flex flex-col gap-8 md:flex-row">
               <template v-if="store.user_data && selected_character">
                 <div
-                  class="flex w-[30rem] max-w-4xl transform flex-col overflow-hidden rounded-2xl border border-grey-700 bg-grey-800 p-6 text-left align-middle shadow-xl transition-all"
+                  class="flex max-w-4xl transform flex-col overflow-hidden rounded-2xl border border-grey-700 bg-grey-800 p-6 text-left align-middle shadow-xl transition-all md:w-[30rem]"
                 >
                   <button
                     class="absolute top-4 right-4 rounded-lg bg-grey bg-opacity-20 p-2 transition-colors hover:bg-opacity-40 md:hidden"
@@ -50,7 +50,7 @@
                   </div>
 
                   <div
-                    class="mt-6 grid h-80 w-fit grid-cols-3 gap-4 overflow-y-auto overflow-x-hidden"
+                    class="mt-6 grid h-80 w-fit grid-cols-2 gap-4 overflow-y-auto overflow-x-hidden md:grid-cols-3"
                   >
                     <CharacterInventoryCard
                       v-for="(character, index) in store.user_inventory"
@@ -64,7 +64,7 @@
                   </div>
                 </div>
                 <div
-                  class="flex w-[30rem] transform flex-col overflow-hidden rounded-2xl border border-grey-700 bg-grey-800 p-6 text-left align-middle shadow-xl transition-all"
+                  class="flex transform flex-col overflow-hidden rounded-2xl border border-grey-700 bg-grey-800 p-6 text-left align-middle shadow-xl transition-all md:w-[30rem]"
                 >
                   <div class="flex w-full flex-row justify-between">
                     <div class="space-y-2">
@@ -102,7 +102,7 @@
                     />
                   </div>
                   <hr class="my-8 text-grey-700" />
-                  <div class="flex flex-row gap-16">
+                  <div class="flex flex-col gap-8 md:flex-row md:gap-16">
                     <div class="space-y-1">
                       <h2 class="font-bold">Your Character</h2>
                       <div class="flex gap-1">

@@ -5,7 +5,7 @@
     @click="emitCharacterEquip()"
   >
     <div
-      class="flex w-32 flex-col items-center justify-end rounded-md bg-grey-700"
+      class="flex w-28 flex-col items-center justify-end rounded-md bg-grey-700 md:w-32"
       :class="{
         'border-2 border-brand-main': character_id === bound_character_id,
       }"
@@ -14,7 +14,9 @@
         :src="`https://flkaastenubusimwykpj.supabase.co/storage/v1/object/public/character-images/heads/${props.character_name.toLowerCase()}.png`"
         class="h-fit rounded-t-md bg-grey-600"
       />
-      <span class="my-2 font-bold text-white">{{ props.character_name }}</span>
+      <span class="my-2 text-center font-bold text-white">{{
+        props.character_name
+      }}</span>
     </div>
   </div>
 </template>
