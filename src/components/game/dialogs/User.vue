@@ -137,7 +137,7 @@
 
               <div
                 v-if="state.loaded"
-                class="flex h-full w-full flex-grow flex-col gap-2 overflow-y-auto rounded-2xl border border-grey-700 bg-grey-800 p-8"
+                class="flex max-h-screen w-full flex-col gap-2 overflow-y-auto rounded-2xl border border-grey-700 bg-grey-800 p-8"
               >
                 <h2 class="mb-4 text-2xl font-bold">Fight History</h2>
                 <div
@@ -160,7 +160,12 @@
                     <span>against a bot</span>
                   </template>
 
-                  <template v-else-if="game.player2 && game.player1">
+                  <template
+                    v-else-if="
+                      typeof game.player2 !== 'number' &&
+                      typeof game.player1 !== 'number'
+                    "
+                  >
                     <h4>
                       <template
                         v-if="game.player1.id === state.id && game.winner === 1"
@@ -188,6 +193,11 @@
                     >
                   </template>
                 </div>
+                <div v-if="state.games_played.length <= 0">
+                  <p>
+                    So empty here! Try coming back after you played some fights!
+                  </p>
+                </div>
               </div>
             </DialogPanel>
           </TransitionChild>
@@ -209,6 +219,7 @@ import type {
   CharacterInventoryTable,
   CharacterInfoTable,
   GamesTable,
+  UsersTable,
 } from "@/types/Database";
 
 import IconConstruction from "virtual:icons/mdi/construction";
@@ -252,7 +263,10 @@ const state = reactive<
       is_character_designer: boolean;
       is_artwork_designer: boolean;
 
-      games_played: GamesTable[];
+      games_played: (Omit<GamesTable, "player1" | "player2"> & {
+        player1: UsersTable | number;
+        player2: UsersTable | number;
+      })[];
     }
   | { loaded: false }
 >({
@@ -261,14 +275,14 @@ const state = reactive<
 
 const getData = async () => {
   state.loaded = false;
-  const user_id = store.authSession?.user?.id;
-  if (!user_id) {
+
+  if (!store.user_data) {
     router.push("/game");
     return;
   }
 
   const { data: user_data, error: user_error } = await getFullUser(
-    props.username || user_id,
+    props.username || store.user_data.id,
     props.username !== null
   );
 

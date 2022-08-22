@@ -26,45 +26,96 @@
             leave-from="opacity-100 scale-100"
             leave-to="opacity-0 scale-95"
           >
-            <DialogPanel
-              class="w-full max-w-xl transform overflow-hidden rounded-2xl border border-grey-700 bg-grey-800 p-6 text-left align-middle shadow-xl transition-all"
-            >
-              <div class="flex justify-between">
-                <div class="space-y-2">
-                  <DialogTitle
-                    as="h3"
-                    class="text-gray-900 text-lg font-bold leading-6"
-                    >Shop</DialogTitle
-                  >
-                  <DialogDescription class="text-gray-500 mt-2 text-sm">
-                    Here, you'll be able to buy characters with your primogems!
-                  </DialogDescription>
-                </div>
+            <DialogPanel class="max-w-5xl">
+              <div
+                class="w-full transform overflow-hidden rounded-2xl border border-grey-700 bg-grey-800 p-6 text-left align-middle shadow-xl transition-all"
+              >
+                <div class="flex justify-between">
+                  <div class="space-y-2">
+                    <DialogTitle
+                      as="h3"
+                      class="text-gray-900 text-lg font-bold leading-6"
+                      >Shop</DialogTitle
+                    >
+                    <DialogDescription class="text-gray-500 mt-2 text-sm">
+                      Buy some characters with your primos!
+                    </DialogDescription>
+                  </div>
 
-                <button
-                  class="mb-auto h-fit rounded-md bg-grey bg-opacity-20 p-2 transition-colors hover:bg-opacity-40"
-                  @click="props.closeShopDialog"
-                >
-                  <IconClose />
-                </button>
+                  <button
+                    class="mb-auto h-fit rounded-md bg-grey bg-opacity-20 p-2 transition-colors hover:bg-opacity-40"
+                    @click="props.closeShopDialog"
+                  >
+                    <IconClose />
+                  </button>
+                </div>
               </div>
 
-              <div class="mt-6 flex justify-between gap-2" v-if="state.loaded">
+              <div
+                class="mt-6 flex flex-col justify-between gap-2 md:flex-row"
+                v-if="state.loaded && store.user_data"
+              >
                 <div
-                  @click="processPayment(character.id)"
-                  class="cursor-pointer rounded-lg border border-grey-600 bg-grey-700 p-3"
+                  class="group flex flex-col justify-end rounded-lg border border-grey-600 bg-grey-700 transition duration-300 ease-in-out hover:-translate-y-0.5 md:w-1/3 md:max-w-none"
                   :key="character.id"
                   v-for="character in state.characters"
                 >
-                  <h4 class="text-lg font-bold">{{ character.name }}</h4>
+                  <div
+                    class="clipEverythingOutOfDiv relative flex h-full w-full flex-col items-center justify-end rounded-md bg-grey-700"
+                  >
+                    <img
+                      :src="`https://flkaastenubusimwykpj.supabase.co/storage/v1/object/public/character-images/bodies/${character.name.toLowerCase()}.png`"
+                      class="h-full w-auto rounded-lg bg-grey-800 object-cover"
+                    />
 
-                  <span>{{ character.price }} primogems</span>
+                    <div
+                      class="absolute top-0 bottom-0 right-0 left-0 flex flex-col items-center justify-end rounded-lg bg-gradient-to-b from-[transparent] to-grey-700 p-4"
+                    >
+                      <div
+                        class="translate-y-4 transition duration-300 ease-in-out group-hover:-translate-y-2"
+                      >
+                        <h4 class="text-2xl font-bold text-head">
+                          {{ character.name }}
+                        </h4>
+
+                        <span class="font-bold text-note"
+                          >{{ character.price }} Primogems</span
+                        >
+                      </div>
+
+                      <button
+                        @click="processPayment(character.id)"
+                        class="translate-y-20 rounded-lg px-6 py-1 transition duration-300 ease-in-out group-hover:translate-y-0"
+                        :class="{
+                          'bg-brand-main': !checkCharacterInInventory(
+                            character.id
+                          ),
+                          'bg-grey-800': checkCharacterInInventory(
+                            character.id
+                          ),
+                        }"
+                        :disabled="
+                          checkCharacterInInventory(character.id)
+                            ? true
+                            : store.user_data.primos < character.price
+                        "
+                      >
+                        {{
+                          checkCharacterInInventory(character.id)
+                            ? "You already own this character!"
+                            : store.user_data.primos < character.price
+                            ? "Not enough Primogems!"
+                            : "Purchase!"
+                        }}
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <button
                 v-if="state.loaded"
-                class="mt-4 rounded-lg bg-brand-main py-1 px-3"
+                class="mt-4 w-full rounded-lg border border-grey-700 bg-grey-700 py-2 px-3 shadow-lg"
                 @click="refreshShopCharacters"
               >
                 Refresh
@@ -92,8 +143,8 @@ import {
   TransitionChild,
 } from "@headlessui/vue";
 
+import { store } from "@/utils/store";
 import { supabase } from "@/utils/supabase";
-// import { capitalizeFirstLetter } from "@/utils/globals";
 
 import { reactive, onBeforeMount } from "vue";
 
@@ -109,6 +160,14 @@ const props = defineProps<{
   open: boolean;
   closeShopDialog: () => unknown;
 }>();
+
+const checkCharacterInInventory = (character_id: number) => {
+  if (!store.user_inventory) return false;
+
+  return store.user_inventory.find(
+    (character) => character.base_character.id === character_id
+  );
+};
 
 const refreshShopCharacters = async () => {
   state.loaded = false;
@@ -142,8 +201,14 @@ const processPayment = async (id: number) => {
   );
 
   if (error || response.error || !response.success) {
-    alert("An error occurred when processing the payment.");
+    alert(response.error || "An error occurred when processing the payment.");
     return;
   }
 };
 </script>
+
+<style>
+.clipEverythingOutOfDiv {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
+</style>

@@ -72,16 +72,18 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive } from "vue";
+import { onMounted, onUnmounted, reactive } from "vue";
 import IconDiscord from "virtual:icons/fa6-brands/discord";
 import IconGoogle from "virtual:icons/fa6-brands/google";
 import IconGitHub from "virtual:icons/fa6-brands/github";
 
-import LabelledInput from "@/components/LabelledInput.vue";
+import type { Provider } from "@supabase/gotrue-js";
 
 import { supabase } from "@/utils/supabase";
-import { Provider } from "@supabase/gotrue-js";
+import { konamiCodeHandler } from "@/utils/globals";
 import { useRouter } from "vue-router";
+
+import LabelledInput from "@/components/LabelledInput.vue";
 
 const router = useRouter();
 
@@ -96,70 +98,41 @@ const handleSubmit = (e: Event) => {
   const email = state.email.trim();
   const password = state.password.trim();
 
-  if (email.length <= 0) return alert("Please enter an email adress");
-  if (password.length <= 0) return alert("Please enter a password");
+  if (email.length <= 0) return alert("Please enter an email address.");
+  if (password.length <= 0) return alert("Please enter a password.");
 
   signInWithEmail(email, password);
 };
 
 const signInWithEmail = async (email: string, password: string) => {
-  try {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    if (error) throw error;
-  } catch (error: Error) {
-    alert(error.error_description || error.message);
-  } finally {
-    router.push("/game");
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (error) {
+    alert(error.message);
+    return;
   }
+
+  router.push("/game");
 };
 
 const signInWithProvider = async (provider: Provider) => {
   const { error } = await supabase.auth.signInWithOAuth({
-    provider: provider,
+    provider,
     options: {
       redirectTo: window.location.origin + "/oauth-login",
     },
   });
+
   if (error) alert(error.message);
 };
 
-onMounted(() => {
-  // the 'official' Konami Code sequence
-  const konamiCode = [
-    "ArrowUp",
-    "ArrowUp",
-    "ArrowDown",
-    "ArrowDown",
-    "ArrowLeft",
-    "ArrowRight",
-    "ArrowLeft",
-    "ArrowRight",
-  ];
+const konamiCodeListener = konamiCodeHandler(() =>
+  router.push("/easter-eggs/forgot-password")
+);
 
-  // a variable to remember the 'position' the user has reached so far.
-  let konamiCodePosition = 0;
-
-  // add keydown event listener
-  document.addEventListener("keydown", (e) => {
-    // get the value of the required key from the konami code
-    const requiredKey = konamiCode[konamiCodePosition];
-
-    // compare the key with the required key
-    if (e.code == requiredKey) {
-      // move to the next key in the konami code sequence
-      konamiCodePosition++;
-
-      // if the last key is reached, activate cheats
-      if (konamiCodePosition == konamiCode.length) {
-        router.push("/easter-eggs/forgot-password");
-        konamiCodePosition = 0;
-      }
-    } else {
-      konamiCodePosition = 0;
-    }
-  });
-});
+onMounted(() => document.addEventListener("keydown", konamiCodeListener));
+onUnmounted(() => document.removeEventListener("keydown", konamiCodeListener));
 </script>

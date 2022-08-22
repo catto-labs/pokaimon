@@ -1,8 +1,11 @@
 <template>
-  <div class="bg-gray-900 flex flex-col items-center py-32 px-6">
+  <div
+    v-if="store.user_data"
+    class="bg-gray-900 flex flex-col items-center py-32 px-6"
+  >
     <div class="text-center">
       <h1 class="mb-2 text-4xl font-bold text-head">
-        Welcome, {{ state.username }}!
+        Welcome, {{ store.user_data.username }}!
       </h1>
       <h2 class="mb-2 text-xl text-body">Which character best suits you?</h2>
     </div>
@@ -39,6 +42,7 @@
       </button>
     </form>
   </div>
+  <div v-else>Loading...</div>
 </template>
 
 <route>
@@ -51,7 +55,7 @@
 </route>
 
 <script setup lang="ts">
-import { reactive, onMounted } from "vue";
+import { reactive } from "vue";
 import { useRouter } from "vue-router";
 
 import { supabase } from "@/utils/supabase";
@@ -61,58 +65,48 @@ const router = useRouter();
 
 const state = reactive<{
   traveller: "lumine" | "aether" | null;
-  username: string | null;
 }>({
   traveller: null,
-  username: null,
 });
 
 const handleSubmit = async (e: Event) => {
   e.preventDefault();
-  if (!state.traveller) return alert("Please choose a traveller");
+  if (!store.user_data) {
+    return alert("User data not found, please try to refresh the page.");
+  }
+
+  if (!state.traveller) return alert("Please choose a traveller.");
+
+  // These values comes from the `character_info` table.
+  const AETHER_CHARACTER_ID = 1;
+  const LUMINE_CHARACTER_ID = 2;
+  const TRAVELLERS_BASE_HEALTH = 1300;
 
   // Insert character card to inventory
-  const { data, error: err1 } = await supabase
+  const { data: insert_data, error: insert_error } = await supabase
     .from("character_inventory")
     .insert({
-      base_character: state.traveller === "aether" ? 1 : 2,
-      health: 1300,
+      base_character:
+        state.traveller === "aether"
+          ? AETHER_CHARACTER_ID
+          : LUMINE_CHARACTER_ID,
+      health: TRAVELLERS_BASE_HEALTH,
       xp: 0,
-      owner: store.authSession?.user?.id,
+      owner: store.user_data.id,
     })
     .select();
 
-  if (err1) return alert(err1.message);
-  if (data.length <= 0) {
-    return alert("Something went wrong setting your character.");
-  }
+  if (insert_error) return alert("Something went wrong setting your character");
 
-  const { error: err2 } = await supabase
+  const { error: character_insert_error } = await supabase
     .from("users")
     .update({
       starter_traveller: state.traveller,
-      selected_character: data[0].id,
+      selected_character: insert_data[0].id,
     })
-    .match({ id: store.authSession?.user?.id });
+    .match({ id: store.user_data.id });
 
-  if (err2) return alert(err2.message);
-
+  if (character_insert_error) return alert(character_insert_error.message);
   router.push("/onboarding/welcome");
 };
-
-onMounted(async () => {
-  const { data, error } = await supabase
-    .from("users")
-    .select()
-    .match({ id: store.authSession?.user?.id })
-    .single();
-
-  if (error) alert(error.message);
-
-  if (data && !error) {
-    state.username = data.username;
-  } else {
-    state.username = "Traveller";
-  }
-});
 </script>

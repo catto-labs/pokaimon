@@ -166,23 +166,13 @@ export const getFullUser = async (uid: string, matchWithUsername = false) => {
       .from("users")
       .select(
         `
-          username,
-          starter_traveller,
-          primos,
-          xp,
-          id,
+          *,
           selected_character(
-            id, xp, health, created_at, owner,
+            *,
             base_character(
-              name,
-              region,
-              element
+              *
             )
-          ),
-          is_developer,
-          is_ui_designer,
-          is_character_designer,
-          is_artwork_designer
+          )
         `
       )
       .match(matchWithUsername ? { username: uid } : { id: uid })
@@ -191,11 +181,7 @@ export const getFullUser = async (uid: string, matchWithUsername = false) => {
   type Response = Awaited<ReturnType<typeof getData>>;
   type ResponseSuccess = Omit<UsersTable, "selected_character"> & {
     selected_character: Omit<CharacterInventoryTable, "base_character"> & {
-      base_character: {
-        name: CharacterInfoTable["name"];
-        region: CharacterInfoTable["region"];
-        element: CharacterInfoTable["element"];
-      };
+      base_character: CharacterInfoTable;
     };
   };
 

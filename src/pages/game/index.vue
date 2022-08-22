@@ -1,95 +1,184 @@
 <template>
-  <CommandPalette
-    :open="state.commandPaletteOpen"
-    :close="closeCommandPalette"
-  />
-
-  <div class="absolute flex h-screen w-screen flex-col justify-end p-4">
-    <div class="flex flex-row justify-end">
-      <div class="flex flex-col gap-4">
-        <TransitionRoot
-          :show="copyToast"
-          as="template"
-          leave="transform duration-200 transition ease-in-out"
-          leave-from="opacity-100 rotate-0 scale-100 "
-          leave-to="opacity-0 scale-95 "
-        >
-          <div
-            class="z-10 w-96 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 p-2 backdrop-blur-md"
+  <template v-if="store.user_data">
+    <div class="absolute flex h-screen w-screen flex-col justify-end p-4">
+      <div class="flex flex-row justify-end">
+        <div class="flex flex-col gap-4">
+          <TransitionRoot
+            :show="copyToast"
+            as="template"
+            leave="transform duration-200 transition ease-in-out"
+            leave-from="opacity-100 rotate-0 scale-100 "
+            leave-to="opacity-0 scale-95 "
           >
-            <div class="flex gap-2">
-              <IconContentCopy />
-              <h1 class="font-bold">Copied to Clipboard</h1>
-            </div>
-            <span class="text-body"
-              >Your username was copied to the clipboard!</span
+            <div
+              class="z-10 w-96 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 p-2 backdrop-blur-md"
             >
-          </div>
-        </TransitionRoot>
-        <TransitionRoot
-          :show="loginToast"
-          as="template"
-          leave="transform duration-200 transition ease-in-out"
-          leave-from="opacity-100 rotate-0 scale-100"
-          leave-to="opacity-0 scale-95"
-        >
-          <div
-            class="z-10 w-96 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 p-2 backdrop-blur-md"
-          >
-            <div class="flex gap-2">
-              <IconHandWave />
-              <h1 class="font-bold">Welcome back!</h1>
+              <div class="flex gap-2">
+                <IconContentCopy />
+                <h1 class="font-bold">Copied to Clipboard</h1>
+              </div>
+              <span class="text-body"
+                >Your username was copied to the clipboard!</span
+              >
             </div>
-            <span class="text-body">Logged in as {{ state.username }}. </span>
-          </div>
-        </TransitionRoot>
+          </TransitionRoot>
+          <TransitionRoot
+            :show="loginToast"
+            as="template"
+            leave="transform duration-200 transition ease-in-out"
+            leave-from="opacity-100 rotate-0 scale-100"
+            leave-to="opacity-0 scale-95"
+          >
+            <div
+              class="z-10 w-96 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 p-2 backdrop-blur-md"
+            >
+              <div class="flex gap-2">
+                <IconHandWave />
+                <h1 class="font-bold">Welcome back!</h1>
+              </div>
+              <span class="text-body"
+                >Logged in as {{ store.user_data.username }}.
+              </span>
+            </div>
+          </TransitionRoot>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="relative z-20 p-4">
-    <div class="flex flex-col justify-between gap-2 md:flex-row">
-      <div
-        class="my-auto hidden cursor-default items-center justify-start gap-8 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md md:flex"
-      >
-        <IconPerson
-          v-tippy="{ content: 'Profile' }"
-          @click="
-            () => {
-              state.userDialogOpen = true;
-              state.userDialogUsername = null;
-            }
-          "
-          class="my-auto cursor-pointer text-2xl hover:text-brand-main"
-        />
-        <IconBackpack
-          v-tippy="{ content: 'Inventory' }"
-          @click="state.inventoryDialogOpen = true"
-          class="my-auto cursor-pointer text-2xl hover:text-brand-main"
-        />
-        <IconSwordCross
-          v-tippy="{ content: 'Game against bot' }"
-          @click="router.push('/game/new-game')"
-          class="my-auto cursor-pointer text-2xl hover:text-brand-main"
-        />
-        <IconStore
-          v-tippy="{ content: 'Shop' }"
-          @click="state.shoppingDialogOpen = true"
-          class="my-auto cursor-pointer text-2xl hover:text-brand-main"
-        />
-        <IconSearch
-          v-tippy="{ content: 'Command Palette' }"
-          @click="state.commandPaletteOpen = true"
-          class="my-auto cursor-pointer text-2xl hover:text-brand-main"
-        />
+    <div class="relative z-20 p-4">
+      <div class="flex flex-col justify-between gap-2 md:flex-row">
+        <div
+          class="fixed bottom-12 right-0 left-0 mx-auto flex w-max cursor-default items-center justify-start gap-8 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md md:relative md:left-auto md:right-auto md:bottom-auto md:ml-0"
+        >
+          <IconPerson
+            v-tippy="{ content: 'Profile' }"
+            @click="
+              () => {
+                state.userDialogOpen = true;
+                state.userDialogUsername = null;
+              }
+            "
+            class="my-auto cursor-pointer text-2xl hover:text-brand-main"
+          />
+          <IconBackpack
+            v-tippy="{ content: 'Inventory' }"
+            @click="state.inventoryDialogOpen = true"
+            class="my-auto cursor-pointer text-2xl hover:text-brand-main"
+          />
+          <IconSwordCross
+            v-tippy="{ content: 'Game against bot' }"
+            @click="router.push('/game/new-game')"
+            class="my-auto cursor-pointer text-2xl hover:text-brand-main"
+          />
+          <IconStore
+            v-tippy="{ content: 'Shop' }"
+            @click="state.shoppingDialogOpen = true"
+            class="my-auto cursor-pointer text-2xl hover:text-brand-main"
+          />
+        </div>
+        <div class="flex items-center justify-between gap-4 md:justify-end">
+          <div
+            class="my-auto flex cursor-default space-x-2 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md"
+          >
+            <img src="@/assets/game/primogem.svg" class="my-auto h-4" />
+            <span class="my-auto text-white">{{
+              store.user_data.primos.toLocaleString("en-GB")
+            }}</span>
+          </div>
+          <Menu as="div">
+            <div>
+              <MenuButton
+                class="my-auto flex items-center gap-2 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md transition duration-300 hover:bg-grey-700"
+              >
+                <IconUser class="my-auto" />
+                <span class="my-auto text-white">{{
+                  store.user_data.username
+                }}</span>
+                <IconMenuDown />
+              </MenuButton>
+            </div>
+
+            <Transition
+              enter-active-class="transition duration-100 ease-out"
+              enter-from-class="transform scale-95 opacity-0"
+              enter-to-class="transform scale-100 opacity-100"
+              leave-active-class="transition duration-75 ease-in"
+              leave-from-class="transform scale-100 opacity-100"
+              leave-to-class="transform scale-95 opacity-0"
+            >
+              <MenuItems
+                class="absolute right-0 mt-2 mr-4 origin-top-right divide-y divide-grey-100 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 shadow-lg ring-1 ring-black ring-opacity-5 backdrop-blur-md focus:outline-none"
+              >
+                <div class="px-2 py-2">
+                  <MenuItem class="">
+                    <div class="flex border-b border-b-grey-400 pb-2">
+                      <span
+                        class="mx-2 cursor-default text-left text-sm text-grey-300"
+                        >You currently have
+                        {{ store.user_data.xp.toLocaleString("en-GB") }}
+                        experience!</span
+                      >
+                      <img
+                        v-if="
+                          store.user_data.xp === 69 ||
+                          store.user_data.xp === 420 ||
+                          store.user_data.xp === 727 ||
+                          store.user_data.xp === 69420 ||
+                          store.user_data.xp === 42069
+                        "
+                        src="@/assets/misc/nice.svg"
+                        class="mt-auto mb-1 hidden h-2 text-right text-grey-400 brightness-75 md:inline-block"
+                      />
+                    </div>
+                  </MenuItem>
+                  <MenuItem v-slot="{ active }">
+                    <button
+                      @click="copyToClipboard(store.user_data?.username)"
+                      :class="[
+                        active
+                          ? 'bg-brand-main bg-opacity-60 text-white'
+                          : 'text-white',
+                        'group mt-2 flex w-full flex-row items-center gap-2 rounded-md px-2 py-2 text-sm',
+                      ]"
+                    >
+                      <IconContentCopy />
+                      <span class="text-left text-white"
+                        >Copy to clipboard</span
+                      >
+                    </button>
+                  </MenuItem>
+                  <MenuItem v-slot="{ active }">
+                    <button
+                      @click="$router.push('/logout')"
+                      :class="[
+                        active
+                          ? 'bg-brand-main bg-opacity-60 text-white'
+                          : 'text-white',
+                        'group flex w-full flex-row items-center gap-2 rounded-md px-2 py-2 text-sm',
+                      ]"
+                    >
+                      <IconLogout />
+                      <span class="text-left text-white"
+                        >Logout of Pokaimon</span
+                      >
+                    </button>
+                  </MenuItem>
+                </div>
+              </MenuItems>
+            </Transition>
+          </Menu>
+        </div>
       </div>
+    </div>
+
+    <div class="absolute bottom-0 flex w-screen flex-col justify-end p-4">
       <div class="flex items-center justify-between gap-4 md:justify-end">
         <div
           class="my-auto flex cursor-default space-x-2 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md"
         >
           <img src="@/assets/game/primogem.svg" class="my-auto h-4" />
           <span class="my-auto text-white">{{
-            state.primos.toLocaleString("en-GB")
+            store.user_data.primos.toLocaleString("en-GB")
           }}</span>
         </div>
         <Menu as="div">
@@ -98,7 +187,9 @@
               class="my-auto flex items-center gap-2 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md transition duration-300 hover:bg-grey-700"
             >
               <IconUser class="my-auto" />
-              <span class="my-auto text-white">{{ state.username }}</span>
+              <span class="my-auto text-white">{{
+                store.user_data.username
+              }}</span>
               <IconMenuDown />
             </MenuButton>
           </div>
@@ -115,21 +206,21 @@
               class="absolute right-0 mt-2 mr-4 origin-top-right divide-y divide-grey-100 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 shadow-lg ring-1 ring-black ring-opacity-5 backdrop-blur-md focus:outline-none"
             >
               <div class="px-2 py-2">
-                <MenuItem class="">
+                <MenuItem>
                   <div class="flex border-b border-b-grey-400 pb-2">
                     <span
                       class="mx-2 cursor-default text-left text-sm text-grey-300"
                       >You currently have
-                      {{ state.xp.toLocaleString("en-GB") }}
+                      {{ store.user_data.xp.toLocaleString("en-GB") }}
                       experience!</span
                     >
                     <img
                       v-if="
-                        state.xp === 69 ||
-                        state.xp === 420 ||
-                        state.xp === 727 ||
-                        state.xp === 69420 ||
-                        state.xp === 42069
+                        store.user_data.xp === 69 ||
+                        store.user_data.xp === 420 ||
+                        store.user_data.xp === 727 ||
+                        store.user_data.xp === 69420 ||
+                        store.user_data.xp === 42069
                       "
                       src="@/assets/misc/nice.svg"
                       class="mt-auto mb-1 hidden h-2 text-right text-grey-400 brightness-75 md:inline-block"
@@ -138,10 +229,7 @@
                 </MenuItem>
                 <MenuItem v-slot="{ active }">
                   <button
-                    @click="
-                      copyToClipboard(state.username);
-                      resetCopyToast();
-                    "
+                    @click="copyToClipboard(store.user_data?.username)"
                     :class="[
                       active
                         ? 'bg-brand-main bg-opacity-60 text-white'
@@ -173,137 +261,115 @@
         </Menu>
       </div>
     </div>
-  </div>
 
-  <div class="absolute bottom-0 flex w-screen flex-col justify-end p-4">
     <div
-      class="bottom-0 z-20 my-auto flex cursor-default items-center justify-center gap-8 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md md:hidden"
-    >
-      <IconPerson
-        v-tippy="{ content: 'Profile' }"
-        @click="state.userDialogOpen = true"
-        class="my-auto cursor-pointer text-2xl hover:text-brand-main"
-      />
-      <IconBackpack
-        v-tippy="{ content: 'Inventory' }"
-        @click="state.inventoryDialogOpen = true"
-        class="my-auto cursor-pointer text-2xl hover:text-brand-main"
-      />
-      <IconSwordCross
-        v-tippy="{ content: 'Game against bot' }"
-        @click="router.push('/game/new-game')"
-        class="my-auto cursor-pointer text-2xl hover:text-brand-main"
-      />
-      <IconStore
-        v-tippy="{ content: 'Shop' }"
-        @click="state.shoppingDialogOpen = true"
-        class="my-auto cursor-pointer text-2xl hover:text-brand-main"
-      />
-    </div>
-  </div>
+      class="fixed top-0 left-0 h-screen w-screen"
+      style="background-color: #1c293c"
+      ref="map_element_ref"
+    ></div>
 
-  <div
-    class="fixed top-0 left-0 h-screen w-screen"
-    style="background-color: #1c293c"
-    ref="map_element_ref"
-  ></div>
-
-  <TransitionRoot appear :show="state.dialogOpen" as="template">
-    <Dialog as="div" @close="closeDialog" class="relative z-10">
-      <TransitionChild
-        as="template"
-        enter="duration-300 ease-out"
-        enter-from="opacity-0"
-        enter-to="opacity-100"
-        leave="duration-200 ease-in"
-        leave-from="opacity-100"
-        leave-to="opacity-0"
-      >
-        <div class="fixed inset-0 bg-grey-900 bg-opacity-75" />
-      </TransitionChild>
-
-      <div class="fixed inset-0 overflow-y-auto">
-        <div
-          class="flex min-h-full items-center justify-center p-4 text-center"
+    <TransitionRoot appear :show="state.dialogOpen" as="template">
+      <Dialog as="div" @close="closeDialog" class="relative z-10">
+        <TransitionChild
+          as="template"
+          enter="duration-300 ease-out"
+          enter-from="opacity-0"
+          enter-to="opacity-100"
+          leave="duration-200 ease-in"
+          leave-from="opacity-100"
+          leave-to="opacity-0"
         >
-          <TransitionChild
-            as="template"
-            enter="duration-300 ease-out"
-            enter-from="opacity-0 scale-95"
-            enter-to="opacity-100 scale-100"
-            leave="duration-200 ease-in"
-            leave-from="opacity-100 scale-100"
-            leave-to="opacity-0 scale-95"
+          <div class="fixed inset-0 bg-grey-900 bg-opacity-75" />
+        </TransitionChild>
+
+        <div class="fixed inset-0 overflow-y-auto">
+          <div
+            class="flex min-h-full items-center justify-center p-4 text-center"
           >
-            <DialogPanel
-              class="w-full max-w-xl transform overflow-hidden rounded-2xl border border-grey-700 bg-grey-800 p-6 text-left align-middle shadow-xl transition-all"
+            <TransitionChild
+              as="template"
+              enter="duration-300 ease-out"
+              enter-from="opacity-0 scale-95"
+              enter-to="opacity-100 scale-100"
+              leave="duration-200 ease-in"
+              leave-from="opacity-100 scale-100"
+              leave-to="opacity-0 scale-95"
             >
-              <div v-if="state.openedDialogData !== null">
-                <div class="flex justify-between">
-                  <div class="space-y-2">
-                    <DialogTitle
-                      as="h3"
-                      class="text-gray-900 text-lg font-bold leading-6"
+              <DialogPanel
+                class="w-full max-w-xl transform overflow-hidden rounded-2xl border border-grey-700 bg-grey-800 p-6 text-left align-middle shadow-xl transition-all"
+              >
+                <div v-if="state.openedDialogData !== null">
+                  <div class="flex justify-between">
+                    <div class="space-y-2">
+                      <DialogTitle
+                        as="h3"
+                        class="text-gray-900 text-lg font-bold leading-6"
+                      >
+                        {{ state.openedDialogData.title }}
+                      </DialogTitle>
+                      <DialogDescription
+                        v-if="state.openedDialogData.description"
+                        class="text-gray-500 mt-2 text-sm"
+                      >
+                        {{ state.openedDialogData.description }}
+                      </DialogDescription>
+                    </div>
+
+                    <button
+                      class="mb-auto h-fit rounded-md bg-grey bg-opacity-20 p-2 transition-colors hover:bg-opacity-40"
+                      @click="closeDialog()"
                     >
-                      {{ state.openedDialogData.title }}
-                    </DialogTitle>
-                    <DialogDescription
-                      v-if="state.openedDialogData.description"
-                      class="text-gray-500 mt-2 text-sm"
-                    >
-                      {{ state.openedDialogData.description }}
-                    </DialogDescription>
+                      <IconClose />
+                    </button>
                   </div>
 
-                  <button
-                    class="mb-auto h-fit rounded-md bg-grey bg-opacity-20 p-2 transition-colors hover:bg-opacity-40"
-                    @click="closeDialog()"
+                  <div
+                    class="mt-12 flex flex-col justify-end gap-6 sm:flex-row"
                   >
-                    <IconClose />
-                  </button>
-                </div>
-
-                <div class="mt-12 flex flex-col justify-end gap-6 sm:flex-row">
-                  <div class="flex flex-col justify-end gap-2 md:flex-row">
-                    <button
-                      class="w-full rounded-md bg-brand-second px-6 py-1 transition-colors hover:bg-opacity-80 sm:w-auto"
-                      @click="
-                        createFightIn(state.openedDialogData!.region, 'no')
-                      "
-                    >
-                      Matchmaking
-                    </button>
-                    <button
-                      class="w-full rounded-md bg-brand-main px-6 py-1 transition-colors hover:bg-opacity-80 sm:w-auto"
-                      @click="
-                        createFightIn(state.openedDialogData!.region, 'yes')
-                      "
-                    >
-                      Play against a bot
-                    </button>
+                    <div class="flex flex-col justify-end gap-2 md:flex-row">
+                      <button
+                        class="w-full rounded-md bg-brand-second px-6 py-1 transition-colors hover:bg-opacity-80 sm:w-auto"
+                        @click="
+                          createFightIn(state.openedDialogData!.region, 'no')
+                        "
+                      >
+                        Matchmaking
+                      </button>
+                      <button
+                        class="w-full rounded-md bg-brand-main px-6 py-1 transition-colors hover:bg-opacity-80 sm:w-auto"
+                        @click="
+                          createFightIn(state.openedDialogData!.region, 'yes')
+                        "
+                      >
+                        Play against a bot
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </DialogPanel>
-          </TransitionChild>
+              </DialogPanel>
+            </TransitionChild>
+          </div>
         </div>
-      </div>
-    </Dialog>
-  </TransitionRoot>
+      </Dialog>
+    </TransitionRoot>
 
-  <ShoppingDialog
-    :open="state.shoppingDialogOpen"
-    :closeShopDialog="closeShoppingDialog"
-  />
-  <UserDialog
-    :username="state.userDialogUsername"
-    :open="state.userDialogOpen"
-    :close="closeUserDialog"
-  />
-  <InventoryDialog
-    :open="state.inventoryDialogOpen"
-    :close="closeInventoryDialog"
-  />
+    <ShoppingDialog
+      :open="state.shoppingDialogOpen"
+      :closeShopDialog="closeShoppingDialog"
+    />
+    <UserDialog
+      :username="state.userDialogUsername"
+      :open="state.userDialogOpen"
+      :close="closeUserDialog"
+    />
+    <InventoryDialog
+      :open="state.inventoryDialogOpen"
+      :close="closeInventoryDialog"
+    />
+  </template>
+  <template v-else>
+    <div>Loading user data and stuff for you...</div>
+  </template>
 </template>
 
 <route>
@@ -353,13 +419,13 @@ import {
   TransitionChild,
 } from "@headlessui/vue";
 
+import UserDialog from "@/components/game/dialogs/User.vue";
 import CommandPalette from "@/components/game/CommandPalette.vue";
 import ShoppingDialog from "@/components/game/dialogs/Shopping.vue";
-import UserDialog from "@/components/game/dialogs/User.vue";
 import InventoryDialog from "@/components/game/dialogs/Inventory.vue";
 
 import { supabase, storedMapsUrl } from "@/utils/supabase";
-import { copyToClipboard } from "@/utils/globals";
+import { copyToClipboard as clipboard_copy } from "@/utils/globals";
 import { store } from "@/utils/store";
 
 import {
@@ -372,7 +438,6 @@ import {
   Icon,
   DivIcon,
 } from "leaflet";
-import Inventory from "../../components/game/dialogs/Inventory.vue";
 
 interface MousePositionPayload {
   type: string;
@@ -391,13 +456,9 @@ const map_ref = ref<Map | null>(null);
 const router = useRouter();
 
 const state = reactive<{
-  username: string;
-  primos: number;
-  xp: number;
-
   connected_users_channel: RealtimeChannel | null;
   connected_users: {
-    [username: string]: Marker;
+    [username: string]: Marker | undefined;
   };
 
   dialogOpen: boolean;
@@ -409,10 +470,6 @@ const state = reactive<{
   commandPaletteOpen: boolean;
   inventoryDialogOpen: boolean;
 }>({
-  username: "Loading...",
-  primos: 0,
-  xp: 0,
-
   connected_users_channel: null,
   connected_users: {},
 
@@ -426,14 +483,20 @@ const state = reactive<{
   inventoryDialogOpen: false,
 });
 
+const copyToClipboard = (text?: string | null) => {
+  if (!text) return;
+
+  clipboard_copy(text);
+  resetCopyToast();
+};
+
 const sendMouseBroadcast = throttle(({ lat, lng }) => {
-  if (!state.connected_users_channel) return;
-  if (state.username === "Loading...") return;
+  if (!state.connected_users_channel || !store.user_data) return;
 
   state.connected_users_channel.send({
     type: "broadcast",
     event: "location",
-    payload: { username: state.username, lat, lng },
+    payload: { username: store.user_data.username, lat, lng },
   });
 }, 1000 / 10);
 
@@ -552,7 +615,7 @@ const createUserMarker = (username: string, latlng: LatLng) => {
 
   const icon = new DivIcon({
     className: "h-24 w-24 rounded-full bg-grey-600 border-2 border-grey-500",
-    iconSize: 20,
+    iconSize: [20, 20],
   });
 
   const marker = new Marker(latlng, {
@@ -588,23 +651,7 @@ const resetLoginToast = () => {
   }, 3000);
 };
 
-onMounted(async () => {
-  const { data, error } = await supabase
-    .from("users")
-    .select()
-    .match({ id: store.authSession?.user?.id })
-    .single();
-
-  if (error || !data) {
-    alert(error?.message || "Something went wrong, redirecting to homepage.");
-    router.push("/");
-    return;
-  }
-
-  state.username = data.username;
-  state.primos = data.primos;
-  state.xp = data.xp;
-
+onMounted(() => {
   const southWest = new LatLng(-128, 0);
   const northEast = new LatLng(0, 128);
   const bounds = new LatLngBounds(southWest, northEast);
@@ -658,14 +705,18 @@ onMounted(async () => {
       "broadcast",
       { event: "location" },
       (event_data: MousePositionPayload) => {
-        if (!state.connected_users[event_data.payload.username]) {
+        const marker_obj = state.connected_users[event_data.payload.username];
+
+        if (!marker_obj) {
           state.connected_users[event_data.payload.username] = createUserMarker(
             event_data.payload.username,
             new LatLng(event_data.payload.lat, event_data.payload.lng)
           );
+
+          return;
         }
 
-        state.connected_users[event_data.payload.username].setLatLng(
+        marker_obj.setLatLng(
           new LatLng(event_data.payload.lat, event_data.payload.lng)
         );
       }
@@ -673,10 +724,10 @@ onMounted(async () => {
     .subscribe(async (status: string) => {
       if (status === "SUBSCRIBED") {
         map.on("mousemove", ({ latlng }) => {
-          if (!latlng.lat || !latlng.lng) return;
+          if (!store.user_data || !latlng.lat || !latlng.lng) return;
 
           sendMouseBroadcast({
-            username: state.username,
+            username: store.user_data.username,
             lat: latlng.lat,
             lng: latlng.lng,
           });
@@ -686,6 +737,7 @@ onMounted(async () => {
 
   resetLoginToast();
 
+  /** TODO: reenable this when the palette is working
   document.addEventListener("keydown", (e) => {
     switch (e.key) {
       case "1":
@@ -733,6 +785,7 @@ onMounted(async () => {
       state.dialogOpen = false;
     }
   });
+  */
 });
 
 onBeforeUnmount(() => {

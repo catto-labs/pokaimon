@@ -412,9 +412,7 @@ const state = reactive<
 });
 
 onMounted(async () => {
-  const user_session = store.authSession?.user;
-
-  if (!props.id || !user_session) {
+  if (!props.id || !store.user_data) {
     router.push("/game");
     return;
   }
@@ -432,15 +430,15 @@ onMounted(async () => {
 
   // Check if the player is able to join the game.
   const isUserInFight =
-    game_data.player1 === user_session.id ||
-    game_data.player2 === user_session.id;
+    game_data.player1 === store.user_data.id ||
+    game_data.player2 === store.user_data.id;
   if (!isUserInFight) {
     alert("You're not allowed to join this fight. Redirecting to map...");
     router.push("/game");
     return;
   }
 
-  const userIsPlayer = game_data.player1 === user_session.id ? 1 : 2;
+  const userIsPlayer = game_data.player1 === store.user_data.id ? 1 : 2;
 
   // Re-structure game's data about the player.
   const player_received_data = {
