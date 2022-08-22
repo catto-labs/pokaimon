@@ -79,7 +79,10 @@
                         </h4>
 
                         <span class="font-bold text-note"
-                          >{{ character.price }} Primogems</span
+                          >{{
+                            character.price.toLocaleString("en-GB")
+                          }}
+                          Primogems</span
                         >
                       </div>
 
