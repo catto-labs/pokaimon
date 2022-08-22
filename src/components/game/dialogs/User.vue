@@ -58,14 +58,31 @@
                       <h3 class="text-lg">
                         Joined at {{ joinTime.toLocaleDateString("en-GB") }}
                       </h3>
-                      <p
-                        v-tippy="{
-                          content: `${state.xp.toLocaleString('en-GB')} XP`,
-                        }"
-                      >
-                        Level
-                        {{ getLevelFromXp(state.xp).toLocaleString("en-GB") }}
-                      </p>
+                      <div class="mt-4 flex flex-row items-end justify-between">
+                        <p>
+                          Level
+                          {{
+                            getUserLevelFromXp(state.xp).toLocaleString("en-GB")
+                          }}
+                        </p>
+                        <p>
+                          {{ state.xp.toLocaleString("en-GB") }}/{{
+                            getNextLevelXp(state.xp).toLocaleString("en-GB")
+                          }}
+                        </p>
+                      </div>
+                      <div class="rounded-full bg-grey-600">
+                        <div
+                          class="rounded-full bg-brand-main p-2"
+                          :style="{
+                            width:
+                              (
+                                (state.xp / getNextLevelXp(state.xp)) *
+                                100
+                              ).toString() + '%',
+                          }"
+                        ></div>
+                      </div>
                     </div>
                     <div class="flex gap-4">
                       <IconConstruction
@@ -241,7 +258,11 @@ import { useRouter } from "vue-router";
 import { supabase, getFullUser } from "@/utils/supabase";
 
 import { store } from "@/utils/store";
-import { capitalizeFirstLetter, getLevelFromXp } from "@/utils/globals";
+import {
+  capitalizeFirstLetter,
+  getUserLevelFromXp,
+  getNextLevelXp,
+} from "@/utils/globals";
 
 const props = defineProps<{
   open: boolean;
