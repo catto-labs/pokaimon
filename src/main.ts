@@ -38,20 +38,6 @@ router.beforeEach(async (to, from) => {
 
   if (to.path.startsWith("/onboarding")) {
     if (!store.initialized) return { path: "/login" };
-    if (
-      !to.path.includes("welcome") &&
-      store.user_data.username &&
-      store.user_data.starter_traveller
-    ) {
-      return { path: "/onboarding/welcome" };
-    }
-
-    if (!to.path.includes("user") && !store.user_data.username) {
-      return { path: "/onboarding/user" };
-    }
-    if (!to.path.includes("character") && !store.user_data.starter_traveller) {
-      return { path: "/onboarding/character" };
-    }
   }
 
   if (to.path.startsWith("/game")) {
