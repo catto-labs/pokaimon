@@ -10,11 +10,8 @@
       <h2 v-else class="mb-2 text-xl text-note">
         Selecting an available game for you...
       </h2>
-      <div class="mt-6 flex items-center justify-center gap-4">
-        <PrimoIcon class="dot-flashing h-8" />
-        <PrimoIcon class="dot-flashing h-8" />
-        <PrimoIcon class="dot-flashing h-8" />
-      </div>
+
+      <LoadingPrimogems class="mt-6" />
     </div>
   </div>
 </template>
@@ -25,7 +22,7 @@ import { useRouter, useRoute } from "vue-router";
 
 import { supabase } from "@/utils/supabase";
 
-import PrimoIcon from "@/components/game/PrimoIcon.vue";
+import LoadingPrimogems from "@/components/game/LoadingPrimogems.vue";
 
 const router = useRouter();
 const route = useRoute();

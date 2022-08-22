@@ -1,9 +1,11 @@
+export type AvailableRegions = "mondstadt" | "liyue" | "inazuma";
+
 export interface CharacterInfoTable {
   id: number;
   name: string;
   description: string;
 
-  region: string;
+  region: AvailableRegions;
   element: string;
 
   /** Default health for this character. */
@@ -41,7 +43,7 @@ export interface ArticlesTable {
 export interface CharacterActionsTable {
   id: number;
   name: string;
-  description?: string;
+  description: string;
 
   enemy_min_damage: number;
   enemy_max_damage: number;
@@ -54,7 +56,7 @@ export interface CharacterActionsTable {
 
 export interface GamesTable {
   id: number;
-  region: string;
+  region: AvailableRegions;
 
   player1: string | null;
   player2: string | null;
@@ -80,20 +82,24 @@ export interface GamesTable {
     card_xp: number;
     user_xp: number;
 
+    /** Only when playing against a bot. */
     character_name?: string;
   };
 }
 
 export interface UsersTable {
-  selected_character?: number;
-  primos: number;
-  xp: number;
   id: string;
-  username: string | null;
-  starter_traveller: string | null;
+  xp: number;
+  primos: number;
+
+  username?: string;
+  selected_character?: number;
+  starter_traveller?: "aether" | "lumine";
 
   is_developer: boolean;
   is_ui_designer: boolean;
   is_character_designer: boolean;
   is_artwork_designer: boolean;
+
+  created_at: string;
 }

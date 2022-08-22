@@ -72,13 +72,12 @@ export const getCharacterInfo = async (id: number) => {
       .from("character_info")
       .select(
         `
-    id, region, description, name,
-    element, base_health,
-    action_1(*),
-    action_2(*),
-    action_3(*),
-    action_4(*)
-  `
+          *,
+          action_1(*),
+          action_2(*),
+          action_3(*),
+          action_4(*)
+        `
       )
       .match({ id })
       .single();

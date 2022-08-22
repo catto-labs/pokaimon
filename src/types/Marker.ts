@@ -1,14 +1,18 @@
+import type { AvailableRegions } from "@/types/Database";
+
 interface DefaultMarkerOptions {
+  title: string;
   latitude: number;
   longitude: number;
-
-  title: string;
-  description?: string;
 }
 
 export interface FightMarkerOptions extends DefaultMarkerOptions {
+  description?: string;
+
   type: "fight";
-  region: "mondstadt" | "liyue" | "inazuma";
+  region: AvailableRegions;
 }
 
-export type MarkerOptions = FightMarkerOptions;
+export interface UserMarkerOptions extends DefaultMarkerOptions {
+  username: string;
+}

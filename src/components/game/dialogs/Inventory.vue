@@ -26,8 +26,8 @@
             leave-from="opacity-100 scale-100"
             leave-to="opacity-0 scale-95"
           >
-            <DialogPanel class="flex flex-col gap-8 md:flex-row">
-              <template v-if="store.user_data && selected_character">
+            <DialogPanel class="flex flex-col gap-8 lg:flex-row">
+              <template v-if="store.initialized && selected_character">
                 <div
                   class="flex w-[30rem] max-w-4xl transform flex-col overflow-hidden rounded-2xl border border-grey-700 bg-grey-800 p-6 text-left align-middle shadow-xl transition-all"
                 >
@@ -152,7 +152,7 @@
                 </div>
               </template>
               <template v-else>
-                <h3>Loading...</h3>
+                <LoadingPrimogems />
               </template>
             </DialogPanel>
           </TransitionChild>
@@ -172,6 +172,7 @@ import IconAccountArrowUp from "virtual:icons/mdi/account-arrow-up";
 import IconAccountHeart from "virtual:icons/mdi/account-heart";
 
 import CharacterInventoryCard from "@/components/game/CharacterInventoryCard.vue";
+import LoadingPrimogems from "../LoadingPrimogems.vue";
 
 import {
   Dialog,
@@ -193,15 +194,16 @@ const props = defineProps<{
 }>();
 
 const selected_character = computed(() => {
-  if (!store.user_data || !store.user_inventory) return;
+  if (!store.initialized) return;
+  const current_character = store.user_data.selected_character;
 
   return store.user_inventory.find(
-    (character) => character.id === store.user_data?.selected_character
+    (character) => character.id === current_character
   );
 });
 
 const equipCharacter = async (character_id: number) => {
-  if (!store.user_data) return;
+  if (!store.initialized) return;
 
   const { error } = await supabase
     .from("users")

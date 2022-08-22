@@ -15,5 +15,5 @@
 import { useRouter } from "vue-router";
 const router = useRouter();
 
-router.push("/onboarding");
+router.push("/onboarding/user");
 </script>
