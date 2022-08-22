@@ -1,8 +1,8 @@
 <template>
   <template v-if="store.user_data">
-    <div class="absolute flex h-screen w-screen flex-col justify-end p-4">
-      <div class="flex flex-row justify-end">
-        <div class="flex flex-col gap-4">
+    <div class="absolute flex h-screen w-screen flex-col p-4 md:justify-end">
+      <div class="flex flex-row">
+        <div class="flex w-full flex-col gap-4">
           <TransitionRoot
             :show="copyToast"
             as="template"
@@ -11,7 +11,7 @@
             leave-to="opacity-0 scale-95 "
           >
             <div
-              class="z-10 w-96 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 p-2 backdrop-blur-md"
+              class="z-50 w-full rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 p-2 backdrop-blur-md md:w-96"
             >
               <div class="flex gap-2">
                 <IconContentCopy />
@@ -30,7 +30,7 @@
             leave-to="opacity-0 scale-95"
           >
             <div
-              class="z-10 w-96 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 p-2 backdrop-blur-md"
+              class="z-50 w-full rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 p-2 backdrop-blur-md md:w-96"
             >
               <div class="flex gap-2">
                 <IconHandWave />
