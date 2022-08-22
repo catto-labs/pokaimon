@@ -66,20 +66,39 @@
                             )
                           }}
                         </h3>
-                        <p
-                          v-tippy="{
-                            content: `${state.user.xp.toLocaleString(
-                              'en-GB'
-                            )} XP`,
-                          }"
+
+                        <div
+                          class="mt-4 flex flex-row items-end justify-between"
                         >
-                          Level
-                          {{
-                            getLevelFromXp(state.user.xp).toLocaleString(
-                              "en-GB"
-                            )
-                          }}
-                        </p>
+                          <p>
+                            Level
+                            {{
+                              getUserLevelFromXp(state.user.xp).toLocaleString(
+                                "en-GB"
+                              )
+                            }}
+                          </p>
+                          <p>
+                            {{ state.user.xp.toLocaleString("en-GB") }}/{{
+                              getNextLevelXp(state.user.xp).toLocaleString(
+                                "en-GB"
+                              )
+                            }}
+                          </p>
+                        </div>
+                        <div class="rounded-full bg-grey-600">
+                          <div
+                            class="rounded-full bg-brand-main p-2"
+                            :style="{
+                              width:
+                                (
+                                  (state.user.xp /
+                                    getNextLevelXp(state.user.xp)) *
+                                  100
+                                ).toString() + '%',
+                            }"
+                          ></div>
+                        </div>
                       </div>
                       <div class="flex gap-4">
                         <IconConstruction
@@ -259,9 +278,14 @@ import IconClose from "virtual:icons/mdi/close";
 import LoadingPrimogems from "../LoadingPrimogems.vue";
 import { reactive, onMounted, onUpdated } from "vue";
 
-import { capitalizeFirstLetter, getLevelFromXp } from "@/utils/globals";
 import { supabase, getFullUser } from "@/utils/supabase";
+
 import { store } from "@/utils/store";
+import {
+  capitalizeFirstLetter,
+  getUserLevelFromXp,
+  getNextLevelXp,
+} from "@/utils/globals";
 
 const props = defineProps<{
   open: boolean;
