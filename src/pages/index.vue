@@ -39,12 +39,6 @@
           >
             View All Cards
           </router-link>
-          <!-- <button
-            class="w-fit transform rounded-2xl border border-brand-second px-8 py-2 text-right text-xl font-bold text-white transition duration-300 ease-in-out hover:-translate-y-0.5 hover:bg-brand-second"
-          >
-            See Deck Builder
-          </button>
-          -->
         </div>
         <div
           class="cards-row flex flex-row flex-wrap items-start justify-end gap-6 space-y-0 md:self-end"
