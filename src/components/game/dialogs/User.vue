@@ -58,7 +58,14 @@
                       <h3 class="text-lg">
                         Joined at {{ joinTime.toLocaleDateString("en-GB") }}
                       </h3>
-                      <p>{{ state.xp.toLocaleString("en-GB") }} XP</p>
+                      <p
+                        v-tippy="{
+                          content: `${state.xp.toLocaleString('en-GB')} XP`,
+                        }"
+                      >
+                        Level
+                        {{ getLevelFromXp(state.xp).toLocaleString("en-GB") }}
+                      </p>
                     </div>
                     <div class="flex gap-4">
                       <IconConstruction
@@ -234,7 +241,7 @@ import { useRouter } from "vue-router";
 import { supabase, getFullUser } from "@/utils/supabase";
 
 import { store } from "@/utils/store";
-import { capitalizeFirstLetter } from "@/utils/globals";
+import { capitalizeFirstLetter, getLevelFromXp } from "@/utils/globals";
 
 const props = defineProps<{
   open: boolean;
