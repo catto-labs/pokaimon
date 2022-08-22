@@ -484,6 +484,102 @@ onMounted(() => {
   });
 
   state.connected_users_channel
+    .on("presence", { event: "SYNC" }, () => {
+      if (!state.connected_users_channel) return;
+
+      const presence = state.connected_users_channel.presenceState();
+      for (const presence_key of Object.keys(presence)) {
+        const presences = presence[presence_key];
+        presences.forEach((data) => {
+          if (
+            !store.initialized ||
+            data.username === store.user_data.username
+          ) {
+            return;
+          }
+
+          console.log("sync: adding", data);
+          const marker_obj = state.connected_users[data.username];
+
+          if (!marker_obj) {
+            state.connected_users[data.username] = createUserMarker(
+              map,
+              {
+                title: data.username,
+                username: data.username,
+
+                latitude: data.lat,
+                longitude: data.lng,
+              },
+              () => {
+                state.userDialogUsername = data.username;
+                state.userDialogOpen = true;
+              }
+            );
+
+            return;
+          }
+
+          marker_obj.setLatLng(new LatLng(data.lat, data.lng));
+        });
+      }
+    })
+    .on(
+      "presence",
+      { event: "join" },
+      (payload: {
+        newPresences: { username: string; lat: number; lng: number }[];
+      }) => {
+        const presences = payload.newPresences;
+        presences.forEach((data) => {
+          if (
+            !store.initialized ||
+            data.username === store.user_data.username
+          ) {
+            return;
+          }
+          console.log("join: add", data);
+          const marker_obj = state.connected_users[data.username];
+
+          if (!marker_obj) {
+            state.connected_users[data.username] = createUserMarker(
+              map,
+              {
+                title: data.username,
+                username: data.username,
+
+                latitude: data.lat,
+                longitude: data.lng,
+              },
+              () => {
+                state.userDialogUsername = data.username;
+                state.userDialogOpen = true;
+              }
+            );
+
+            return;
+          }
+
+          marker_obj.setLatLng(new LatLng(data.lat, data.lng));
+        });
+      }
+    )
+    .on(
+      "presence",
+      { event: "leave" },
+      (payload: {
+        leftPresences: { username: string; lat: number; lng: number }[];
+      }) => {
+        const presences = payload.leftPresences;
+        presences.forEach((data) => {
+          console.log("left: remove", data);
+          const marker = state.connected_users[data.username];
+          if (!marker) return;
+
+          marker.remove();
+        });
+      }
+    )
     .on(
       "broadcast",
       { event: "location" },
@@ -515,7 +611,15 @@ onMounted(() => {
       }
     )
     .subscribe(async (status: string) => {
+      if (!store.initialized || !state.connected_users_channel) return;
+
       if (status === "SUBSCRIBED") {
+        await state.connected_users_channel.track({
+          username: store.user_data.username,
+          lat: MONDSTADT_LOCATION.lat,
+          lng: MONDSTADT_LOCATION.lng,
+        });
+
         map.on("mousemove", ({ latlng }) => {
           if (!store.initialized || !latlng.lat || !latlng.lng) return;
 
