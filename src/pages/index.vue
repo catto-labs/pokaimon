@@ -16,11 +16,12 @@
           >
             Play Now
           </router-link>
-          <button
+          <router-link
+            to="linkout?url=aHR0cHM6Ly9naXRodWIuY29tL3Ryb2Jvbm94L3Bva2FpbW9uL2Jsb2IvbWFpbi9SRUFETUUubWQ="
             class="transform rounded-2xl border-2 border-brand-second px-8 py-2 text-center font-bold text-white transition duration-300 ease-in-out hover:-translate-y-0.5 hover:bg-brand-second sm:text-xl"
           >
             Learn More
-          </button>
+          </router-link>
         </div>
       </section>
 
