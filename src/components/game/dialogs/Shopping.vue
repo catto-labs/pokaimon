@@ -38,7 +38,9 @@
                       >Shop</DialogTitle
                     >
                     <DialogDescription class="text-gray-500 mt-2 text-sm">
-                      Buy some characters with your primos!
+                      Buy some characters with your primos! New characters often
+                      have more HP, and new abilities which can deal more
+                      damage.
                     </DialogDescription>
                   </div>
 
