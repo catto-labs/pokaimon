@@ -52,6 +52,10 @@
           undefined labs keeps the personal information of clients safe and away
           from any use without proper consent.
         </p>
+        <p class="w-[36rem]">
+          While undefined labs does not sell or give your data to third parties,
+          we cannot guarantee the same for our host, Supabase.
+        </p>
       </div>
       <div class="mt-8 flex flex-col items-center justify-center gap-4">
         <h2 class="text-center text-xl text-body">
