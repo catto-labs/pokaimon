@@ -1,4 +1,11 @@
 <template>
+  <div
+    class="flex h-screen w-screen items-center justify-center"
+    v-if="!store.first_load"
+  >
+    <LoadingPrimogems />
+  </div>
+
   <router-view></router-view>
   <!-- <router-view v-slot="{ Component }">
     <transition name="fade" mode="out-in">
@@ -14,3 +21,8 @@
   background: #111827;
 }
 </style>
+
+<script setup lang="ts">
+import LoadingPrimogems from "@/components/game/LoadingPrimogems.vue";
+import { store } from "@/utils/store";
+</script>

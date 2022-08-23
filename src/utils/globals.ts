@@ -52,3 +52,13 @@ export const konamiCodeHandler = (callback: () => unknown) => {
     }
   };
 };
+
+export const getUserLevelFromXp = (xp: number) => {
+  const result = Math.floor(Math.log(xp / 1000) / Math.log(1.2));
+  return result > 0 ? result : 0;
+};
+
+export const getNextLevelXp = (xp: number) => {
+  const curr_lvl = getUserLevelFromXp(xp);
+  return Math.floor(1000 * 1.2 ** (curr_lvl + 1));
+};

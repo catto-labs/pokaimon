@@ -25,11 +25,8 @@
         Send this URL to your opponent !
         <button>{{ getJoinFightUrl() }}</button>
       </h2>
-      <div class="mt-6 flex items-center justify-center gap-4">
-        <PrimoIcon class="dot-flashing h-8" />
-        <PrimoIcon class="dot-flashing h-8" />
-        <PrimoIcon class="dot-flashing h-8" />
-      </div>
+
+      <LoadingPrimogems class="mt-6" />
 
       <button
         v-if="!isOffline"
@@ -50,7 +47,7 @@ import { useRouter, useRoute } from "vue-router";
 import { capitalizeFirstLetter } from "@/utils/globals";
 import { supabase } from "@/utils/supabase";
 
-import PrimoIcon from "@/components/game/PrimoIcon.vue";
+import LoadingPrimogems from "@/components/game/LoadingPrimogems.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -117,27 +114,6 @@ onMounted(async () => {
   }
 });
 </script>
-
-<style>
-.dot-flashing {
-  @apply text-white;
-  animation: dotFlashing 1s infinite;
-}
-
-.dot-flashing:nth-of-type(2) {
-  animation-delay: 250ms;
-}
-
-.dot-flashing:nth-of-type(3) {
-  animation-delay: 500ms;
-}
-
-@keyframes dotFlashing {
-  50% {
-    @apply text-brand-main;
-  }
-}
-</style>
 
 <route>
 {

@@ -1,5 +1,5 @@
 <template>
-  <template v-if="store.user_data">
+  <template v-if="store.initialized && user">
     <div class="absolute flex h-screen w-screen flex-col p-4 md:justify-end">
       <div class="flex flex-row">
         <div class="flex w-full flex-col gap-4">
@@ -15,7 +15,7 @@
             >
               <div class="flex gap-2">
                 <IconContentCopy />
-                <h1 class="font-bold">Copied to Clipboard</h1>
+                <h1 class="font-bold">Copied to clipboard</h1>
               </div>
               <span class="text-body"
                 >Your username was copied to the clipboard!</span
@@ -36,9 +36,7 @@
                 <IconHandWave />
                 <h1 class="font-bold">Welcome back!</h1>
               </div>
-              <span class="text-body"
-                >Logged in as {{ store.user_data.username }}.
-              </span>
+              <span class="text-body">Logged in as {{ user.username }}. </span>
             </div>
           </TransitionRoot>
         </div>
@@ -82,7 +80,7 @@
           >
             <img src="@/assets/game/primogem.svg" class="my-auto h-4" />
             <span class="my-auto text-white">{{
-              store.user_data.primos.toLocaleString("en-GB")
+              user.primos.toLocaleString("en-GB")
             }}</span>
           </div>
           <Menu as="div">
@@ -91,9 +89,7 @@
                 class="my-auto flex items-center gap-2 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md transition duration-300 hover:bg-grey-700"
               >
                 <IconUser class="my-auto" />
-                <span class="my-auto text-white">{{
-                  store.user_data.username
-                }}</span>
+                <span class="my-auto text-white">{{ user.username }}</span>
                 <IconMenuDown />
               </MenuButton>
             </div>
@@ -110,21 +106,21 @@
                 class="absolute right-0 mt-2 mr-4 origin-top-right divide-y divide-grey-100 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 shadow-lg ring-1 ring-black ring-opacity-5 backdrop-blur-md focus:outline-none"
               >
                 <div class="px-2 py-2">
-                  <MenuItem class="">
+                  <MenuItem>
                     <div class="flex border-b border-b-grey-400 pb-2">
                       <span
                         class="mx-2 cursor-default text-left text-sm text-grey-300"
                         >You currently have
-                        {{ store.user_data.xp.toLocaleString("en-GB") }}
+                        {{ user.xp.toLocaleString("en-GB") }}
                         experience!</span
                       >
                       <img
                         v-if="
-                          store.user_data.xp === 69 ||
-                          store.user_data.xp === 420 ||
-                          store.user_data.xp === 727 ||
-                          store.user_data.xp === 69420 ||
-                          store.user_data.xp === 42069
+                          user.xp === 69 ||
+                          user.xp === 420 ||
+                          user.xp === 727 ||
+                          user.xp === 69420 ||
+                          user.xp === 42069
                         "
                         src="@/assets/misc/nice.svg"
                         class="mt-auto mb-1 hidden h-2 text-right text-grey-400 brightness-75 md:inline-block"
@@ -133,7 +129,7 @@
                   </MenuItem>
                   <MenuItem v-slot="{ active }">
                     <button
-                      @click="copyToClipboard(store.user_data?.username)"
+                      @click="copyToClipboard(user!.username)"
                       :class="[
                         active
                           ? 'bg-brand-main bg-opacity-60 text-white'
@@ -178,7 +174,7 @@
         >
           <img src="@/assets/game/primogem.svg" class="my-auto h-4" />
           <span class="my-auto text-white">{{
-            store.user_data.primos.toLocaleString("en-GB")
+            user.primos.toLocaleString("en-GB")
           }}</span>
         </div>
         <Menu as="div">
@@ -187,9 +183,7 @@
               class="my-auto flex items-center gap-2 rounded-md border border-grey-700 bg-grey-800 bg-opacity-60 px-2 py-1 text-white backdrop-blur-md transition duration-300 hover:bg-grey-700"
             >
               <IconUser class="my-auto" />
-              <span class="my-auto text-white">{{
-                store.user_data.username
-              }}</span>
+              <span class="my-auto text-white">{{ user.username }}</span>
               <IconMenuDown />
             </MenuButton>
           </div>
@@ -211,16 +205,16 @@
                     <span
                       class="mx-2 cursor-default text-left text-sm text-grey-300"
                       >You currently have
-                      {{ store.user_data.xp.toLocaleString("en-GB") }}
+                      {{ user.xp.toLocaleString("en-GB") }}
                       experience!</span
                     >
                     <img
                       v-if="
-                        store.user_data.xp === 69 ||
-                        store.user_data.xp === 420 ||
-                        store.user_data.xp === 727 ||
-                        store.user_data.xp === 69420 ||
-                        store.user_data.xp === 42069
+                        user.xp === 69 ||
+                        user.xp === 420 ||
+                        user.xp === 727 ||
+                        user.xp === 69420 ||
+                        user.xp === 42069
                       "
                       src="@/assets/misc/nice.svg"
                       class="mt-auto mb-1 hidden h-2 text-right text-grey-400 brightness-75 md:inline-block"
@@ -229,7 +223,7 @@
                 </MenuItem>
                 <MenuItem v-slot="{ active }">
                   <button
-                    @click="copyToClipboard(store.user_data?.username)"
+                    @click="copyToClipboard(user!.username)"
                     :class="[
                       active
                         ? 'bg-brand-main bg-opacity-60 text-white'
@@ -268,90 +262,11 @@
       ref="map_element_ref"
     ></div>
 
-    <TransitionRoot appear :show="state.dialogOpen" as="template">
-      <Dialog as="div" @close="closeDialog" class="relative z-10">
-        <TransitionChild
-          as="template"
-          enter="duration-300 ease-out"
-          enter-from="opacity-0"
-          enter-to="opacity-100"
-          leave="duration-200 ease-in"
-          leave-from="opacity-100"
-          leave-to="opacity-0"
-        >
-          <div class="fixed inset-0 bg-grey-900 bg-opacity-75" />
-        </TransitionChild>
-
-        <div class="fixed inset-0 overflow-y-auto">
-          <div
-            class="flex min-h-full items-center justify-center p-4 text-center"
-          >
-            <TransitionChild
-              as="template"
-              enter="duration-300 ease-out"
-              enter-from="opacity-0 scale-95"
-              enter-to="opacity-100 scale-100"
-              leave="duration-200 ease-in"
-              leave-from="opacity-100 scale-100"
-              leave-to="opacity-0 scale-95"
-            >
-              <DialogPanel
-                class="w-full max-w-xl transform overflow-hidden rounded-2xl border border-grey-700 bg-grey-800 p-6 text-left align-middle shadow-xl transition-all"
-              >
-                <div v-if="state.openedDialogData !== null">
-                  <div class="flex justify-between">
-                    <div class="space-y-2">
-                      <DialogTitle
-                        as="h3"
-                        class="text-gray-900 text-lg font-bold leading-6"
-                      >
-                        {{ state.openedDialogData.title }}
-                      </DialogTitle>
-                      <DialogDescription
-                        v-if="state.openedDialogData.description"
-                        class="text-gray-500 mt-2 text-sm"
-                      >
-                        {{ state.openedDialogData.description }}
-                      </DialogDescription>
-                    </div>
-
-                    <button
-                      class="mb-auto h-fit rounded-md bg-grey bg-opacity-20 p-2 transition-colors hover:bg-opacity-40"
-                      @click="closeDialog()"
-                    >
-                      <IconClose />
-                    </button>
-                  </div>
-
-                  <div
-                    class="mt-12 flex flex-col justify-end gap-6 sm:flex-row"
-                  >
-                    <div class="flex flex-col justify-end gap-2 md:flex-row">
-                      <button
-                        class="w-full rounded-md bg-brand-second px-6 py-1 transition-colors hover:bg-opacity-80 sm:w-auto"
-                        @click="
-                          createFightIn(state.openedDialogData!.region, 'no')
-                        "
-                      >
-                        Matchmaking
-                      </button>
-                      <button
-                        class="w-full rounded-md bg-brand-main px-6 py-1 transition-colors hover:bg-opacity-80 sm:w-auto"
-                        @click="
-                          createFightIn(state.openedDialogData!.region, 'yes')
-                        "
-                      >
-                        Play against a bot
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </DialogPanel>
-            </TransitionChild>
-          </div>
-        </div>
-      </Dialog>
-    </TransitionRoot>
+    <FightDialog
+      :data="state.fightDialogData"
+      :open="state.fightDialogOpen"
+      :close="closeFightDialog"
+    />
 
     <ShoppingDialog
       :open="state.shoppingDialogOpen"
@@ -367,19 +282,7 @@
       :close="closeInventoryDialog"
     />
   </template>
-  <template v-else>
-    <div>Loading user data and stuff for you...</div>
-  </template>
 </template>
-
-<route>
-{
-  meta: {
-    requiresAuth: true,
-    checkForCompletedOnboarding: true
-  }
-}
-</route>
 
 <script setup lang="ts">
 import "leaflet/dist/leaflet.css";
@@ -391,18 +294,14 @@ import IconHandWave from "virtual:icons/mdi/hand-wave";
 import IconBackpack from "virtual:icons/mdi/backpack";
 import IconPerson from "virtual:icons/mdi/person";
 import IconLogout from "virtual:icons/mdi/logout";
-import IconClose from "virtual:icons/mdi/close";
 import IconStore from "virtual:icons/mdi/store";
 import IconUser from "virtual:icons/mdi/user";
-import IconSearch from "virtual:icons/mdi/search";
-
-import RawIconSwordCross from "@/assets/icons/sword-cross.png";
-import RawIconInformation from "@/assets/icons/information.png";
+// import IconSearch from "virtual:icons/mdi/search";
 
 import type { RealtimeChannel } from "@supabase/realtime-js";
-import type { MarkerOptions, FightMarkerOptions } from "@/types/Marker";
+import type { FightMarkerOptions } from "@/types/Marker";
 
-import { reactive, onMounted, ref, onBeforeUnmount } from "vue";
+import { reactive, onMounted, ref, onBeforeUnmount, computed } from "vue";
 import { useRouter } from "vue-router";
 import throttle from "lodash.throttle";
 
@@ -411,33 +310,27 @@ import {
   MenuButton,
   MenuItems,
   MenuItem,
-  Dialog,
-  DialogPanel,
-  DialogTitle,
-  DialogDescription,
   TransitionRoot,
-  TransitionChild,
 } from "@headlessui/vue";
 
 import UserDialog from "@/components/game/dialogs/User.vue";
-import CommandPalette from "@/components/game/CommandPalette.vue";
+import FightDialog from "@/components/game/dialogs/Fight.vue";
 import ShoppingDialog from "@/components/game/dialogs/Shopping.vue";
 import InventoryDialog from "@/components/game/dialogs/Inventory.vue";
+
+// import CommandPalette from "@/components/game/CommandPalette.vue";
 
 import { supabase, storedMapsUrl } from "@/utils/supabase";
 import { copyToClipboard as clipboard_copy } from "@/utils/globals";
 import { store } from "@/utils/store";
-
 import {
-  Map,
-  Marker,
-  TileLayer,
-  LatLngBounds,
-  LatLng,
-  CRS,
-  Icon,
-  DivIcon,
-} from "leaflet";
+  DEFAULT_FIGHT_MARKERS,
+  MONDSTADT_LOCATION,
+  createFightMarker,
+  createUserMarker,
+} from "@/utils/markers";
+
+import { Map, Marker, TileLayer, LatLngBounds, LatLng, CRS } from "leaflet";
 
 interface MousePositionPayload {
   type: string;
@@ -450,36 +343,39 @@ interface MousePositionPayload {
   key?: string;
 }
 
+// Refs to HTML elements.
 const map_element_ref = ref<HTMLElement | null>(null);
 const map_ref = ref<Map | null>(null);
 
-const router = useRouter();
+// Computed values.
+const user = computed(() => (store.initialized ? store.user_data : null));
 
+const router = useRouter();
 const state = reactive<{
   connected_users_channel: RealtimeChannel | null;
   connected_users: {
     [username: string]: Marker | undefined;
   };
 
-  dialogOpen: boolean;
-  openedDialogData: MarkerOptions | null;
+  fightDialogOpen: boolean;
+  fightDialogData: FightMarkerOptions | null;
 
   shoppingDialogOpen: boolean;
   userDialogOpen: boolean;
   userDialogUsername: string | null;
-  commandPaletteOpen: boolean;
+  // commandPaletteOpen: boolean;
   inventoryDialogOpen: boolean;
 }>({
   connected_users_channel: null,
   connected_users: {},
 
-  dialogOpen: false,
-  openedDialogData: null,
+  fightDialogOpen: false,
+  fightDialogData: null,
 
   shoppingDialogOpen: false,
   userDialogOpen: false,
   userDialogUsername: null,
-  commandPaletteOpen: false,
+  // commandPaletteOpen: false,
   inventoryDialogOpen: false,
 });
 
@@ -490,146 +386,28 @@ const copyToClipboard = (text?: string | null) => {
   resetCopyToast();
 };
 
+/**
+ * Throttle the send mouse event to every 100ms
+ * to not flood the realtime websocket.
+ */
 const sendMouseBroadcast = throttle(({ lat, lng }) => {
-  if (!state.connected_users_channel || !store.user_data) return;
+  if (!state.connected_users_channel || !store.initialized) return;
 
   state.connected_users_channel.send({
     type: "broadcast",
     event: "location",
     payload: { username: store.user_data.username, lat, lng },
   });
-}, 1000 / 10);
+}, 100);
 
-/** Short-hand to close the dialog. */
-const closeDialog = () => (state.dialogOpen = false);
-
+/** Short-hands to close dialogs. */
+const closeFightDialog = () => (state.fightDialogOpen = false);
 const closeShoppingDialog = () => (state.shoppingDialogOpen = false);
-const closeCommandPalette = () => (state.commandPaletteOpen = false);
+// const closeCommandPalette = () => (state.commandPaletteOpen = false);
 const closeInventoryDialog = () => (state.inventoryDialogOpen = false);
 const closeUserDialog = () => {
   state.userDialogUsername = null;
   state.userDialogOpen = false;
-};
-
-/**
- * Creates a new game with a bot.
- * @param region The bot will use this info to build his deck. Defaults to `mondstadt`.
- */
-const createFightIn = (
-  region: FightMarkerOptions["region"] = "mondstadt",
-  offline: "yes" | "no"
-) => {
-  if (offline === "yes") {
-    router.push({ name: "new-game", params: { region, offline } });
-  } else if (offline === "no") {
-    router.push("/game/join-game");
-  }
-};
-
-const MONDSTADT_LOCATION = new LatLng(-19.15562605857849, 41.16369414329529);
-const LIYUE_LOCATION = new LatLng(-48.4375, 28.265625);
-const INAZUMA_LOCATION = new LatLng(-77.15562605857849, 79.16369414329529);
-
-const DEFAULT_FIGHT_MARKERS: FightMarkerOptions[] = [
-  {
-    type: "fight",
-
-    region: "mondstadt",
-    latitude: MONDSTADT_LOCATION.lat,
-    longitude: MONDSTADT_LOCATION.lng,
-
-    title: "Fight - Mondstadt",
-    description: "Wanna fight with someone in Mondstadt?",
-  },
-  {
-    type: "fight",
-
-    region: "liyue",
-    latitude: LIYUE_LOCATION.lat,
-    longitude: LIYUE_LOCATION.lng,
-
-    title: "Fight - Liyue",
-    description: "Wanna fight with someone in Liyue?",
-  },
-  {
-    type: "fight",
-
-    region: "inazuma",
-    latitude: INAZUMA_LOCATION.lat,
-    longitude: INAZUMA_LOCATION.lng,
-
-    title: "Fight - Inazuma",
-    description: "Wanna fight with someone in Inazuma?",
-  },
-];
-
-const DEFAULT_MARKERS = [...DEFAULT_FIGHT_MARKERS];
-
-/**
- * @example
- * ```typescript
- * createMarker({
- *   latitude: 1,
- *   longitude: 1,
- *   title: "Random title here !",
- *   type: "fight",
- *   id: 12345678
- * });
- * ```
- */
-const createMarker = (options: MarkerOptions) => {
-  if (!map_ref.value) return;
-  const map = map_ref.value as Map;
-
-  const ICON_SIZE = 36;
-  const icon = new Icon({
-    iconUrl:
-      options.type === "fight"
-        ? RawIconSwordCross
-        : // TODO: add other icons
-          RawIconInformation,
-    className:
-      "!p-1 bg-grey-800 rounded-md border border-grey-700 bg-opacity-70 filter backdrop-blur-sm",
-    iconSize: [ICON_SIZE, ICON_SIZE],
-    iconAnchor: [ICON_SIZE / 2, ICON_SIZE / 2],
-  });
-
-  const marker = new Marker(new LatLng(options.latitude, options.longitude), {
-    icon,
-    title: options.title,
-    alt: options.title,
-  });
-
-  // Open the marker's dialog on click.
-  marker.on("click", () => {
-    state.openedDialogData = options;
-    state.dialogOpen = true;
-  });
-
-  marker.addTo(map);
-};
-
-const createUserMarker = (username: string, latlng: LatLng) => {
-  if (!map_ref.value) return;
-  const map = map_ref.value as Map;
-
-  const icon = new DivIcon({
-    className: "h-24 w-24 rounded-full bg-grey-600 border-2 border-grey-500",
-    iconSize: [20, 20],
-  });
-
-  const marker = new Marker(latlng, {
-    icon,
-    title: username,
-  });
-
-  marker.on("click", () => {
-    state.userDialogUsername = username;
-    state.userDialogOpen = true;
-  });
-
-  marker.addTo(map);
-  return marker;
 };
 
 const copyToast = ref(false);
@@ -691,7 +469,12 @@ onMounted(() => {
   // When the map is ready, store the map reference for access later.
   map.whenReady(() => (map_ref.value = map));
   // Add the default markers to the map.
-  DEFAULT_MARKERS.forEach(createMarker);
+  DEFAULT_FIGHT_MARKERS.forEach((marker) =>
+    createFightMarker(map, marker, () => {
+      state.fightDialogData = marker;
+      state.fightDialogOpen = true;
+    })
+  );
 
   // Add the connected users to the map.
   state.connected_users_channel = supabase.channel("map_cursors", {
@@ -701,6 +484,102 @@ onMounted(() => {
   });
 
   state.connected_users_channel
+    .on("presence", { event: "SYNC" }, () => {
+      if (!state.connected_users_channel) return;
+
+      const presence = state.connected_users_channel.presenceState();
+      for (const presence_key of Object.keys(presence)) {
+        const presences = presence[presence_key];
+        presences.forEach((data) => {
+          if (
+            !store.initialized ||
+            data.username === store.user_data.username
+          ) {
+            return;
+          }
+
+          console.log("sync: adding", data);
+          const marker_obj = state.connected_users[data.username];
+
+          if (!marker_obj) {
+            state.connected_users[data.username] = createUserMarker(
+              map,
+              {
+                title: data.username,
+                username: data.username,
+
+                latitude: data.lat,
+                longitude: data.lng,
+              },
+              () => {
+                state.userDialogUsername = data.username;
+                state.userDialogOpen = true;
+              }
+            );
+
+            return;
+          }
+
+          marker_obj.setLatLng(new LatLng(data.lat, data.lng));
+        });
+      }
+    })
+    .on(
+      "presence",
+      { event: "join" },
+      (payload: {
+        newPresences: { username: string; lat: number; lng: number }[];
+      }) => {
+        const presences = payload.newPresences;
+        presences.forEach((data) => {
+          if (
+            !store.initialized ||
+            data.username === store.user_data.username
+          ) {
+            return;
+          }
+          console.log("join: add", data);
+          const marker_obj = state.connected_users[data.username];
+
+          if (!marker_obj) {
+            state.connected_users[data.username] = createUserMarker(
+              map,
+              {
+                title: data.username,
+                username: data.username,
+
+                latitude: data.lat,
+                longitude: data.lng,
+              },
+              () => {
+                state.userDialogUsername = data.username;
+                state.userDialogOpen = true;
+              }
+            );
+
+            return;
+          }
+
+          marker_obj.setLatLng(new LatLng(data.lat, data.lng));
+        });
+      }
+    )
+    .on(
+      "presence",
+      { event: "leave" },
+      (payload: {
+        leftPresences: { username: string; lat: number; lng: number }[];
+      }) => {
+        const presences = payload.leftPresences;
+        presences.forEach((data) => {
+          console.log("left: remove", data);
+          const marker = state.connected_users[data.username];
+          if (!marker) return;
+
+          marker.remove();
+        });
+      }
+    )
     .on(
       "broadcast",
       { event: "location" },
@@ -709,8 +588,18 @@ onMounted(() => {
 
         if (!marker_obj) {
           state.connected_users[event_data.payload.username] = createUserMarker(
-            event_data.payload.username,
-            new LatLng(event_data.payload.lat, event_data.payload.lng)
+            map,
+            {
+              title: event_data.payload.username,
+              username: event_data.payload.username,
+
+              latitude: event_data.payload.lat,
+              longitude: event_data.payload.lng,
+            },
+            () => {
+              state.userDialogUsername = event_data.payload.username;
+              state.userDialogOpen = true;
+            }
           );
 
           return;
@@ -722,9 +611,17 @@ onMounted(() => {
       }
     )
     .subscribe(async (status: string) => {
+      if (!store.initialized || !state.connected_users_channel) return;
+
       if (status === "SUBSCRIBED") {
+        await state.connected_users_channel.track({
+          username: store.user_data.username,
+          lat: MONDSTADT_LOCATION.lat,
+          lng: MONDSTADT_LOCATION.lng,
+        });
+
         map.on("mousemove", ({ latlng }) => {
-          if (!store.user_data || !latlng.lat || !latlng.lng) return;
+          if (!store.initialized || !latlng.lat || !latlng.lng) return;
 
           sendMouseBroadcast({
             username: store.user_data.username,
