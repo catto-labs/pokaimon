@@ -36,7 +36,7 @@
         <div class="flex flex-col gap-4">
           <img src="@/assets/branding/vector/undefined.svg" class="w-56" />
           <div>
-            <p>© 2022-2023 undefined labs</p>
+            <p>© 2022-2023 catto labs</p>
             <div class="flex gap-2">
               <router-link class="text-sm text-grey-300" to="/docs/privacy"
                 >Privacy Policy</router-link

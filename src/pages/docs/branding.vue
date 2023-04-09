@@ -5,17 +5,18 @@
       <div class="flex flex-col items-center justify-center text-center">
         <h1 class="mb-2 text-4xl font-bold text-head">Design & Branding</h1>
         <p class="max-w-xl text-center">
-          The Pokaimon brand belongs to undefined labs, the entity that guides
-          and supports development of Pokaimon. These guidelines describe when
-          and how the brand should be used.
+          The Pokaimon brand belongs to catto labs, the entity that guides and
+          supports development of Pokaimon. These guidelines describe when and
+          how the brand should be used.
         </p>
       </div>
       <div class="mt-8 flex flex-col items-center justify-center space-y-4">
         <h2 class="mb-2 max-w-xl text-center text-xl text-body">Brand Marks</h2>
         <p class="max-w-xl text-center">
-          undefined labs claims two marks: the
+          catto labs claims three marks: the
           <strong>"Pokaimon" logo-mark</strong> and the
           <strong>"undefined" logo-type</strong>.
+          <strong>"catto.labs" logo-type</strong>.
         </p>
         <h3 class="max-w-xl">
           Both should be used with the following in mind:
@@ -51,8 +52,8 @@
           <div class="my-auto">
             <h4 class="text-xl font-bold">"undefined" logo-type</h4>
             <p class="w-[32rem]">
-              This is the primary and only logo-type for undefined labs, the
-              organisation behind Pokaimon.
+              This is the logo type for undefined labs, the old name of catto
+              labs.
             </p>
           </div>
         </div>
