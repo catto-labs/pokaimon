@@ -412,7 +412,7 @@ const state = reactive<
 });
 
 onMounted(async () => {
-  if (!props.id || !store.user_data) {
+  if (!props.id || !("user_data" in store)) {
     router.push("/game");
     return;
   }

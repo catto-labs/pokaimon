@@ -74,7 +74,7 @@ const state = reactive({
   tag: "#",
 });
 
-if (store.user_data && store.user_data.username) {
+if ("user_data" in store && store.user_data && store.user_data.username) {
   router.push("/game");
 }
 
@@ -84,7 +84,7 @@ const handleSubmit = async (e: Event) => {
   if (state.username.trim() === "") return alert("Please enter a username");
   if (state.tag.trim().substring(1) === "") return alert("Please enter a tag");
 
-  if (!store.user_data) {
+  if (!("user_data" in store)) {
     return alert("User data not found, please try to refresh the page.");
   }
 

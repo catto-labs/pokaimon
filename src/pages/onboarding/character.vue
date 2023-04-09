@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="store.user_data"
+    v-if="'user_data' in store"
     class="bg-gray-900 flex flex-col items-center py-32 px-6"
   >
     <div class="text-center">
@@ -71,7 +71,7 @@ const state = reactive<{
 
 const handleSubmit = async (e: Event) => {
   e.preventDefault();
-  if (!store.user_data) {
+  if (!("user_data" in store)) {
     return alert("User data not found, please try to refresh the page.");
   }
 

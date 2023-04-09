@@ -55,7 +55,7 @@
 
               <div
                 class="mt-8 flex flex-col justify-between gap-4 md:flex-row"
-                v-if="state.loaded && store.user_data"
+                v-if="state.loaded && 'user_data' in store"
               >
                 <div
                   class="group flex flex-col justify-end rounded-lg border border-grey-600 bg-grey-700 transition duration-300 ease-in-out hover:-translate-y-0.5 md:w-1/3"
@@ -167,7 +167,7 @@ const props = defineProps<{
 }>();
 
 const checkCharacterInInventory = (character_id: number) => {
-  if (!store.user_inventory) return false;
+  if (!("user_inventory" in store)) return false;
 
   return store.user_inventory.find(
     (character) => character.base_character.id === character_id
