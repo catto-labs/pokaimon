@@ -13,13 +13,11 @@
       <div class="mt-8 flex flex-col items-center justify-center space-y-4">
         <h2 class="mb-2 max-w-xl text-center text-xl text-body">Brand Marks</h2>
         <p class="max-w-xl text-center">
-          catto labs claims three marks: the
-          <strong>"Pokaimon" logo-mark</strong> and the
-          <strong>"undefined" logo-type</strong>.
-          <strong>"catto.labs" logo-type</strong>.
+          catto labs claims the
+          <strong>"Pokaimon" logo-mark</strong>.
         </p>
         <h3 class="max-w-xl">
-          Both should be used with the following in mind:
+          They should be used with the following in mind:
         </h3>
         <ol class="max-w-xl list-disc">
           <li>
@@ -43,30 +41,6 @@
               <h4 class="text-xl font-bold">"Pokaimon" logo-mark</h4>
               <p class="max-w-[16rem]">
                 This is the primary and only logo-mark for Pokaimon.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="flex flex-col space-y-8">
-          <img src="@/assets/branding/vector/undefined.svg" class="h-10" />
-          <div class="my-auto">
-            <h4 class="text-xl font-bold">"undefined" logo-type</h4>
-            <p class="w-[32rem]">
-              This is the logo type for undefined labs, the old name of catto
-              labs.
-            </p>
-          </div>
-        </div>
-        <div class="flex flex-col items-center justify-center space-y-8">
-          <div class="flex gap-16">
-            <img
-              src="@/assets/branding/vector/undefined-mark.svg"
-              class="my-auto h-12"
-            />
-            <div class="my-auto">
-              <h4 class="text-xl font-bold">"undefined" logo-mark</h4>
-              <p class="max-w-[16rem]">
-                This is the primary and only logo-mark for undefined labs.
               </p>
             </div>
           </div>

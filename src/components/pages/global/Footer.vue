@@ -3,7 +3,7 @@
     <footer
       class="flex w-full flex-col justify-between gap-6 rounded-t-xl border-t border-grey-700 bg-grey-800 bg-opacity-60 py-8 px-8 sm:flex-row sm:flex-wrap md:flex-nowrap md:gap-16"
     >
-      <div class="items-center space-y-8 text-body">
+      <div class="space-y-8 text-body">
         <div class="flex flex-col gap-4">
           <router-link to="/" class="flex flex-row gap-4">
             <img
@@ -34,7 +34,9 @@
         </div>
 
         <div class="flex flex-col gap-4">
-          <img src="@/assets/branding/vector/undefined.svg" class="w-56" />
+          <div>
+            <img src="@/assets/branding/vector/catto.svg" class="h-12" />
+          </div>
           <div>
             <p>© 2022-2023 catto labs</p>
             <div class="flex gap-2">
