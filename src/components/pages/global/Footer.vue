@@ -84,7 +84,7 @@
           </h2>
           <div class="flex flex-wrap gap-y-4 gap-x-12">
             <router-link
-              to="/linkout?url=aHR0cHM6Ly9naXRodWIuY29tL3Ryb2Jvbm94L3Bva2FpbW9u"
+              to="/linkout?url=aHR0cHM6Ly9naXRodWIuY29tL2NhdHRvLWxhYnMvcG9rYWltb24"
               class="flex w-full gap-4"
             >
               <IconGitHub class="my-auto h-5 w-5" />
