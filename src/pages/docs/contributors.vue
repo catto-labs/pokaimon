@@ -35,11 +35,6 @@
             img="https://cdn.discordapp.com/avatars/466453424930553856/ddebd51f7c60c80d16cbac8a85f304d1.png"
             role="Character Buffs"
           />
-          <IndirectContributor
-            name="Aiko"
-            img="https://cdn.discordapp.com/avatars/697062367426510948/5d349c64afb707308210589f0be13452.png"
-            role="Misc. Artwork"
-          />
         </div>
       </div>
       <div class="mt-8 flex flex-col items-center justify-center space-y-4">
@@ -48,16 +43,12 @@
         </h2>
         <div class="grid grid-cols-2 gap-12 md:flex-row">
           <div class="flex flex-col gap-2 text-right">
-            <p class="font-bold">daz</p>
             <p class="font-bold">HoYoverse Pte. Ltd.</p>
             <p class="font-bold">Supabase Hackathon</p>
-            <p class="font-bold">Lastly, you, the customer</p>
           </div>
           <div class="flex flex-col gap-2">
-            <p>Emotional support for Pixel</p>
             <p>Allowing usage of Genshin character assets.</p>
-            <p>Our main source of motivation.</p>
-            <p>For being amazing!</p>
+            <p>Giving this opportunity for our team.</p>
           </div>
         </div>
       </div>
