@@ -21,7 +21,6 @@
 
       <div class="flex gap-6 rounded-xl pl-4 md:bg-grey-700 md:bg-opacity-40">
         <nav class="hidden flex-row items-center space-x-2 md:flex">
-          <NavbarItem to="/news" text="News" />
           <NavbarItem to="/cards" text="Cards" />
           <NavbarItem
             to="/linkout?url=aHR0cHM6Ly9naXRodWIuY29tL3Ryb2Jvbm94L3Bva2FpbW9u"

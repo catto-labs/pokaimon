@@ -49,41 +49,6 @@
           <PlayingCard class="hidden lg:block" />
         </div>
       </section>
-
-      <section id="news" class="mt-64 mb-32 space-y-8">
-        <h1 class="text-left text-6xl font-bold">
-          What's cookin' in Pokaimon?
-        </h1>
-        <div
-          class="flex flex-wrap justify-center gap-16 lg:flex-nowrap lg:justify-between xl:justify-start"
-        >
-          <NewsCard class="md:max-w-sm lg:max-w-xs" />
-          <NewsCard class="md:max-w-sm lg:max-w-xs" />
-          <NewsCard class="lg:max-w-xs" />
-        </div>
-
-        <div class="flex flex-col space-x-8 sm:flex-row">
-          <h2 class="text-xl">Check out more Pokaimon news:</h2>
-          <router-link
-            to="/news#featured"
-            class="text-xl text-brand-main transition duration-300 ease-in-out hover:underline hover:brightness-125"
-          >
-            Featured
-          </router-link>
-          <router-link
-            to="/news#patches"
-            class="text-xl text-brand-main transition duration-300 ease-in-out hover:underline hover:brightness-125"
-          >
-            Patch Notes
-          </router-link>
-          <router-link
-            to="/news#all"
-            class="text-xl text-brand-main transition duration-300 ease-in-out hover:underline hover:brightness-125"
-          >
-            All
-          </router-link>
-        </div>
-      </section>
     </main>
     <Footer class="bottom-0 w-full" />
   </div>
@@ -92,6 +57,5 @@
 <script setup lang="ts">
 import Navbar from "@/components/pages/global/Navbar.vue";
 import Footer from "@/components/pages/global/Footer.vue";
-import NewsCard from "@/components/pages/index/NewsCard.vue";
 import PlayingCard from "@/components/pages/index/PlayingCard.vue";
 </script>

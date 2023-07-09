@@ -198,8 +198,8 @@
         <p class="max-w-xl text-center">
           For further information regarding the use of the Pokaimon or undefined
           labs name and branding, please contact
-          <a href="mailto:brand@pokaimon.ml" class="text-brand-main"
-            >brand@pokaimon.ml</a
+          <a href="mailto:hello@trobo.tech" class="text-brand-main"
+            >hello@trobo.tech</a
           >.
         </p>
       </div>
