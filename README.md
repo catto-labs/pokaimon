@@ -35,7 +35,7 @@ If you just want to play the game, you can access the live website at [pokaimon.
 If you want to contribute, you can [read the contribution guidelines here.](https://github.com/trobonox/pokaimon/blob/main/CONTRIBUTING.md)
 
 ---
-© 2022-2023 catto labs
+© 2022-2024 catto labs
 
 Licensed under the MIT license
 
